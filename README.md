@@ -1,4 +1,3 @@
-s:ld;jfnsb;ksf
 # LELEC210X project
 
 This repository contains every thing you (student) need for the LELEC210X project.
