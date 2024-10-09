@@ -83,10 +83,14 @@ if __name__ == "__main__":
             plt.xlabel("Time (s)")
             plt.ylabel("Voltage (mV)")
             plt.ylim([0, 3300])
-            plt.draw()
-            plt.pause(0.001)
-            plt.cla()
+            # plt.draw()
+            # plt.pause(0.001)
+            # plt.cla()
 
             generate_audio(msg, f"acq-{msg_counter}")
 
             msg_counter += 1
+            # begin merde
+            plt.show()
+            break
+            # end merde
