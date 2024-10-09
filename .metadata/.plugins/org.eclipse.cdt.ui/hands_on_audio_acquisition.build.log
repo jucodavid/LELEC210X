@@ -1,0 +1,10 @@
+19:15:08 **** Incremental Build of configuration Debug for project hands_on_audio_acquisition ****
+make -j16 all 
+arm-none-eabi-size  hands_on_audio_acquisition.elf 
+   text	   data	    bss	    dec	    hex	filename
+  28524	    112	   4360	  32996	   80e4	hands_on_audio_acquisition.elf
+Finished building: default.size.stdout
+ 
+
+19:15:08 Build Finished. 0 errors, 0 warnings. (took 317ms)
+
