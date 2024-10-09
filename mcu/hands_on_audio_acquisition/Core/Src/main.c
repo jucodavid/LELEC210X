@@ -38,7 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ADC_BUF_SIZE 256
+#define ADC_BUF_SIZE 15000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,6 +53,8 @@ volatile int state;
 volatile uint16_t ADCBuffer[2*ADC_BUF_SIZE]; /* ADC group regular conversion data (array of data) */
 volatile uint16_t* ADCData1;
 volatile uint16_t* ADCData2;
+volatile uint16_t signalPower;
+volatile uint16_t lastSample = 0;
 
 char hex_encoded_buffer[4*ADC_BUF_SIZE+1];
 /* USER CODE END PV */
@@ -67,11 +69,34 @@ uint32_t get_signal_power(uint16_t *buffer, size_t len);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
+	signalPower = get_signal_power(ADCData1, ADC_BUF_SIZE);
+	printf("%d", signalPower);
+	printf("\n");
+	if(lastSample == 1){
+		HAL_TIM_Base_Stop(&htim3);
+		HAL_ADC_Stop_DMA(&hadc1);
+		print_buffer(ADCData2);
+		print_buffer(ADCData1);
+	}
+	if(signalPower > 50){
+		lastSample = 1;
+	}
+	//print_buffer(ADCData1);
+}
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
-	HAL_TIM_Base_Stop(&htim3);
-	HAL_ADC_Stop_DMA(&hadc1);
-	print_buffer(ADCData1);
+	signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
+	printf("%d", signalPower);
+	printf("\n");
+	if(lastSample == 1){
+		HAL_TIM_Base_Stop(&htim3);
+		HAL_ADC_Stop_DMA(&hadc1);
+		print_buffer(ADCData1);
+		print_buffer(ADCData2);
+	}
+	if(signalPower > 50){
+		lastSample = 1;
+	}
 }
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin == B1_Pin) {
@@ -79,7 +104,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	}
 	if (state == 1){
 		HAL_TIM_Base_Start(&htim3);
-		HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE);
+		HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
 	}
 }
 

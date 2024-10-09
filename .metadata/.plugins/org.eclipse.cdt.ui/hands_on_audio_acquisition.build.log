@@ -1,10 +1,69 @@
-19:15:08 **** Incremental Build of configuration Debug for project hands_on_audio_acquisition ****
+20:17:36 **** Incremental Build of configuration Debug for project hands_on_audio_acquisition ****
 make -j16 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'HAL_ADC_ConvHalfCpltCallback':
+../Core/Src/main.c:73:40: warning: passing argument 1 of 'get_signal_power' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   73 |         signalPower = get_signal_power(ADCData1, ADC_BUF_SIZE);
+      |                                        ^~~~~~~~
+../Core/Src/main.c:67:37: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+   67 | uint32_t get_signal_power(uint16_t *buffer, size_t len);
+      |                           ~~~~~~~~~~^~~~~~
+../Core/Src/main.c:79:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   79 |                 print_buffer(ADCData2);
+      |                              ^~~~~~~~
+../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+   66 | void print_buffer(uint16_t *buffer);
+      |                   ~~~~~~~~~~^~~~~~
+../Core/Src/main.c:80:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   80 |                 print_buffer(ADCData1);
+      |                              ^~~~~~~~
+../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+   66 | void print_buffer(uint16_t *buffer);
+      |                   ~~~~~~~~~~^~~~~~
+../Core/Src/main.c: In function 'HAL_ADC_ConvCpltCallback':
+../Core/Src/main.c:88:40: warning: passing argument 1 of 'get_signal_power' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   88 |         signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
+      |                                        ^~~~~~~~
+../Core/Src/main.c:67:37: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+   67 | uint32_t get_signal_power(uint16_t *buffer, size_t len);
+      |                           ~~~~~~~~~~^~~~~~
+../Core/Src/main.c:94:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   94 |                 print_buffer(ADCData1);
+      |                              ^~~~~~~~
+../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+   66 | void print_buffer(uint16_t *buffer);
+      |                   ~~~~~~~~~~^~~~~~
+../Core/Src/main.c:95:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   95 |                 print_buffer(ADCData2);
+      |                              ^~~~~~~~
+../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+   66 | void print_buffer(uint16_t *buffer);
+      |                   ~~~~~~~~~~^~~~~~
+../Core/Src/main.c: In function 'HAL_GPIO_EXTI_Callback':
+../Core/Src/main.c:107:43: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+  107 |                 HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
+      |                                           ^~~~~~~~
+      |                                           |
+      |                                           volatile uint16_t * {aka volatile short unsigned int *}
+In file included from ../Core/Inc/stm32l4xx_hal_conf.h:278,
+                 from ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:29,
+                 from ../Core/Inc/main.h:31,
+                 from ../Core/Src/main.c:21:
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_adc.h:1945:78: note: expected 'uint32_t *' {aka 'long unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
+ 1945 | HAL_StatusTypeDef       HAL_ADC_Start_DMA(ADC_HandleTypeDef *hadc, uint32_t *pData, uint32_t Length);
+      |                                                                    ~~~~~~~~~~^~~~~
+arm-none-eabi-gcc -o "hands_on_audio_acquisition.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Carabouille\Documents\LELEC210X\mcu\hands_on_audio_acquisition\STM32L4A6ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="hands_on_audio_acquisition.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.16.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.200.202406191623/tools/bin/../lib/gcc/arm-none-eabi/12.3.1/../../../../arm-none-eabi/bin/ld.exe: warning: hands_on_audio_acquisition.elf has a LOAD segment with RWX permissions
+Finished building target: hands_on_audio_acquisition.elf
+ 
 arm-none-eabi-size  hands_on_audio_acquisition.elf 
+arm-none-eabi-objdump -h -S hands_on_audio_acquisition.elf  > "hands_on_audio_acquisition.list"
    text	   data	    bss	    dec	    hex	filename
-  28524	    112	   4360	  32996	   80e4	hands_on_audio_acquisition.elf
+  29164	    112	 122320	 151596	  2502c	hands_on_audio_acquisition.elf
 Finished building: default.size.stdout
  
+Finished building: hands_on_audio_acquisition.list
+ 
 
-19:15:08 Build Finished. 0 errors, 0 warnings. (took 317ms)
+20:17:37 Build Finished. 0 errors, 8 warnings. (took 1s.518ms)
 
