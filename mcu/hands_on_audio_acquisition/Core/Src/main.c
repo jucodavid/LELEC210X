@@ -80,7 +80,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
 		state = 0;
 		print_buffer(ADCData1);
 	}
-	if(signalPower > 50000){
+	if(signalPower > 20000){
 		lastSample = 1;
 	}
 	//print_buffer(ADCData1);
