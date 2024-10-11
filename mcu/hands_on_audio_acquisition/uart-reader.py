@@ -10,6 +10,7 @@ import numpy as np
 import serial
 import soundfile as sf
 from serial.tools import list_ports
+# from playsound import playsound
 from matplotlib.ticker import EngFormatter
 formatter_s = EngFormatter(unit='s', usetex=True)
 formatter_dB = EngFormatter(unit='dB', usetex=True)
@@ -115,5 +116,6 @@ if __name__ == "__main__":
 
             generate_audio(msg, f"acq-{msg_counter}")
             print("generated audio\n")
+            # playsound(f"acq-{msg_counter}")
 
             msg_counter += 1
