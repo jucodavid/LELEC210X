@@ -50,6 +50,8 @@ def generate_audio(buf, file_name):
 
 
 if __name__ == "__main__":
+    plt.ion()
+    plt.show()
     argParser = argparse.ArgumentParser()
     argParser.add_argument("-p", "--port", help="Port for serial communication")
     args = argParser.parse_args()
@@ -83,14 +85,11 @@ if __name__ == "__main__":
             plt.xlabel("Time (s)")
             plt.ylabel("Voltage (mV)")
             plt.ylim([0, 3300])
-            # plt.draw()
-            # plt.pause(0.001)
+            plt.draw()
+            plt.pause(0.001)
             # plt.cla()
+            # input("Press [enter] to continue.")
 
             generate_audio(msg, f"acq-{msg_counter}")
 
             msg_counter += 1
-            # begin merde
-            plt.show()
-            break
-            # end merde
