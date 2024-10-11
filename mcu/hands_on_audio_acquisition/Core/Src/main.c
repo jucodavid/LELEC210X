@@ -77,6 +77,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
 		HAL_TIM_Base_Stop(&htim3);
 		HAL_ADC_Stop_DMA(&hadc1);
 		lastSample = 0;
+		state = 0;
 		print_buffer(ADCData2);
 		print_buffer(ADCData1);
 	}
@@ -93,6 +94,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 		HAL_TIM_Base_Stop(&htim3);
 		HAL_ADC_Stop_DMA(&hadc1);
 		lastSample = 0;
+		state = 0;
 		print_buffer(ADCData1);
 		print_buffer(ADCData2);
 	}
@@ -107,6 +109,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (state == 1){
 		HAL_TIM_Base_Start(&htim3);
 		HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
+		state = 0;
 	}
 }
 
