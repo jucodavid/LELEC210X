@@ -1,6 +1,17 @@
-20:17:36 **** Incremental Build of configuration Debug for project hands_on_audio_acquisition ****
+17:04:29 **** Incremental Build of configuration Debug for project hands_on_audio_acquisition ****
 make -j16 all 
+arm-none-eabi-gcc "../Core/Src/adc.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/adc.d" -MT"Core/Src/adc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/adc.o"
+arm-none-eabi-gcc "../Core/Src/dma.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/dma.d" -MT"Core/Src/dma.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/dma.o"
+arm-none-eabi-gcc "../Core/Src/gpio.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/gpio.d" -MT"Core/Src/gpio.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/gpio.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/retarget.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/retarget.d" -MT"Core/Src/retarget.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/retarget.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_hal_msp.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_hal_msp.d" -MT"Core/Src/stm32l4xx_hal_msp.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32l4xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32l4xx_it.d" -MT"Core/Src/stm32l4xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32l4xx_it.o"
+arm-none-eabi-gcc "../Core/Src/syscalls.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/syscalls.d" -MT"Core/Src/syscalls.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/syscalls.o"
+arm-none-eabi-gcc "../Core/Src/sysmem.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sysmem.d" -MT"Core/Src/sysmem.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/sysmem.o"
+arm-none-eabi-gcc "../Core/Src/system_stm32l4xx.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/system_stm32l4xx.d" -MT"Core/Src/system_stm32l4xx.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/system_stm32l4xx.o"
+arm-none-eabi-gcc "../Core/Src/tim.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/tim.d" -MT"Core/Src/tim.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/tim.o"
+arm-none-eabi-gcc "../Core/Src/usart.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L4A6xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/usart.d" -MT"Core/Src/usart.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/usart.o"
 ../Core/Src/main.c: In function 'HAL_ADC_ConvHalfCpltCallback':
 ../Core/Src/main.c:73:40: warning: passing argument 1 of 'get_signal_power' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
    73 |         signalPower = get_signal_power(ADCData1, ADC_BUF_SIZE);
@@ -8,40 +19,28 @@ arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -D
 ../Core/Src/main.c:67:37: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
    67 | uint32_t get_signal_power(uint16_t *buffer, size_t len);
       |                           ~~~~~~~~~~^~~~~~
-../Core/Src/main.c:79:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
-   79 |                 print_buffer(ADCData2);
-      |                              ^~~~~~~~
-../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
-   66 | void print_buffer(uint16_t *buffer);
-      |                   ~~~~~~~~~~^~~~~~
-../Core/Src/main.c:80:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
-   80 |                 print_buffer(ADCData1);
+../Core/Src/main.c:81:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   81 |                 print_buffer(ADCData1);
       |                              ^~~~~~~~
 ../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
    66 | void print_buffer(uint16_t *buffer);
       |                   ~~~~~~~~~~^~~~~~
 ../Core/Src/main.c: In function 'HAL_ADC_ConvCpltCallback':
-../Core/Src/main.c:88:40: warning: passing argument 1 of 'get_signal_power' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
-   88 |         signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
+../Core/Src/main.c:89:40: warning: passing argument 1 of 'get_signal_power' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   89 |         signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
       |                                        ^~~~~~~~
 ../Core/Src/main.c:67:37: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
    67 | uint32_t get_signal_power(uint16_t *buffer, size_t len);
       |                           ~~~~~~~~~~^~~~~~
-../Core/Src/main.c:94:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
-   94 |                 print_buffer(ADCData1);
-      |                              ^~~~~~~~
-../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
-   66 | void print_buffer(uint16_t *buffer);
-      |                   ~~~~~~~~~~^~~~~~
-../Core/Src/main.c:95:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
-   95 |                 print_buffer(ADCData2);
+../Core/Src/main.c:97:30: warning: passing argument 1 of 'print_buffer' discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   97 |                 print_buffer(ADCData1);
       |                              ^~~~~~~~
 ../Core/Src/main.c:66:29: note: expected 'uint16_t *' {aka 'short unsigned int *'} but argument is of type 'volatile uint16_t *' {aka 'volatile short unsigned int *'}
    66 | void print_buffer(uint16_t *buffer);
       |                   ~~~~~~~~~~^~~~~~
 ../Core/Src/main.c: In function 'HAL_GPIO_EXTI_Callback':
-../Core/Src/main.c:107:43: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
-  107 |                 HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
+../Core/Src/main.c:109:43: warning: passing argument 2 of 'HAL_ADC_Start_DMA' from incompatible pointer type [-Wincompatible-pointer-types]
+  109 |                 HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
       |                                           ^~~~~~~~
       |                                           |
       |                                           volatile uint16_t * {aka volatile short unsigned int *}
@@ -59,11 +58,11 @@ Finished building target: hands_on_audio_acquisition.elf
 arm-none-eabi-size  hands_on_audio_acquisition.elf 
 arm-none-eabi-objdump -h -S hands_on_audio_acquisition.elf  > "hands_on_audio_acquisition.list"
    text	   data	    bss	    dec	    hex	filename
-  29164	    112	 122320	 151596	  2502c	hands_on_audio_acquisition.elf
+  29192	    112	 122320	 151624	  25048	hands_on_audio_acquisition.elf
 Finished building: default.size.stdout
  
 Finished building: hands_on_audio_acquisition.list
  
 
-20:17:37 Build Finished. 0 errors, 8 warnings. (took 1s.518ms)
+17:04:31 Build Finished. 0 errors, 6 warnings. (took 1s.765ms)
 
