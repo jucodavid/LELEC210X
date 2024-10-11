@@ -78,10 +78,9 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
 		HAL_ADC_Stop_DMA(&hadc1);
 		lastSample = 0;
 		state = 0;
-		print_buffer(ADCData2);
 		print_buffer(ADCData1);
 	}
-	if(signalPower > 50){
+	if(signalPower > 50000){
 		lastSample = 1;
 	}
 	//print_buffer(ADCData1);
@@ -96,9 +95,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 		lastSample = 0;
 		state = 0;
 		print_buffer(ADCData1);
-		print_buffer(ADCData2);
 	}
-	if(signalPower > 50){
+	if(signalPower > 50000){
 		lastSample = 1;
 	}
 }
