@@ -92,7 +92,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 	if(lastSample == 1){
 		HAL_TIM_Base_Stop(&htim3);
 		HAL_ADC_Stop_DMA(&hadc1);
-		lastSampl = 0;
+		lastSample = 0;
 		print_buffer(ADCData1);
 		print_buffer(ADCData2);
 	}
