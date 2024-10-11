@@ -19,10 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "adc.h"
-#include "dma.h"
 #include "usart.h"
-#include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -38,7 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ADC_BUF_SIZE 15000
+#define ADC_BUF_SIZE 256
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,8 +50,6 @@ volatile int state;
 volatile uint16_t ADCBuffer[2*ADC_BUF_SIZE]; /* ADC group regular conversion data (array of data) */
 volatile uint16_t* ADCData1;
 volatile uint16_t* ADCData2;
-volatile uint16_t signalPower;
-volatile uint16_t lastSample = 0;
 
 char hex_encoded_buffer[4*ADC_BUF_SIZE+1];
 /* USER CODE END PV */
@@ -69,42 +64,9 @@ uint32_t get_signal_power(uint16_t *buffer, size_t len);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
-	signalPower = get_signal_power(ADCData1, ADC_BUF_SIZE);
-	printf("%d", signalPower);
-	printf("\n");
-	if(lastSample == 1){
-		HAL_TIM_Base_Stop(&htim3);
-		HAL_ADC_Stop_DMA(&hadc1);
-		print_buffer(ADCData2);
-		print_buffer(ADCData1);
-	}
-	if(signalPower > 50){
-		lastSample = 1;
-	}
-	//print_buffer(ADCData1);
-}
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
-	signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
-	printf("%d", signalPower);
-	printf("\n");
-	if(lastSample == 1){
-		HAL_TIM_Base_Stop(&htim3);
-		HAL_ADC_Stop_DMA(&hadc1);
-		print_buffer(ADCData1);
-		print_buffer(ADCData2);
-	}
-	if(signalPower > 50){
-		lastSample = 1;
-	}
-}
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin == B1_Pin) {
 		state = 1-state;
-	}
-	if (state == 1){
-		HAL_TIM_Base_Start(&htim3);
-		HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
 	}
 }
 
@@ -138,7 +100,6 @@ uint32_t get_signal_power(uint16_t *buffer, size_t len){
   */
 int main(void)
 {
-
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -161,10 +122,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_LPUART1_UART_Init();
-  MX_ADC1_Init();
-  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   RetargetInit(&hlpuart1);
   printf("Hello world!\r\n");
