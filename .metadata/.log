@@ -1059,3 +1059,18 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\Carabouille\D
 
 !ENTRY org.eclipse.cdt.core 1 0 2024-10-09 19:34:45.492
 !MESSAGE Indexed 'hands_on_audio_acquisition' (33 sources, 136 headers) in 5.75 sec: 14,766 declarations; 87,796 references; 3 unresolved inclusions; 46 syntax errors; 169 unresolved names (0.16%)
+!SESSION 2024-10-11 16:26:09.646 -----------------------------------------------
+eclipse.buildId=Version 1.16.1
+java.version=17.0.11
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=fr_BE
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2024-10-11 16:26:38.717
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-10-11 16:26:38.727
+!MESSAGE Log4j2 initialized with config file C:\Users\Carabouille\Documents\LELEC210X\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-10-11 16:26:49.261
+!MESSAGE Started RMI Server, listening on port 41337
