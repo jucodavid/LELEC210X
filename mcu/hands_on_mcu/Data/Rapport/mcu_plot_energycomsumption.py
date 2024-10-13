@@ -16,7 +16,7 @@ def plot_energy_consumption(csv_file, start_line, graph_title):
 
     plt.figure(figsize=(10, 6))
     #plt.plot(times, np.square(channel_1) / 6.8*1000, label='Channel 1')
-    plt.plot(times, np.square(channel_1) / 6.8*1000)
+    plt.plot(times, np.array(channel_1) / 6.8 * 1000 * 3.3)
     plt.xlabel('Time [s]')
     plt.ylabel('Consumption [mW]')
     plt.title(graph_title)
@@ -34,7 +34,7 @@ def calculate_plateau_means(csv_file, start_line, plateauxlevels, delta):
             next(reader)  # Skip lines until start_line
         for row in reader:
             times.append(float(row[1]))
-            channel_1.append(np.square(float(row[2])) / 6.8 * 1000)
+            channel_1.append(3.3*float(row[2]) / 6.8 * 1000)
 
     plateaus = []
     extreme_times = []
@@ -74,7 +74,8 @@ def plot_pie(mean_values, time_extremes):
     
 
 plot_energy_consumption('energy_sequence_2.csv', 9, 'Energy Consumption of the sequence')
-mean_values, time_extremes = calculate_plateau_means('energy_sequence_2.csv', 9, [5, 21.1], 0.5)
+
+mean_values, time_extremes = calculate_plateau_means('energy_sequence_2.csv', 9, [90, 184], 4)
 time_extremes[0][1] = time_extremes[1][0]
 print("Valeurs moyennes",mean_values)
 print("Temps extremes",time_extremes)
