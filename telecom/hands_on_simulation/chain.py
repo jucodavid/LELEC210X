@@ -38,7 +38,7 @@ class Chain:
 
     # Lowpass filter parameters
     numtaps: int = 100
-    cutoff: float = BIT_RATE * osr_rx / 2.0001  # or 2*BIT_RATE,...
+    cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...
 
     # Tx methods
 
@@ -188,14 +188,22 @@ class BasicChain(Chain):
 
         # Group symbols together, in a matrix. Each row contains the R samples over one symbol period
         y = np.resize(y, (nb_syms, R))
-
+        # print(y)
         # TO DO: generate the reference waveforms used for the correlation
         # hint: look at what is done in modulate() in chain.py
 
+        eS0 = np.exp(-2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
+        eS1 = np.exp( 2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
+
         # TO DO: compute the correlations with the two reference waveforms (r0 and r1)
-
-        # TO DO: performs the decision based on r0 and r1
-
         bits_hat = np.zeros(nb_syms, dtype=int)  # Default value, all bits=0. TO CHANGE!
+
+        for i,Y in enumerate(y):
+            rO = 1/R * np.sum(Y * eS1)
+            r1 = 1/R * np.sum(Y * eS0)
+            if np.abs(rO) > np.abs(r1):
+                bits_hat[i] = 0
+            else:
+                bits_hat[i] = 1
 
         return bits_hat
