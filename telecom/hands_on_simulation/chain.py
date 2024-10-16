@@ -38,7 +38,7 @@ class Chain:
 
     # Lowpass filter parameters
     numtaps: int = 100
-    cutoff: float = BIT_RATE * osr_rx / 2.0001  # or 2*BIT_RATE,...
+    cutoff: float = BIT_RATE * osr_rx /6  # or 2*BIT_RATE,...
 
     # Tx methods
 
@@ -125,7 +125,7 @@ class BasicChain(Chain):
 
     cfo_val, sto_val = np.nan, np.nan  # CFO and STO are random
 
-    bypass_preamble_detect = True
+    bypass_preamble_detect = False
 
     def preamble_detect(self, y):
         """
@@ -188,14 +188,26 @@ class BasicChain(Chain):
 
         # Group symbols together, in a matrix. Each row contains the R samples over one symbol period
         y = np.resize(y, (nb_syms, R))
-
+        
         # TO DO: generate the reference waveforms used for the correlation
         # hint: look at what is done in modulate() in chain.py
+        exp_factor_r1 = -1j*np.pi*2*self.freq_dev/(self.bit_rate*self.osr_rx)
+        exp_factor_r0 = 1j*np.pi*2*self.freq_dev/(self.bit_rate*self.osr_rx)
 
         # TO DO: compute the correlations with the two reference waveforms (r0 and r1)
 
         # TO DO: performs the decision based on r0 and r1
 
         bits_hat = np.zeros(nb_syms, dtype=int)  # Default value, all bits=0. TO CHANGE!
+        for i in range(nb_syms):
+            r0 = 0
+            r1 = 0
+            for j in range(R):
+                r0 += y[i][j]*np.exp(exp_factor_r0*j)
+                r1 += y[i][j]*np.exp(exp_factor_r1*j)
+            if abs(r0) > abs(r1):
+                bits_hat[i] = 0
+            else:
+                bits_hat[i] = 1
 
         return bits_hat
