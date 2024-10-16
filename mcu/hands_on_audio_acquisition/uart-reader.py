@@ -10,11 +10,6 @@ import numpy as np
 import serial
 import soundfile as sf
 from serial.tools import list_ports
-# from playsound import playsound
-from matplotlib.ticker import EngFormatter
-formatter_s = EngFormatter(unit='s', usetex=True)
-formatter_dB = EngFormatter(unit='dB', usetex=True)
-formatter_Hz = EngFormatter(unit='Hz', usetex=True)
 
 PRINT_PREFIX = "SND:HEX:"
 FREQ_SAMPLING = 10200
@@ -55,7 +50,6 @@ def generate_audio(buf, file_name):
 
 
 if __name__ == "__main__":
-    # plt.ion()
     argParser = argparse.ArgumentParser()
     argParser.add_argument("-p", "--port", help="Port for serial communication")
     args = argParser.parse_args()
@@ -84,38 +78,19 @@ if __name__ == "__main__":
             times = np.linspace(0, buffer_size - 1, buffer_size) * 1 / FREQ_SAMPLING
             voltage_mV = msg * VDD / VAL_MAX_ADC * 1e3
 
-            ax1 = plt.subplot(211)
-            ax1.plot(times, voltage_mV)
-            ax1.set_xlabel("Time (s)")
-            ax1.set_ylabel("Voltage (mV)")
-            ax1.set_ylim([0, 3300])
-            ax1.xaxis.set_major_formatter(formatter_s)
-
-            ax2 = plt.subplot(212)
-            ft = np.fft.fft(voltage_mV)
-            ft = np.fft.fftshift(ft)
-            freqs = np.fft.fftfreq(buffer_size, 1 / FREQ_SAMPLING)
-            freqs = np.fft.fftshift(freqs)
-            ax2.set_xlabel("Frequency (Hz)")
-            ax2.set_ylabel("Magnitude")
-            freqs = freqs[buffer_size//2:]
-            ft = ft[buffer_size//2:]
-            ax2.plot(freqs, np.abs(ft))
-            ax2.set_yscale('log')
-            ax2.grid(True)
-            ax2.xaxis.set_ticks(np.arange(0, 5000, 200))
-            ax2.xaxis.set_major_formatter(formatter_Hz)
-            ax2.tick_params(axis='x', labelrotation=90)
-
-            plt.suptitle(f"Acquisition #{msg_counter}")
-            plt.tight_layout()
-            plt.draw()
-            plt.pause(5)
-            ax1.cla()
-            ax2.cla()
+            plt.plot(times, voltage_mV)
+            plt.title(f"Acquisition #{msg_counter}")
+            plt.xlabel("Time (s)")
+            plt.ylabel("Voltage (mV)")
+            plt.ylim([0, 3300])
+            # plt.draw()
+            # plt.pause(0.001)
+            # plt.cla()
 
             generate_audio(msg, f"acq-{msg_counter}")
-            print("generated audio\n")
-            # playsound(f"acq-{msg_counter}")
 
             msg_counter += 1
+            # begin merde
+            plt.show()
+            break
+            # end merde
