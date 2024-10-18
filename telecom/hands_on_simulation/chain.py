@@ -141,17 +141,20 @@ class BasicChain(Chain):
 
         return None
 
-    bypass_cfo_estimation = True
+    bypass_cfo_estimation = False
 
     def cfo_estimation(self, y):
         """
         Estimates CFO using Moose algorithm, on first samples of preamble.
         """
+        N = 2
+        Nt = N * self.osr_rx
+        sum_ = 0
+        for i in range(Nt):
+            sum_ += y[i+Nt] * np.conj(y[i])
+        cfo_est = np.angle(sum_) / (2*np.pi*Nt*(1/self.bit_rate)/self.osr_rx)
+
         # TO DO: extract 2 blocks of size N*R at the start of y
-
-        # TO DO: apply the Moose algorithm on these two blocks to estimate the CFO
-
-        cfo_est = 0  # Default value, to change
 
         return cfo_est
 

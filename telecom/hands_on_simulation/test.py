@@ -18,7 +18,8 @@ class TestBasicChain:
 
     @pytest.mark.parametrize("size", (1, 10, 100))
     def test_demodulate(self, rng: np.random.Generator, size: int):
-        bits = rng.integers(2, size=size)  # choice of bits to send
+        bits = np.random.randint(0, 2, size=size)
+        # choice of bits to send
         x_pay = self.chain.modulate(bits)  # modulated signal with payload
         x = x_pay
 
@@ -33,7 +34,7 @@ class TestBasicChain:
     @pytest.mark.parametrize("size", (1, 10, 100))
     @pytest.mark.parametrize("cfo_val", (0, 100, 1000))
     def test_cfo_estimation(self, rng: np.random.Generator, size: int, cfo_val: float):
-        bits = rng.integers(2, size=size)  # choice of bits to send
+        bits = np.random.randint(0, 2, size=size)  # choice of bits to send
         x_pay = self.chain.modulate(bits)  # modulated signal with payload
 
         x_pr = self.chain.modulate(
