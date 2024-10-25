@@ -1,0 +1,10 @@
+1) a 60 dB Rx gain with low-pass filter (LPF)
+INFO:noise:===== > Final estimated noise power: 1.62e-05 (-47.91dB, Noise std : 4.02e-03)
+2) a 60 dB Rx gain with the LPF bypassed
+INFO:noise:===== > Final estimated noise power: 4.42e-05 (-43.55dB, Noise std : 6.65e-03)
+3) a 70 dB Rx gain with LPF
+INFO:noise:===== > Final estimated noise power: 1.58e-04 (-38.00dB, Noise std : 1.26e-02)
+4) a 70 dB Rx gain with the LPF bypassed.
+INFO:noise:===== > Final estimated noise power: 4.02e-04 (-33.96dB, Noise std : 2.01e-02)
+
+Done on 25-10-24 on LIMESDR #2 by Julien
