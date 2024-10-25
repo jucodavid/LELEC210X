@@ -30,7 +30,22 @@ def demodulate(y, B, R, Fdev):
     """
     nb_syms = int(len(y) / R)
     bits_hat = np.zeros(nb_syms, dtype=int)
-    return bits_hat  # TODO
+
+    # Group symbols together, in a matrix. Each row contains the R samples over one symbol period
+    y = np.resize(y, (nb_syms, R))
+
+    eS0 = np.exp(-2j * np.pi * Fdev * np.arange(R) / B / R)
+    eS1 = np.exp( 2j * np.pi * Fdev * np.arange(R) / B / R)
+
+    for i,Y in enumerate(y):
+        rO = 1/R * np.sum(Y * eS1)
+        r1 = 1/R * np.sum(Y * eS0)
+        if np.abs(rO) > np.abs(r1):
+            bits_hat[i] = 0
+        else:
+            bits_hat[i] = 1
+
+    return bits_hat
 
 
 class demodulation(gr.basic_block):
