@@ -356,23 +356,23 @@ def run_sim(chain: Chain):
     plt.legend()
     plt.show()
 
-    # RMSE CFO
-    #    plt.figure()
-    #    plt.semilogy(SNRs_dB, RMSE_cfo, "-s")
-    #    plt.title("RMSE CFO")
-    #    plt.ylabel("RMSE [-]")
-    #    plt.xlabel("SNR [dB]")
-    #    plt.grid()
-    #    plt.show()
-    #
-    #    # RMSE STO
-    #    plt.figure()
-    #    plt.semilogy(SNRs_dB, RMSE_sto, "-s")
-    #    plt.title("RMSE STO")
-    #    plt.ylabel("RMSE [-]")
-    #    plt.xlabel("SNR [dB]")
-    #    plt.grid()
-    #    plt.show()
+    #RMSE CFO
+    plt.figure()
+    plt.semilogy(SNRs_dB, RMSE_cfo, "-s")
+    plt.title("RMSE CFO")
+    plt.ylabel("RMSE [-]")
+    plt.xlabel("SNR [dB]")
+    plt.grid()
+    plt.show()
+    
+    # RMSE STO
+    plt.figure()
+    plt.semilogy(SNRs_dB, RMSE_sto, "-s")
+    plt.title("RMSE STO")
+    plt.ylabel("RMSE [-]")
+    plt.xlabel("SNR [dB]")
+    plt.grid()
+    plt.show()
 
     # Save simulation outputs (for later post-processing, building new figures,...)
     test_name = "test"

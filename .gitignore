@@ -95,3 +95,4 @@ fpga/*/timing/
 fpga/*/*_sim/
 fpga/incremental_db/
 telecom/hands_on_measurements/gr-fsk/apps/decode_capture.grc
+telecom/hands_on_measurements/gr-fsk/apps/decode_capture.grc

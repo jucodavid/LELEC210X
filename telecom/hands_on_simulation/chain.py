@@ -20,10 +20,10 @@ class Chain:
     preamble: np.ndarray = PREAMBLE
     sync_word: np.ndarray = SYNC_WORD
 
-    payload_len: int = 50  # Number of bits per packet
+    payload_len: int = 10000  # Number of bits per packet
 
     # Simulation parameters
-    n_packets: int = 100  # Number of sent packets
+    n_packets: int = 50  # Number of sent packets
 
     # Channel parameters
     sto_val: float = 0
@@ -31,7 +31,7 @@ class Chain:
 
     cfo_val: float = 0
     cfo_range: float = (
-        10000  # defines the CFO range when random (in Hz) #(1000 in old repo)
+        1000  # defines the CFO range when random (in Hz) #(1000 in old repo)
     )
 
     snr_range: np.ndarray = np.arange(-10, 25)
@@ -76,7 +76,7 @@ class Chain:
         return x
 
     # Rx methods
-    bypass_preamble_detect: bool = False
+    bypass_preamble_detect: bool = True
 
     def preamble_detect(self, y: np.array) -> Optional[int]:
         """
@@ -99,7 +99,7 @@ class Chain:
         """
         raise NotImplementedError
 
-    bypass_sto_estimation: bool = False
+    bypass_sto_estimation: bool = True
 
     def sto_estimation(self, y: np.array) -> float:
         """
@@ -141,8 +141,8 @@ class BasicChain(Chain):
 
         return None
 
+    #bypass_cfo_estimation = False
     bypass_cfo_estimation = False
-    #bypass_cfo_estimation = True
 
     def cfo_estimation(self, y):
         """
@@ -163,7 +163,7 @@ class BasicChain(Chain):
 
         return cfo_est
 
-    bypass_sto_estimation = True
+    bypass_sto_estimation = False
 
     def sto_estimation(self, y):
         """
