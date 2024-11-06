@@ -14,7 +14,7 @@
   </columns>
  </systemtable>
  <library expandedCategories="Project/LELEC2102_IPs,Library,Project" />
- <window width="1938" height="1038" x="-9" y="-9" />
+ <window width="2906" height="1730" x="-13" y="-13" />
  <generation
    path="_PROJECT_NAME_/"
    testbench_system="STANDARD"
