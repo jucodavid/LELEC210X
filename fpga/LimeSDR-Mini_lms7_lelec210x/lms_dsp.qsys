@@ -18,7 +18,7 @@
       }
       datum sopceditor_expanded
       {
-         value = "1";
+         value = "0";
          type = "boolean";
       }
    }
@@ -29,6 +29,11 @@
          value = "2";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element clk_0
    {
@@ -37,6 +42,11 @@
          value = "0";
          type = "int";
       }
+      datum sopceditor_expanded
+      {
+         value = "0";
+         type = "boolean";
+      }
    }
    element fir_compiler_ii_0
    {
@@ -44,6 +54,11 @@
       {
          value = "1";
          type = "int";
+      }
+      datum sopceditor_expanded
+      {
+         value = "1";
+         type = "boolean";
       }
    }
    element lms_auto_dsp
@@ -207,6 +222,46 @@
    type="conduit"
    dir="end" />
  <interface
+   name="fir_compiler_ii_0_avalon_streaming_sink"
+   internal="fir_compiler_ii_0.avalon_streaming_sink"
+   type="avalon_streaming"
+   dir="end" />
+ <interface
+   name="fir_compiler_ii_0_avalon_streaming_source"
+   internal="fir_compiler_ii_0.avalon_streaming_source"
+   type="avalon_streaming"
+   dir="start" />
+ <interface
+   name="fir_compiler_ii_0_clk"
+   internal="fir_compiler_ii_0.clk"
+   type="clock"
+   dir="end" />
+ <interface
+   name="fir_compiler_ii_0_rst"
+   internal="fir_compiler_ii_0.rst"
+   type="reset"
+   dir="end" />
+ <interface
+   name="packet_presence_detection_0_avalon_streaming_sink"
+   internal="packet_presence_detection_0.avalon_streaming_sink"
+   type="avalon_streaming"
+   dir="end" />
+ <interface
+   name="packet_presence_detection_0_avalon_streaming_source"
+   internal="packet_presence_detection_0.avalon_streaming_source"
+   type="avalon_streaming"
+   dir="start" />
+ <interface
+   name="packet_presence_detection_0_clock_sink"
+   internal="packet_presence_detection_0.clock_sink"
+   type="clock"
+   dir="end" />
+ <interface
+   name="packet_presence_detection_0_reset_sink"
+   internal="packet_presence_detection_0.reset_sink"
+   type="reset"
+   dir="end" />
+ <interface
    name="ppd"
    internal="packet_presence_detection_0.cfg"
    type="conduit"
@@ -278,30 +333,8 @@
    version="1.0"
    enabled="1">
   <parameter name="DATA_WIDTH" value="12" />
-  <parameter name="LONG_SUM_LEN" value="256" />
   <parameter name="PASSTHROUGH_LEN_WIDTH" value="16" />
-  <parameter name="SHORT_SUM_LEN" value="32" />
  </module>
- <connection
-   kind="avalon_streaming"
-   version="18.1"
-   start="packet_presence_detection_0.avalon_streaming_source"
-   end="AVS2FIFO_0.avalon_streaming_sink" />
- <connection
-   kind="avalon_streaming"
-   version="18.1"
-   start="FIFO2AVS_0.avalon_streaming_source"
-   end="fir_compiler_ii_0.avalon_streaming_sink" />
- <connection
-   kind="avalon_streaming"
-   version="18.1"
-   start="fir_compiler_ii_0.avalon_streaming_source"
-   end="packet_presence_detection_0.avalon_streaming_sink" />
- <connection
-   kind="clock"
-   version="18.1"
-   start="clk_0.clk"
-   end="fir_compiler_ii_0.clk" />
  <connection
    kind="clock"
    version="18.1"
@@ -313,11 +346,6 @@
    start="clk_0.clk"
    end="FIFO2AVS_0.clock_sink" />
  <connection
-   kind="clock"
-   version="18.1"
-   start="clk_0.clk"
-   end="packet_presence_detection_0.clock_sink" />
- <connection
    kind="reset"
    version="18.1"
    start="clk_0.clk_reset"
@@ -327,16 +355,6 @@
    version="18.1"
    start="clk_0.clk_reset"
    end="FIFO2AVS_0.reset_sink" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="packet_presence_detection_0.reset_sink" />
- <connection
-   kind="reset"
-   version="18.1"
-   start="clk_0.clk_reset"
-   end="fir_compiler_ii_0.rst" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

@@ -1,0 +1,48 @@
+Setup Summary report for LimeSDR-Mini_lms7_lelec210x
+Wed Nov 13 17:40:00 2024
+Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Slow 1200mV 85C Model Setup Summary
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+
+
+
++----------------------------------------------+
+; Slow 1200mV 85C Model Setup Summary          ;
++---------------------+--------+---------------+
+; Clock               ; Slack  ; End Point TNS ;
++---------------------+--------+---------------+
+; RX_C3               ; 0.116  ; 0.000         ;
+; FT_CLK              ; 0.741  ; 0.000         ;
+; LMK_CLK             ; 4.814  ; 0.000         ;
+; ONCHIP_FLASH_CLK    ; 12.325 ; 0.000         ;
+; FPGA_SPI_SCLK_FPGA  ; 18.313 ; 0.000         ;
+; DUAL_BOOT_CLK       ; 19.069 ; 0.000         ;
+; FPGA_SPI_SCLK_out   ; 31.456 ; 0.000         ;
+; altera_reserved_tck ; 44.463 ; 0.000         ;
++---------------------+--------+---------------+
+
+

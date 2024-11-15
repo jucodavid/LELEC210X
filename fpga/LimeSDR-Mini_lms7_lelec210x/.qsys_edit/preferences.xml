@@ -3,17 +3,18 @@
  <debug showDebugMenu="0" />
  <systemtable filter="All Interfaces">
   <columns>
-   <connections preferredWidth="111" />
+   <connections preferredWidth="63" />
    <irq preferredWidth="34" />
-   <name preferredWidth="434" />
-   <inputclock preferredWidth="95" />
-   <export preferredWidth="161" />
+   <name preferredWidth="364" />
+   <inputclock preferredWidth="159" />
+   <export preferredWidth="632" />
    <description preferredWidth="242" />
    <baseaddress preferredWidth="56" />
    <endaddress preferredWidth="30" />
+   <security visible="0" />
   </columns>
  </systemtable>
- <library expandedCategories="Project/LELEC2102_IPs,Library,Project" />
+ <library expandedCategories="Project,Library" />
  <window width="2906" height="1730" x="-13" y="-13" />
  <generation
    path="_PROJECT_NAME_/"
