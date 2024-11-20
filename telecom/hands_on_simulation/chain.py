@@ -20,10 +20,10 @@ class Chain:
     preamble: np.ndarray = PREAMBLE
     sync_word: np.ndarray = SYNC_WORD
 
-    payload_len: int = 10000  # Number of bits per packet
+    payload_len: int = 50 # Number of bits per packet
 
     # Simulation parameters
-    n_packets: int = 50  # Number of sent packets
+    n_packets: int = 100  # Number of sent packets
 
     # Channel parameters
     sto_val: float = 0
@@ -37,7 +37,7 @@ class Chain:
     snr_range: np.ndarray = np.arange(-10, 25)
 
     # Lowpass filter parameters
-    numtaps: int = 100
+    numtaps: int = 31
     cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...
 
     # Tx methods

@@ -24,6 +24,31 @@ void tag_cbc_mac(uint8_t *tag, const uint8_t *msg, size_t msg_len) {
 
 
     // TO DO : Complete the CBC-MAC_AES
+	// Parse msg into blocks of 16 bytes
+	size_t num_blocks = (msg_len + 15) / 16;
+	uint8_t block[16];
+
+	// Initialize state to 0
+	memset(state, 0, 16);
+
+	for (i = 0; i < num_blocks; i++) {
+		// Copy the current block into the block buffer
+		size_t block_len = (i == num_blocks - 1) ? (msg_len % 16) : 16;
+		memcpy(block, msg + i * 16, block_len);
+
+		// If the last block is not 16 bytes, pad with zeros
+		if (block_len < 16) {
+			memset(block + block_len, 0, 16 - block_len);
+		}
+
+		// XOR the block with the current state
+		for (size_t j = 0; j < 16; j++) {
+			state[j] ^= block[j];
+		}
+
+		// Encrypt the state with AES
+		AES128_encrypt(state, AES_Key);
+	}
 
     // Copy the result of CBC-MAC-AES to the tag.
     for (int j=0; j<16; j++) {
@@ -61,6 +86,15 @@ int make_packet(uint8_t *packet, size_t payload_len, uint8_t sender_id, uint32_t
 
 	// For the tag field, you have to calculate the tag. The function call below is correct but
 	// tag_cbc_mac function, calculating the tag, is not implemented.
+	packet[0] = 0x00;
+	packet[1] = sender_id;
+	packet[2] = (payload_len >> 8) & 0xFF;
+	packet[3] = payload_len & 0xFF;
+	packet[4] = (serial >> 24) & 0xFF;
+	packet[5] = (serial >> 16) & 0xFF;
+	packet[6] = (serial >> 8)  & 0XFF;
+	packet[7] = serial & 0xFF;
+
     tag_cbc_mac(packet + payload_len + PACKET_HEADER_LENGTH, packet, payload_len + PACKET_HEADER_LENGTH);
 
     return packet_len;
