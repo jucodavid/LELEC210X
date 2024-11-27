@@ -228,7 +228,6 @@ class AudioUtil:
         """
         sig, sr = audio
         mels = librosa.filters.mel(sr=sr, n_fft=Nft, n_mels=Nmel)
-        mels = mels[:, :-1]
         stft = AudioUtil.specgram(audio, Nft=Nft, fs2=fs2)
         mels = np.array(mels)/np.max(mels)
         melspec = mels@stft
