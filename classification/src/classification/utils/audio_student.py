@@ -181,7 +181,10 @@ class AudioUtil:
         sig_len = len(sig)
         bg = np.zeros(sig_len)
         for _ in range(num_sources):
-            bg_file = random.choice(dataset)
+            class_files = dataset.get_class_files(
+                dataset.list_classes()[np.random.randint(0, len(dataset.list_classes())-1)]
+                )
+            bg_file = class_files[np.random.randint(0, len(class_files)-1)]
             bg_audio = AudioUtil.open(bg_file)
             bg_audio = AudioUtil.resample(bg_audio, sr)
             bg_audio = AudioUtil.pad_trunc(bg_audio, max_ms)
@@ -200,6 +203,7 @@ class AudioUtil:
         :param fs2: The sampling frequency.
         """
         sig, sr = audio
+        sig = np.nan_to_num(sig)
         stft = np.abs(librosa.stft(sig, n_fft=Nft))
         # stft /= float(2**8)
         return stft
