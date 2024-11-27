@@ -157,17 +157,17 @@ class AudioUtil:
         sig = fftconvolve(sig, echo_sig, mode="full")[:sig_len]
         return (sig, sr)
 
-def filter(audio, filt) -> Tuple[ndarray, int]:
-        """
-        Filter the audio signal with a provided filter. Note the filter is given for positive frequencies only and is thus symmetrized in the function.
+    def filter(audio, filt) -> Tuple[ndarray, int]:
+            """
+            Filter the audio signal with a provided filter. Note the filter is given for positive frequencies only and is thus symmetrized in the function.
 
-        :param audio: The audio signal as a tuple (signal, sample_rate).
-        :param filt: The filter to apply.
-        """
-        sig, sr = audio
-        sig_fft = np.fft.fft(sig)
-        sig = np.fft.ifft(sig_fft @ filt)
-        return (sig, sr)
+            :param audio: The audio signal as a tuple (signal, sample_rate).
+            :param filt: The filter to apply.
+            """
+            sig, sr = audio
+            sig_fft = np.fft.fft(sig)
+            sig = np.fft.ifft(sig_fft @ filt)
+            return (sig, sr)
 
     def add_bg(
         audio, dataset, num_sources=1, max_ms=5000, amplitude_limit=0.1
