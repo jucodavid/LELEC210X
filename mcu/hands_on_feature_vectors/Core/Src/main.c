@@ -83,6 +83,7 @@ void stop_cycle_count(char *s);
 /* USER CODE BEGIN 0 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if ((GPIO_Pin == B1_Pin) & !bounce) {
+		HAL_TIM_OC_Start(&htim4, TIM_CHANNEL_2);
 		HAL_ADC_Start_DMA(&hadc1, (uint32_t *) ADCBuffer, 2 * SAMPLES_PER_MELVEC);
 		HAL_TIM_Base_Start(&htim3);
 		bounce = 1;
@@ -102,6 +103,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
 	cur_melvec++;
 	if (cur_melvec == N_MELVECS)
 	{
+		HAL_TIM_OC_Stop(&htim4, TIM_CHANNEL_2);
 		HAL_TIM_Base_Stop(&htim3);
 		HAL_ADC_Stop_DMA(&hadc1);
 		print_buffer(mel_vectors_flat, N_MELVECS * MELVEC_LENGTH);
@@ -190,6 +192,7 @@ int main(void)
   MX_LPUART1_UART_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   RetargetInit(&hlpuart1);
   printf("Hello world!\r\n");

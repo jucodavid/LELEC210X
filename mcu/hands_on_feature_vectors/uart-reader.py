@@ -12,10 +12,14 @@ from serial.tools import list_ports
 
 from classification.utils.plots import plot_specgram
 
+import pickle
+from classification.datasets import Dataset
+from classification.utils.audio_student import AudioUtil, Feature_vector_DS
+
 PRINT_PREFIX = "DF:HEX:"
 FREQ_SAMPLING = 10200
 MELVEC_LENGTH = 20
-N_MELVECS = 200
+N_MELVECS = 20
 
 dt = np.dtype(np.uint16).newbyteorder("<")
 
@@ -67,9 +71,19 @@ if __name__ == "__main__":
         input_stream = reader(port=args.port)
         msg_counter = 0
 
+        model_dir = "../../classification/data/models/"
+        filename = "KNNrigolo.pickle"
+        model = pickle.load(open(model_dir + filename, "rb"))
         plt.figure()
         for melvec in input_stream:
             msg_counter += 1
+            mat = np.zeros((2, len(melvec)))
+            mat[0] = melvec
+            print(mat.shape)
+            prediction = model.predict(mat)
+            print("Class predicted :", prediction[0])
+
+            proba = model.predict_proba(mat)
 
             print(f"MEL Spectrogram #{msg_counter}")
 
