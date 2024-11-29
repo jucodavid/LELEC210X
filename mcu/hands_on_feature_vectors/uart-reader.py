@@ -30,7 +30,7 @@ def parse_buffer(line):
     if line.startswith(PRINT_PREFIX):
         return bytes.fromhex(line[len(PRINT_PREFIX) :])
     else:
-        print(line)
+        # print(line)
         return None
 
 
@@ -42,7 +42,7 @@ def reader(port=None):
             line += ser.read_until(b"\n", size=2 * N_MELVECS * MELVEC_LENGTH).decode(
                 "ascii"
             )
-            print(line)
+            # print(line)
         line = line.strip()
         buffer = parse_buffer(line)
         if buffer is not None:
@@ -79,15 +79,14 @@ if __name__ == "__main__":
         for melvec in input_stream:
             msg_counter += 1
             mat = np.zeros((2, len(melvec)))
-            mat[0] = melvec / np.linalg.norm(melvec)
+            mat[0] = melvec / np.max(melvec)
             prediction = model.predict(mat)
-            print("Class predicted :", prediction[0])
-
             proba = model.predict_proba(mat)
-            print("Proba:\tbirds\tchainsaw\tfire\thandsaw\thelicopter")
-            print(f"\t{proba[0,0]}\t{proba[0,1]}\t\t{proba[0,2]}\t{proba[0,3]}\t{proba[0,4]}\t")
-
             print(f"MEL Spectrogram #{msg_counter}")
+            print(f"Class predicted: {prediction[0]}")
+            print(f"\t{proba[0,0]}\t{proba[0,1]}\t {proba[0,2]}\t{proba[0,3]}\t{proba[0,4]}\t")
+            print("Proba:\tbirds\tchainsaw fire\thandsaw\thelicopter")
+
 
             plot_specgram(
                 melvec.reshape((N_MELVECS, MELVEC_LENGTH)).T,
