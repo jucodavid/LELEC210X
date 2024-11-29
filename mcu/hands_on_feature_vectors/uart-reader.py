@@ -13,6 +13,7 @@ from serial.tools import list_ports
 from classification.utils.plots import plot_specgram
 
 import pickle
+import sklearn.preprocessing as skpre
 from classification.datasets import Dataset
 from classification.utils.audio_student import AudioUtil, Feature_vector_DS
 
@@ -72,18 +73,19 @@ if __name__ == "__main__":
         msg_counter = 0
 
         model_dir = "../../classification/data/models/"
-        filename = "KNNrigolo.pickle"
+        filename = "model_rf_new.pickle"
         model = pickle.load(open(model_dir + filename, "rb"))
         plt.figure()
         for melvec in input_stream:
             msg_counter += 1
             mat = np.zeros((2, len(melvec)))
-            mat[0] = melvec
-            print(mat.shape)
+            mat[0] = melvec / np.linalg.norm(melvec)
             prediction = model.predict(mat)
             print("Class predicted :", prediction[0])
 
             proba = model.predict_proba(mat)
+            print("Proba:\tbirds\tchainsaw\tfire\thandsaw\thelicopter")
+            print(f"\t{proba[0,0]}\t{proba[0,1]}\t\t{proba[0,2]}\t{proba[0,3]}\t{proba[0,4]}\t")
 
             print(f"MEL Spectrogram #{msg_counter}")
 
