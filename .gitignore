@@ -60,32 +60,32 @@ fpga/LimeSDR-Mini_bitstreams/*.sof
 fpga/LimeSDR-Mini_bitstreams/*.rpd
 
 # ignore Quartus II generated files
-fpga/*_generation_script*
-fpga/*_inst.vhd
-fpga/*.bak
-fpga/*.cmp
-fpga/*.done
-fpga/*.eqn
-fpga/*.hex
-fpga/*.html
-fpga/*.jdi
-fpga/*.jpg
-fpga/# *.mif
-fpga/*.pin
-fpga/*.pof
-fpga/*.ptf.*
-fpga/*.qar
-fpga/*.qarlog
-fpga/*.qws
-fpga/*.rpt
-fpga/*.smsg
-fpga/*.sof
-fpga/*.sopc_builder
-fpga/*.summary
-fpga/*.txt # Explicitly add any text files used
-fpga/*~
-fpga/*example*
-fpga/*sopc_*
+fpga/LimeSDR-Mini_lms7_lelec210x/*_generation_script*
+fpga/LimeSDR-Mini_lms7_lelec210x/*_inst.vhd
+fpga/LimeSDR-Mini_lms7_lelec210x/*.bak
+fpga/LimeSDR-Mini_lms7_lelec210x/*.cmp
+fpga/LimeSDR-Mini_lms7_lelec210x/*.done
+fpga/LimeSDR-Mini_lms7_lelec210x/*.eqn
+fpga/LimeSDR-Mini_lms7_lelec210x/*.hex
+fpga/LimeSDR-Mini_lms7_lelec210x/*.html
+fpga/LimeSDR-Mini_lms7_lelec210x/*.jdi
+fpga/LimeSDR-Mini_lms7_lelec210x/*.jpg
+fpga/LimeSDR-Mini_lms7_lelec210x/# *.mif
+fpga/LimeSDR-Mini_lms7_lelec210x/*.pin
+fpga/LimeSDR-Mini_lms7_lelec210x/*.pof
+fpga/LimeSDR-Mini_lms7_lelec210x/*.ptf.*
+fpga/LimeSDR-Mini_lms7_lelec210x/*.qar
+fpga/LimeSDR-Mini_lms7_lelec210x/*.qarlog
+fpga/LimeSDR-Mini_lms7_lelec210x/*.qws
+fpga/LimeSDR-Mini_lms7_lelec210x/*.rpt
+fpga/LimeSDR-Mini_lms7_lelec210x/*.smsg
+fpga/LimeSDR-Mini_lms7_lelec210x/*.sof
+fpga/LimeSDR-Mini_lms7_lelec210x/*.sopc_builder
+fpga/LimeSDR-Mini_lms7_lelec210x/*.summary
+fpga/LimeSDR-Mini_lms7_lelec210x/*.txt # Explicitly add any text files used
+fpga/LimeSDR-Mini_lms7_lelec210x/*~
+fpga/LimeSDR-Mini_lms7_lelec210x/*example*
+fpga/LimeSDR-Mini_lms7_lelec210x/*sopc_*
 
 # ignore Quartus II generated folders
 fpga/*/db/
