@@ -41,6 +41,31 @@ if __name__ == "__main__":
         df = pd.DataFrame.from_dict(data)
 
         print(df)
+        df.to_csv('measures_df.csv', index=False)
 
     fig = df.groupby("txp").hist(column="cfo")
     plt.show()
+"""
+    # Plot BER vs. SNR
+    plt.figure()
+    plt.plot(df["snr"], df["ber"], 'o-', label="BER")
+    plt.xlabel("SNR (dB)")
+    plt.ylabel("Bit Error Rate (BER)")
+    plt.title("BER vs. SNR")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('ber_vs_snr.png')
+    plt.show()
+
+    # Calculate and plot PER vs. SNR
+    df['per'] = df['invalid'].cumsum() / (df.index + 1)
+    plt.figure()
+    plt.plot(df["snr"], df["per"], 's-', label="PER")
+    plt.xlabel("SNR (dB)")
+    plt.ylabel("Packet Error Rate (PER)")
+    plt.title("PER vs. SNR")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('per_vs_snr.png')
+    plt.show()
+"""

@@ -20,10 +20,10 @@ class Chain:
     preamble: np.ndarray = PREAMBLE
     sync_word: np.ndarray = SYNC_WORD
 
-    payload_len: int = 50 # Number of bits per packet
+    payload_len: int = 100 # Number of bits per packet   HERE <---- payload length = 100 dans stm32
 
     # Simulation parameters
-    n_packets: int = 100  # Number of sent packets
+    n_packets: int = 100  # Number of sent packets      HERE <----
 
     # Channel parameters
     sto_val: float = 0
@@ -38,7 +38,7 @@ class Chain:
 
     # Lowpass filter parameters
     numtaps: int = 31
-    cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...
+    cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...     HERE <----
 
     # Tx methods
 
@@ -125,7 +125,7 @@ class BasicChain(Chain):
 
     cfo_val, sto_val = np.nan, np.nan  # CFO and STO are random
 
-    bypass_preamble_detect = False
+    bypass_preamble_detect = True                                                  #HERE <----
 
     def preamble_detect(self, y):
         """
@@ -142,7 +142,7 @@ class BasicChain(Chain):
         return None
 
     #bypass_cfo_estimation = False
-    bypass_cfo_estimation = False
+    bypass_cfo_estimation = True                                                 #HERE <----
 
     def cfo_estimation(self, y):
         """
@@ -163,7 +163,7 @@ class BasicChain(Chain):
 
         return cfo_est
 
-    bypass_sto_estimation = False
+    bypass_sto_estimation = True                                                 #HERE <----
 
     def sto_estimation(self, y):
         """
@@ -204,14 +204,10 @@ class BasicChain(Chain):
         eS1 = np.exp( 2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
 
         # TO DO: compute the correlations with the two reference waveforms (r0 and r1)
-        bits_hat = np.zeros(nb_syms, dtype=int)  # Default value, all bits=0. TO CHANGE!
+        #bits_hat = np.zeros(nb_syms, dtype=int)  # Default value, all bits=0. TO CHANGE!
 
-        for i,Y in enumerate(y):
-            rO = 1/R * np.sum(Y * eS1)
-            r1 = 1/R * np.sum(Y * eS0)
-            if np.abs(rO) > np.abs(r1):
-                bits_hat[i] = 0
-            else:
-                bits_hat[i] = 1
+        r0 = np.abs(np.dot(y, eS1)) / R
+        r1 = np.abs(np.dot(y, eS0)) / R
+        bits_hat = (r1 > r0).astype(int)
 
         return bits_hat

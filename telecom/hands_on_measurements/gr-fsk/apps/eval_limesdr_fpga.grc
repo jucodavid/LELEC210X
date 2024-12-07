@@ -190,7 +190,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1336, 212.0]
+    coordinate: [1344, 228.0]
     rotation: 0
     state: true
 - name: packet_len
@@ -312,7 +312,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [720, 396.0]
+    coordinate: [736, 364.0]
     rotation: 0
     state: enabled
 - name: fsk_flag_detector_0
@@ -369,7 +369,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 404.0]
+    coordinate: [1024, 420.0]
     rotation: 0
     state: enabled
 - name: fsk_synchronization_0
@@ -412,7 +412,7 @@ blocks:
     digital_bandw_ch1: samp_rate
     dspcfg_PASSTHROUGH_LEN: (packet_len+1)*8*int(samp_rate/data_rate)+int(samp_rate/data_rate)
     dspcfg_THRESHOLD: K_threshold
-    dspcfg_preamble_en: Enable_detection
+    dspcfg_preamble_en: '1'
     filename: ''
     gain_dB_ch0: rx_gain
     gain_dB_ch1: '1'
@@ -478,7 +478,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 388.0]
+    coordinate: [1344, 388.0]
     rotation: 0
     state: enabled
 

@@ -37,13 +37,9 @@ def demodulate(y, B, R, Fdev):
     eS0 = np.exp(-2j * np.pi * Fdev * np.arange(R) / B / R)
     eS1 = np.exp( 2j * np.pi * Fdev * np.arange(R) / B / R)
 
-    for i,Y in enumerate(y):
-        rO = 1/R * np.sum(Y * eS1)
-        r1 = 1/R * np.sum(Y * eS0)
-        if np.abs(rO) > np.abs(r1):
-            bits_hat[i] = 0
-        else:
-            bits_hat[i] = 1
+    r0 = np.abs(np.dot(y, eS1)) / R
+    r1 = np.abs(np.dot(y, eS0)) / R
+    bits_hat = (r1 > r0).astype(int)
 
     return bits_hat
 
