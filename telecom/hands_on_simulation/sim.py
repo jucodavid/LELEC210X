@@ -309,9 +309,21 @@ def run_sim(chain: Chain):
         ax2.xaxis.label.set_color("b")
         ax2.tick_params(axis="x", colors="b")
 
+    x_me = [2.4032, 3.5296, 4.656, 5.7824, 6.9088, 8.0352, 9.1616, 10.288, 11.4144,
+            12.5408, 13.6672, 14.7936, 15.92, 17.0464, 18.1728, 19.2992, 20.4256, 21.552,
+            22.6784, 23.8048, 24.9312, 26.0576, 27.184, 28.3104, 29.4368]
+    x_me = [x - shift_SNR_filter + shift_SNR_out for x in x_me]
+    y_me = [1.00000000e+00, 1.00000000e+00, 1.00000000e+00, 9.52380952e-01,
+            9.00763359e-01, 6.13003096e-01, 3.24352332e-01, 7.69230769e-02,
+            4.55635492e-02, 3.08747856e-02, 7.17703349e-03, 6.28140704e-04,
+            3.62776506e-04, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
+            0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
+            0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
+            0.00000000e+00]
     # Packet error rate
     fig, ax = plt.subplots(constrained_layout=True)
     ax.plot(SNRs_dB + shift_SNR_out, PER, "-s", label="Simulation")
+    ax.plot(x_me, y_me,"-s", label="Measures")
     ax.plot(SNR_th, 1 - (1 - BER_th) ** chain.payload_len, label="AWGN Th. FSK")
     ax.plot(
         SNR_th,

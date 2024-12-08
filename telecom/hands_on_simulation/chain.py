@@ -20,10 +20,10 @@ class Chain:
     preamble: np.ndarray = PREAMBLE
     sync_word: np.ndarray = SYNC_WORD
 
-    payload_len: int = 100 # Number of bits per packet   HERE <---- payload length = 100 dans stm32
+    payload_len: int = 800 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
 
     # Simulation parameters
-    n_packets: int = 100  # Number of sent packets      HERE <----
+    n_packets: int = 5000  # Number of sent packets      HERE <----200 (pour le fun)
 
     # Channel parameters
     sto_val: float = 0
@@ -125,7 +125,7 @@ class BasicChain(Chain):
 
     cfo_val, sto_val = np.nan, np.nan  # CFO and STO are random
 
-    bypass_preamble_detect = True                                                  #HERE <----
+    bypass_preamble_detect = False                                                  #HERE <----
 
     def preamble_detect(self, y):
         """
@@ -142,7 +142,7 @@ class BasicChain(Chain):
         return None
 
     #bypass_cfo_estimation = False
-    bypass_cfo_estimation = True                                                 #HERE <----
+    bypass_cfo_estimation = False                                                 #HERE <----
 
     def cfo_estimation(self, y):
         """
@@ -163,7 +163,7 @@ class BasicChain(Chain):
 
         return cfo_est
 
-    bypass_sto_estimation = True                                                 #HERE <----
+    bypass_sto_estimation = False                                                 #HERE <----
 
     def sto_estimation(self, y):
         """
