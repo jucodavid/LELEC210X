@@ -31,9 +31,9 @@ def average(time, power, xmin, xmax):
 
 
 
-time, power = read("mcu_1.csv")
-xmin = -.7
-xmax = 1.0475
+time, power = read("mcu_2.csv")
+xmin = -.255
+xmax = .88
 
 fig, ax = plt.subplots(figsize=(10, 5), dpi=120)
 
@@ -57,30 +57,14 @@ ax.plot(time, power, 'k')
 
 # adc w/ WFI__ & adcto hz to mel
 x = xmin + .04
-x = [x, x + 1.0125]
+x = [x, x + 1.01]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:blue')
 
 # packetisation
-x = [x[1], x[1] + .300 - .0125]
+x = [x[1], xmax]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:orange')
-
-# setup radio
-x = [x[1], x[1] + .0975]
-av = average(time, power, *x)
-ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:green')
-
-# radio w/ WFI__
-x = [x[1], x[1] + .135]
-av = average(time, power, *x)
-ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:red')
-
-# hex encode
-x = [x[1], x[1] + .175]
-av = average(time, power, *x)
-ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:purple')
-
 
 plt.legend(title='Mean Power', framealpha=1)
 plt.show()
