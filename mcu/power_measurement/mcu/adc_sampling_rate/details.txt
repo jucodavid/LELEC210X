@@ -1,0 +1,2 @@
+Aquiered on MCU I_DD port.
+radio off
