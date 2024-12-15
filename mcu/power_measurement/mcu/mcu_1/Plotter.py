@@ -61,12 +61,12 @@ x = [x, x + 1.0125]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:blue')
 
-# packetisation
+# prints
 x = [x[1], x[1] + .300 - .0125]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:orange')
 
-# setup radio
+# packetisation
 x = [x[1], x[1] + .0975]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:green')
@@ -76,7 +76,7 @@ x = [x[1], x[1] + .135]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:red')
 
-# hex encode
+# hex encode & prints
 x = [x[1], x[1] + .175]
 av = average(time, power, *x)
 ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:purple')

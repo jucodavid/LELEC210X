@@ -64,7 +64,7 @@ ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:blue')
 # packetisation
 x = [x[1], xmax]
 av = average(time, power, *x)
-ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:orange')
+ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:green')
 
 plt.legend(title='Mean Power', framealpha=1)
 plt.show()

@@ -3,6 +3,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 formatterW = plt.matplotlib.ticker.EngFormatter("W")
 formatterS = plt.matplotlib.ticker.EngFormatter("s")
+formatterHz = plt.matplotlib.ticker.EngFormatter("Hz")
 
 
 def move_figure(f, x, y):
@@ -43,7 +44,7 @@ def average(time, power, xmin, xmax):
     return np.mean(power[i:j])
 
 
-def plt_setp(ax, xmin, xmax, time, power, title, xlabel=False):
+def plt_setp(ax, xmin, xmax, time, power, X, title, xlabel=False):
     ax.set_title(title)
 
     ax.set_xlim(xmin, xmax)
@@ -53,7 +54,7 @@ def plt_setp(ax, xmin, xmax, time, power, title, xlabel=False):
 
     ax.yaxis.set_major_formatter(formatterW)
     ax.xaxis.set_major_formatter(formatterS)
-    ax.xaxis.set_ticklabels([])
+    # ax.xaxis.set_ticklabels([])
     ax.minorticks_on()
 
     ax.grid(which='major', linewidth='1')
@@ -61,37 +62,56 @@ def plt_setp(ax, xmin, xmax, time, power, title, xlabel=False):
 
     ax.plot(time, power, 'k')
 
+    avv = np.zeros(4)
+
     # adc w/ WFI__ & adcto hz to mel
-    x = xmin + .04
-    x = [x, x + 1.01]
+    x = xmin + X[0]
+    x = [x, x + X[1]]
     av = average(time, power, *x)
+    avv[0] = av
     ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:blue')
 
-    # # packetisation
-    # x = [x[1], x[1] + .300 - .0125]
-    # av = average(time, power, *x)
-    # ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:orange')
+    # prints
+    x = [x[1], x[1] + X[2]]
+    av = average(time, power, *x)
+    avv[1] = av
+    ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:orange')
+
+    # packetisation
+    x = [x[1], x[1] + X[3]]
+    av = average(time, power, *x)
+    avv[2] = av
+    ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:green')
+
+    # hex encode & prints
+    x = [x[1], x[1] + X[4]]
+    av = average(time, power, *x)
+    avv[3] = av
+    ax.hlines(av, *x, label=f"{formatterW(av)}", color='tab:purple')
 
     ax.legend(title='Mean Power', framealpha=1, loc='center left')
 
+    return avv
 
-fig, ax = plt.subplots(3,1, figsize=(10, 5), dpi=120)
+avvv = np.zeros((10, 3))
 
-time, power = read("mcu_sampling_rate_16MHz.csv")
-xmin = .25
-xmax = 1.3
-plt_setp(ax[0], xmin, xmax, time, power, "18MHz")
+fig, ax = plt.subplots(3, 1, figsize=(10, 8), dpi=100)
 
-time, power = read("mcu_sampling_rate_48MHz.csv")
-xmin = -.425
-xmax = .625
-plt_setp(ax[1], xmin, xmax, time, power, "48MHz")
+time, power = read("mcu_normal.csv")
+xmin = -.55
+xmax = 1.1
+plt_setp(ax[0], xmin, xmax, time, power, [.05, 1.01, .29, .0975, .175], "Normal", xlabel=True)
 
-time, power = read("mcu_sampling_rate_80MHz.csv")
-xmin = -.035
-xmax = 1.02
-plt_setp(ax[2], xmin, xmax, time, power, "80MHz", xlabel=True)
+time, power = read("mcu_doubleLength.csv")
+xmin = -.56
+xmax = 1.6
+plt_setp(ax[1], xmin, xmax, time, power, [.05, 1.01, .57, .183, .34], "Double Length", xlabel=True)
+
+time, power = read("mcu_halfSamplePerMelvec.csv")
+xmin = -.275
+xmax = .86
+plt_setp(ax[2], xmin, xmax, time, power, [.05, .5, .29, .095, .175], "Half Sample/Melvec", xlabel=True)
 
 plt.tight_layout()
-move_figure(fig, 300, 0)
+move_figure(fig, 500, 0)
 plt.show()

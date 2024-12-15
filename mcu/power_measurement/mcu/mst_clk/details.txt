@@ -1,4 +1,4 @@
 Aquiered on MCU I_DD port.
-radio off
 
-MST CLK = 48MHz
+UART, Perf, debug off
+
