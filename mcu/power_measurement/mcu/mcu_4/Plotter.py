@@ -16,7 +16,7 @@ def read(filename):
         except:
             n+=1
     time  = data[:,1]
-    power = data[:,2]**2 / GLOBAL_R
+    power = data[:,2] * (3.3-data[:,2]) / GLOBAL_R
     return time, power
 
 def average(time, power, xmin, xmax):
