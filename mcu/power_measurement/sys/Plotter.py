@@ -47,7 +47,7 @@ def average(time, power, xmin, xmax):
 
 def plt_setp(ax, xmin, xmax, time, power, X, title, xlabel=False):
     ax.set_title(title, y=1, pad=-14, backgroundcolor='gainsboro')
-
+    print(title, formatterW(average(time, power, xmin, xmax)))
     ax.set_xlim(xmin, xmax)
 
     ticks = ax.get_xticks()
