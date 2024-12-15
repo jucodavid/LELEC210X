@@ -154,7 +154,7 @@ for i,tavv in enumerate(tavvv):
 
 ax[2,1].axis('off')
 fig.legend(labels, title='Mean Energy', framealpha=1, bbox_to_anchor=(.9, .32))
-move_figure(fig, 500, 0)
+move_figure(fig, 500, -200)
 # plt.show()
 
 fig, ax = plt.subplots(5, 1, figsize=(10, 8), dpi=100)
@@ -216,7 +216,7 @@ for i,tavv in enumerate(tavvv):
 
 ax[2,1].axis('off')
 fig.legend(labels, title='Mean Energy', framealpha=1, bbox_to_anchor=(.9, .32))
-move_figure(fig, 500, 0)
+move_figure(fig, 500, -200)
 # plt.show()
 
 f = np.arange(8e6, 88e6, 8e6)

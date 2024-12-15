@@ -157,7 +157,7 @@ for i,tavv in enumerate(tavvv):
     ax[i//2,i%2].pie(tavv, labels=tavlab, colors=colors, autopct='%1.1f%%')
     ax[i//2,i%2].set_title(titles[i])
 
-move_figure(fig, 500, 0)
+move_figure(fig, 500, -200)
 # plt.show()
 
 v = np.array([2.2, 2.5, 2.8, 3.0, 3.3, 3.6])

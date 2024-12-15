@@ -149,5 +149,5 @@ for i,tavv in enumerate(tavvv):
     ax[i].set_title(titles[i])
 
 fig.legend(labels, title='Mean Energy', framealpha=1)
-move_figure(fig, 500, 0)
+move_figure(fig, 500, -200)
 plt.show()
