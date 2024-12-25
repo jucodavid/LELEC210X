@@ -138,8 +138,9 @@ HAL_StatusTypeDef S2LP_Send(uint8_t *payload, uint16_t pay_len)
 				S2LP_Command(CMD_TX, &radio_status); // start the transmission
 				sending = 1;
 			}
-
+//			stop_cycle_count("Radio WFI");
 			__WFI();
+//			start_cycle_count();
 			if (fifo_almost_empty) {
 				free_chunks = FIFO_SIZE/FIFO_CHUNK_SIZE - FIFO_EMPTY_THRESH;
 				fifo_almost_empty = 0;
@@ -161,7 +162,9 @@ HAL_StatusTypeDef S2LP_Send(uint8_t *payload, uint16_t pay_len)
 	}
 
 	while (!packet_sent) {
+//		stop_cycle_count("Radio WFI");
 		__WFI(); // wait until packet has been fully transmitted
+//		start_cycle_count();
 	}
 
 	DEBUG_PRINT("[S2LP] Packet transmitted!\r\n");

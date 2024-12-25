@@ -1,0 +1,40 @@
+=========================================
+COUNT:  100 iterations
+FV:           2281219.12
+TOTAL ACQ:    48282728.13
+
+ENCODE:       4384632.86
+TOTAL ENCODE: 4384632.86
+
+RADIO:        429443.47
+TOTAL RADIO:  6608103.24
+=========================================
+
+Complexity of FV Computation: N = number of sample per melvec, MelVecLength = Length of the Mel Vectors
+    Spectrogram_Format
+        O(N)
+        O(N)
+
+    Spectrogram_compute
+        O(N)
+        O(N*LN(N))
+        O(N)
+        O(N)
+        O(N)
+        O(N)
+        O(MelVecLength*N)
+
+N = Nsample_per_MelVec = 512
+MelVecLength = 20
+
+COUNT:  100 * 20 = 2000 iterations
+                                                                                                  cycle/th_cycle
+STEP 0.1 :  3679.8   Left Shift        => Nsample_per_MelVec                  => ARM optimized    7.19
+STEP 0.2 :  1750.8   RM DC             => Nsample_per_MelVec                  => ARM optimized    3.42  omg
+STEP 1 :    3949.4   Windowing         => Nsample_per_MelVec                  => ARM optimized    7.71
+STEP 2 :    24032.9  FFT               => Nsample_per_MelVec                  => ARM optimized    5.21  omg
+STEP 3.1 :  18177.8  Max               => 2*Nsample_perMelVec/2               => ARM optimized    35.5  div/mult
+STEP 3.2 :  14976.7  Normalize         => Nsample_per_MelVec                                      29.25 div
+STEP 3.3 :  7153.55  Complex magnitude => Nsample_perMelVec/2                 => ARM optimized    27.94 div/mult
+STEP 3.4 :  6451.8   Denormalize       => Nsample_perMelVec/2                                     25.2  mult
+STEP 4 :    20963.4  Mel Transform     => Nsample_perMelVec/2 * MelVec_length => ARM optimized    4.09  grosse bite hein

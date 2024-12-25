@@ -257,6 +257,7 @@ def plt_setp(ax, xmin, xmax, time, power, xlabel=False):
     # adc to hz to mel
     x = [-.0222, -.018]
     av = average(time, power, *x)
+    print(formatterJ(20*av*(x[1]-x[0])))
     ax.hlines(av, *x, linestyle='--', label=f"{formatterW(av)}", color='tab:blue')
     ax.legend(title='Mean Power', framealpha=1, loc='center left')
 
@@ -265,5 +266,6 @@ time, power = read("mcu_48MHz_zoom.csv")
 xmin = -.024
 xmax = -.016
 plt_setp(ax, xmin, xmax, time, power, xlabel=True)
+
 plt.tight_layout()
 plt.show()

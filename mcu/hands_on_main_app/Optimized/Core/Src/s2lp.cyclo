@@ -1,0 +1,17 @@
+../Core/Src/s2lp.c:21:19:S2LP_Command	1
+../Core/Src/s2lp.c:36:19:S2LP_ReadReg	3
+../Core/Src/s2lp.c:54:19:S2LP_WriteReg	2
+../Core/Src/s2lp.c:70:19:S2LP_WriteTxFIFO	2
+../Core/Src/s2lp.c:89:19:S2LP_Send	14
+../Core/Src/s2lp.c:174:6:S2LP_PrintStatus	13
+../Core/Src/s2lp.c:224:6:S2LP_PLLConf	5
+../Core/Src/s2lp.c:286:10:ComputeDatarate	3
+../Core/Src/s2lp.c:305:6:SearchDatarateME	6
+../Core/Src/s2lp.c:341:10:ComputeFreqDeviation	2
+../Core/Src/s2lp.c:352:6:SearchFreqDevME	5
+../Core/Src/s2lp.c:391:6:S2LP_SetModulation	1
+../Core/Src/s2lp.c:410:6:S2LP_SetPALeveldBm	2
+../Core/Src/s2lp.c:427:19:S2LP_Sleep	4
+../Core/Src/s2lp.c:443:19:S2LP_WakeUp	3
+../Core/Src/s2lp.c:459:19:S2LP_Init	5
+../Core/Src/s2lp.c:510:6:S2LP_IRQ_Handler	4

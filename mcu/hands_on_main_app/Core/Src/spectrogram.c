@@ -19,6 +19,7 @@ q15_t buf_tmp[  SAMPLES_PER_MELVEC/2]; // Intermediate buffer for arm_mat_mult_f
 // Convert 12-bit DC ADC samples to Q1.15 fixed point signal and remove DC component
 void Spectrogram_Format(q15_t *buf)
 {
+	start_cycle_count();
 	// STEP 0.1 : Increase fixed-point scale
 	//            --> Pointwise shift
 	//            Complexity: O(N)
@@ -32,7 +33,8 @@ void Spectrogram_Format(q15_t *buf)
 	// Here we should shift left by 3.
 
 	arm_shift_q15(buf, 3, buf, SAMPLES_PER_MELVEC);
-
+	stop_cycle_count("0.1");
+	start_cycle_count();
 	// STEP 0.2 : Remove DC Component
 	//            --> Pointwise substract
 	//            Complexity: O(N)
@@ -41,20 +43,26 @@ void Spectrogram_Format(q15_t *buf)
 	// Since we use a signed representation, we should now center the value around zero, we can do this by substracting 2**14.
 	// Now the value of buf[i] is in [-2**14 , 2**14 - 1]
 
-	for(uint16_t i=0; i < SAMPLES_PER_MELVEC; i++) { // Remove DC component
-		buf[i] -= (1 << 14);
-	}
+	q15_t offset = -(1 << 14);
+	arm_offset_q15(buf, offset, buf, SAMPLES_PER_MELVEC);
+
+//	for(uint16_t i=0; i < SAMPLES_PER_MELVEC; i++) { // Remove DC component
+//		buf[i] -= (1 << 14);
+//	}
+	stop_cycle_count("0.2");
 }
 
 // Compute spectrogram of samples and transform into MEL vectors.
 void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 {
+	start_cycle_count();
 	// STEP 1  : Windowing of input samples
 	//           --> Pointwise product
 	//           Complexity: O(N)
 	//           Number of cycles: <TODO>
 	arm_mult_q15(samples, hamming_window, buf, SAMPLES_PER_MELVEC);
-
+	stop_cycle_count("1");
+	start_cycle_count();
 	// STEP 2  : Discrete Fourier Transform
 	//           --> In-place Fast Fourier Transform (FFT) on a real signal
 	//           --> For our spectrogram, we only keep only positive frequencies (symmetry) in the next operations.
@@ -67,7 +75,8 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	arm_rfft_init_q15(&rfft_inst, SAMPLES_PER_MELVEC, 0, 1);
 
 	arm_rfft_q15(&rfft_inst, buf, buf_fft);
-
+	stop_cycle_count("2");
+	start_cycle_count();
 	// STEP 3  : Compute the complex magnitude of the FFT
 	//           Because the FFT can output a great proportion of very small values,
 	//           we should rescale all values by their maximum to avoid loss of precision when computing the complex magnitude
@@ -81,7 +90,8 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	uint32_t pIndex=0;
 
 	arm_absmax_q15(buf_fft, SAMPLES_PER_MELVEC, &vmax, &pIndex);
-
+	stop_cycle_count("3.1");
+	start_cycle_count();
 	// STEP 3.2: Normalize the vector - Dynamic range increase
 	//           Complexity: O(N)
 	//           Number of cycles: <TODO>
@@ -90,14 +100,16 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	{
 		buf[i] = (q15_t) (((q31_t) buf_fft[i] << 15) /((q31_t)vmax));
 	}
-
+	stop_cycle_count("3.2");
+	start_cycle_count();
 	// STEP 3.3: Compute the complex magnitude
 	//           --> The output buffer is now two times smaller because (real|imag) --> (mag)
 	//           Complexity: O(N)
 	//           Number of cycles: <TODO>
 
 	arm_cmplx_mag_q15(buf, buf, SAMPLES_PER_MELVEC/2);
-
+	stop_cycle_count("3.3");
+	start_cycle_count();
 	// STEP 3.4: Denormalize the vector
 	//           Complexity: O(N)
 	//           Number of cycles: <TODO>
@@ -106,7 +118,8 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	{
 		buf[i] = (q15_t) ((((q31_t) buf[i]) * ((q31_t) vmax) ) >> 15 );
 	}
-
+	stop_cycle_count("3.4");
+	start_cycle_count();
 	// STEP 4:   Apply MEL transform
 	//           --> Fast Matrix Multiplication
 	//           Complexity: O(Nmel*N)
@@ -127,4 +140,5 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	arm_mat_init_q15(&melvec_inst, MELVEC_LENGTH, 1, melvec);
 
 	arm_mat_mult_fast_q15(&hz2mel_inst, &fftmag_inst, &melvec_inst, buf_tmp);
+	stop_cycle_count("4");
 }
