@@ -1,0 +1,2 @@
+clk frequency : 48MHz
+ADC clk frequency : 48MHz

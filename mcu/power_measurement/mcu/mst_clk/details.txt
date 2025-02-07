@@ -1,0 +1,4 @@
+Aquiered on MCU I_DD port.
+
+UART, Perf, debug off
+

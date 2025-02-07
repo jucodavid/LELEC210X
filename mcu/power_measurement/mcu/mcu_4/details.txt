@@ -1,0 +1,3 @@
+Aquiered on MCU I_DD port.
+radio off
+ADC_Callback cycle count on ==> spectrogram

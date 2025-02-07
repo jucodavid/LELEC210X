@@ -1,0 +1,2 @@
+../Core/Src/spectrogram.c:20:6:Spectrogram_Format	1
+../Core/Src/spectrogram.c:56:6:Spectrogram_Compute	3
