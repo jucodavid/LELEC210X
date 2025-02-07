@@ -100,10 +100,10 @@ def plot_cfo_histogram(df):
     print(df['CFO'].std())
     plt.figure(figsize=(10, 7))
     plt.hist(df['CFO'], bins=150, edgecolor='black')
-    plt.xlabel('CFO')
+    plt.xlabel('CFO [Hz]')
     plt.ylabel('N° of occurrences')
-    plt.xlim(5000,10000)
-    plt.title('Histogram of CFO')
+    #plt.xlim(1300,1400)
+    plt.title('CFO Histogram')
     plt.grid(True)
     plt.show()
 
@@ -135,9 +135,9 @@ mini,maxi = 0,30
 
 
 #create_plot(x_dist, SNR_dist, 'SNR vs Distance', 'Distance (cm)', 'SNR (dB)')
-plot_SNR_f_vs_f_dBm(f_dBm, fc2, SNR_f2)
+#plot_SNR_f_vs_f_dBm(f_dBm, fc2, SNR_f2)
 #plot_per_vs_snr2(per_data, 25,mini, maxi)
-#plot_cfo_histogram(per_data)
+plot_cfo_histogram(per_data)
 
 
 
