@@ -72,7 +72,7 @@ if __name__ == "__main__":
         mat[0] = melvec / np.max(melvec)
         prediction = model.predict(mat)[0]
 
-        # submit(prediction)
+        submit(prediction)
 
         print(f"MEL Spectrogram #{msg_counter}")
         print(f"Class predicted: {prediction}")
