@@ -19,8 +19,10 @@ MELVEC_LENGTH = 20
 N_MELVECS = 20
 TAG_LENGTH = 16
 
-HOST_ADRESS = "http://localhost:5000"
-TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
+# HOST_ADRESS = "http://localhost:5000"
+HOST_ADRESS = "http://lelec210x.sipr.ucl.ac.be"
+# TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
+TEAM_KEY = "a5vIbTLb5gDwxC2VXEj2lLuv4UAGSPmKm-iyCJVQ"
 
 
 def iint(x):
@@ -51,10 +53,11 @@ def reader() -> Iterator[str]:
 def submit(guess):
     response = requests.post(f"{HOST_ADRESS}/lelec210x/leaderboard/submit/{TEAM_KEY}/{guess}", timeout=1)
     response_as_dict = json.loads(response.text)
+    print(f"Response: {response_as_dict}")
 
 
 if __name__ == "__main__":
-    model_dir = "../../classification/data/models/"
+    model_dir = "classification/data/models/"
     filename = "model_rf_new.pickle"
     model = pickle.load(open(model_dir + filename, "rb"))
 
