@@ -23,7 +23,7 @@ class Chain:
     payload_len: int = 100 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
 
     # Simulation parameters
-    n_packets: int = 800  # Number of sent packets      HERE <----200 ou 800(pour le fun)
+    n_packets: int = 1600  # Number of sent packets      HERE <----200 ou 800(pour le fun)
 
     # Channel parameters
     sto_val: float = 0
@@ -42,7 +42,7 @@ class Chain:
 
     # Tx methods
 
-    def modulate(self, bits: np.array) -> np.array:
+    def modulate_cst(self, bits: np.array) -> np.array:
         """
         Modulates a stream of bits of size N
         with a given TX oversampling factor R (osr_tx).
@@ -55,14 +55,14 @@ class Chain:
         R = self.osr_tx  # Oversampling factor
 
         # Map bits to symbols: 1 -> +1, 0 -> -1
-        symbols = np.where(bits == 1, 1.1, -1.1)
+        symbols = np.where(bits == 1, 1, -1)
 
         # Upsample the symbols by repeating each symbol R times
         x = np.repeat(symbols, R)
 
         return x
 
-    def demodulate(self, y: np.array) -> np.array:
+    def demodulate_cst(self, y: np.array) -> np.array:
         """
         Demodulates a baseband BPSK signal.
 
@@ -96,7 +96,7 @@ class Chain:
         """
         R = self.osr_tx  # Oversampling factor
         t = np.arange(R) / (self.bit_rate * R)  # Time vector for one symbol period
-        carrier = np.cos(2 * np.pi * self.freq_dev/2 * t)  # Carrier signal
+        carrier = np.cos(2 * np.pi * self.freq_dev * t)  # Carrier signal
 
         # Modulate each bit
         x = np.zeros(len(bits) * R, dtype=np.complex64)
@@ -120,7 +120,7 @@ class Chain:
 
         # Generate the reference carrier signal
         t = np.arange(R) / (self.bit_rate * R)
-        carrier = np.cos(2 * np.pi * self.freq_dev/2 * t)
+        carrier = np.cos(2 * np.pi * self.freq_dev * t)
 
         # Correlate each symbol with the carrier
         correlations = np.sum(y * carrier, axis=1) / R
@@ -131,7 +131,7 @@ class Chain:
         return bits_hat
 
     # Rx methods
-    bypass_preamble_detect: bool = True
+    bypass_preamble_detect: bool = False
 
     def preamble_detect(self, y):
         """
@@ -148,10 +148,57 @@ class Chain:
         return None
 
     #bypass_cfo_estimation = False
-    bypass_cfo_estimation = True                                                 #HERE <----
+    bypass_cfo_estimation = False                                                 #HERE <----
+
+    def cfo_estimation_fft(self, y):            #FFT with refining
+        """
+        Estimates CFO using FFT-based frequency estimation on the preamble, with zero padding and interpolation.
+
+        :param y: The received signal, (N * R,).
+        :return: The estimated carrier frequency offset (CFO) in Hz.
+        """
+        N = 16  # Use a longer preamble for better accuracy
+        zero_pad_factor = 2**7  # Increase zero-padding factor for finer resolution
+        R = self.osr_rx  # Receiver oversampling factor
+        fs = self.bit_rate * R  # Sampling frequency
+        preamble_length = N * R  # Length of the preamble in samples
+
+        # Ensure the preamble length does not exceed the signal length
+        if preamble_length > len(y):
+            raise ValueError("Preamble length exceeds the received signal length.")
+
+        # Extract the preamble from the received signal
+        preamble_signal = y[:preamble_length]
+
+        # Zero-pad the preamble signal
+        padded_length = preamble_length * zero_pad_factor
+        padded_signal = np.zeros(padded_length, dtype=complex)
+        padded_signal[:preamble_length] = preamble_signal
+
+        # Compute the FFT of the zero-padded preamble signal
+        fft_result = np.fft.fft(padded_signal)
+        fft_freqs = np.fft.fftfreq(padded_length, 1 / fs)  # Frequency bins
+
+        # Focus on the positive frequencies only
+        positive_freqs = fft_freqs[:padded_length // 2]
+        positive_fft = np.abs(fft_result[:padded_length // 2])
+
+        # Find the peak in the FFT magnitude spectrum
+        peak_index = np.argmax(positive_fft)
+        cfo_est = positive_freqs[peak_index]  # CFO estimate
+
+        # Refine the CFO estimate using parabolic interpolation
+        if 1 < peak_index < len(positive_fft) - 1:
+            y0 = positive_fft[peak_index - 1]
+            y1 = positive_fft[peak_index]
+            y2 = positive_fft[peak_index + 1]
+            delta = 0.5 * (y0 - y2) / (y0 - 2 * y1 + y2)
+            cfo_est = positive_freqs[peak_index] + delta * (positive_freqs[1] - positive_freqs[0])
+
+        return cfo_est
 
 
-    def cfo_estimation_fft(self, y):
+    def cfo_estimation1(self, y):
         """
         Estimates CFO using a zero-padded FFT method, with IFFT to refine the CFO estimation.
         """
@@ -166,7 +213,7 @@ class Chain:
         block2 = y[Nt:2*Nt]
         
         # Appliquer un zero padding sur les blocs pour améliorer la résolution en fréquence
-        padding_size = 4096*2**3  # Taille de padding pour FFT (peut être ajustée)
+        padding_size = 4096  # Taille de padding pour FFT (peut être ajustée)
         block1_padded = np.pad(block1, (0, padding_size - len(block1)), mode='constant')
         block2_padded = np.pad(block2, (0, padding_size - len(block2)), mode='constant')
         
@@ -257,7 +304,7 @@ class Chain:
         avg_cfo_est = np.mean(cfo_estimates)
         return avg_cfo_est
 
-    def cfo_estimation__fft(self, y):        #par fft
+    def cfo_estimation1(self, y):        #par fft
         """
         Estimates CFO using a frequency domain method (FFT-based).
         This approach works well when the signal is coherent and has well-defined frequency components.
@@ -266,16 +313,14 @@ class Chain:
         N = 16 # 2 ou 6
         Nt = N * self.osr_rx
         T = 1 / self.bit_rate
-        fs = self.bit_rate * R  # Sampling frequency
         #N = len(y)  # Length of the received signal
-        zero_pad_factor = 2**4  # Increase zero-padding factor for finer resolution
-        fft_size = Nt*zero_pad_factor  # FFT size, can be adjusted based on signal length
-        signal = np.pad(y[:Nt], (0, fft_size - Nt), mode='constant')
+        fft_size = 1024  # FFT size, can be adjusted based on signal length
 
         # Perform FFT on the received signal
-        Y_fft = np.fft.fft(signal, fft_size)
+        Y_fft = np.fft.fft(y[:Nt], fft_size)
+
         # Find the peak in the frequency spectrum and calculate the CFO
-        freq_bins = np.fft.fftfreq(fft_size, fs**-1)
+        freq_bins = np.fft.fftfreq(fft_size, 1 / self.bit_rate)
         peak_bin = np.argmax(np.abs(Y_fft))
 
         # Estimate CFO based on the peak frequency bin
@@ -291,29 +336,15 @@ class Chain:
         """
         R = self.osr_rx
 
-        #preamble_length = 32 * R  # Length of the preamble in samples
-        #y_preamble = y[:preamble_length]  # Use only the preamble
-
         # Computation of derivatives of phase function
         phase_function = np.unwrap(np.angle(y))
-        #phase_function = np.unwrap(np.angle(y_preamble))
-        
-        phase_derivative_1 = phase_function[2:] - phase_function[:-2]
-        #phase_derivative_1 = np.diff(phase_function)
+        phase_derivative_1 = phase_function[1:] - phase_function[:-1]
         phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
-        #phase_derivative_2 = np.abs(np.diff(phase_derivative_1))
 
         sum_der_saved = -np.inf
         save_i = 0
         for i in range(0, R):
-            #sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
-            sum_der = (
-                np.sum(phase_derivative_2[max(i - 2, 0)::R]) +  # i-2
-                np.sum(phase_derivative_2[max(i - 1, 0)::R]) +  # i-1
-                np.sum(phase_derivative_2[i::R]) +  # i
-                np.sum(phase_derivative_2[min(i + 1, R - 1)::R])+  # i+1
-                np.sum(phase_derivative_2[min(i + 2, R - 1)::R])  # i+2
-            )
+            sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
 
             if sum_der > sum_der_saved:
                 sum_der_saved = sum_der
@@ -321,7 +352,7 @@ class Chain:
 
         return np.mod(save_i + 1, R)
 
-    def modulate_fsk_noncoh(self, bits: np.array) -> np.array:
+    def modulate(self, bits: np.array) -> np.array:
         """
         Modulates a stream of bits of size N
         with a given TX oversampling factor R (osr_tx).
@@ -333,7 +364,8 @@ class Chain:
         """
         fd = self.freq_dev  # Frequency deviation, Delta_f
         B = self.bit_rate  # B=1/T
-        h = 2 * fd / B  # Modulation index, freq_dev / bit_rate = 1/4 changé à 1/2
+        h = 2 * fd / B  # Modulation index, freq_dev / bit_rate = 1/4
+        #h = 0.57
         R = self.osr_tx  # Oversampling factor
 
         x = np.zeros(len(bits) * R, dtype=np.complex64)
@@ -354,7 +386,7 @@ class Chain:
 
         return x
 
-    def demodulate_fsk_noncoh(self, y):
+    def demodulate(self, y):
         """
         Non-coherent demodulator.
         """
@@ -375,52 +407,6 @@ class Chain:
 
         r0 = np.abs(np.dot(y, eS1))
         r1 = np.abs(np.dot(y, eS0)) 
-        bits_hat = (r1 > r0).astype(int)
-
-        return bits_hat
-
-    def modulate_fsk_coh(self, bits: np.array) -> np.array:
-        """
-        Modulates a stream of bits of size N
-        with a given TX oversampling factor R (osr_tx).
-
-        Uses Continuous-Phase FSK modulation.
-
-        :param bits: The bit stream, (N,).
-        :return: The modulates bit sequence, (N * R,).
-        """
-        fd = self.freq_dev  # Frequency deviation, Delta_f
-        B = self.bit_rate  # B=1/T
-        R = self.osr_tx  # Oversampling factor
-
-        x = np.zeros(len(bits) * R, dtype=np.complex64)
-        ph = 2 * np.pi * fd * (np.arange(R) / R) / B  # Phase of reference waveform
-
-        for i, b in enumerate(bits):
-            x[i * R : (i + 1) * R] = np.exp(1j * (1 if b else -1) * ph)  # Sent waveforms, with starting phase coming from previous symbol
-        return x
-
-    def demodulate_fsk_coh(self, y):
-        """
-        Non-coherent demodulator.
-        """
-        R = self.osr_rx  # Receiver oversampling factor
-        nb_syms = len(y) // R  # Number of CPFSK symbols in y
-
-        # Group symbols together, in a matrix. Each row contains the R samples over one symbol period
-        y = np.resize(y, (nb_syms, R))
-        # print(y)
-        # TO DO: generate the reference waveforms used for the correlation
-        # hint: look at what is done in modulate() in chain.py
-
-        eS0 = np.exp(-2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
-        eS1 = np.exp( 2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
-
-        # TO DO: compute the correlations with the two reference waveforms (r0 and r1)
-        #bits_hat = np.zeros(nb_syms, dtype=int)  # Default value, all bits=0. TO CHANGE!
-
-        r0 = np.real(np.dot(y, eS1))
-        r1 = np.real(np.dot(y, eS0)) 
         bits_hat = (r1 > r0).astype(int)
 
         return bits_hat
