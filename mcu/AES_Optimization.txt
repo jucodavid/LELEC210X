@@ -1,0 +1,209 @@
+# BEFORE AES ACCELERATION
+
+[PERF] Encrypted 84807 cycles.
+
+[PERF] Encrypted 84748 cycles.
+
+[PERF] Encrypted 84806 cycles.
+
+[PERF] Encrypted 84806 cycles.
+
+[PERF] Encrypted 84865 cycles.
+
+[PERF] Encrypted 84802 cycles.
+
+[PERF] Encrypted 84867 cycles.
+
+[PERF] Encrypted 84826 cycles.
+
+[PERF] Encrypted 84834 cycles.
+
+[PERF] Encrypted 84786 cycles.
+
+[PERF] Encrypted 84844 cycles.
+
+[PERF] Encrypted 84904 cycles.
+
+[PERF] Encrypted 84898 cycles.
+
+[PERF] Encrypted 84789 cycles.
+
+[PERF] Encrypted 84852 cycles.
+
+[PERF] Encrypted 84898 cycles.
+
+[PERF] Encrypted 84899 cycles.
+
+[PERF] Encrypted 84899 cycles.
+
+[PERF] Encrypted 84885 cycles.
+
+[PERF] Encrypted 84859 cycles.
+
+[PERF] Encrypted 84807 cycles.
+
+[PERF] Encrypted 84863 cycles.
+
+[PERF] Encrypted 84863 cycles.
+
+[PERF] Encrypted 84748 cycles.
+
+[PERF] Encrypted 84863 cycles.
+
+[PERF] Encrypted 84860 cycles.
+
+[PERF] Encrypted 84860 cycles.
+
+[PERF] Encrypted 84865 cycles.
+
+[PERF] Encrypted 84864 cycles.
+
+[PERF] Encrypted 84865 cycles.
+
+[PERF] Encrypted 84867 cycles.
+
+[PERF] Encrypted 84871 cycles.
+
+[PERF] Encrypted 84800 cycles.
+
+[PERF] Encrypted 84864 cycles.
+
+[PERF] Encrypted 84862 cycles.
+
+[PERF] Encrypted 84863 cycles.
+
+[PERF] Encrypted 84805 cycles.
+
+[PERF] Encrypted 84804 cycles.
+
+[PERF] Encrypted 84857 cycles.
+
+[PERF] Encrypted 84857 cycles.
+
+[PERF] Encrypted 84806 cycles.
+
+[PERF] Encrypted 84748 cycles.
+
+[PERF] Encrypted 84806 cycles.
+
+[PERF] Encrypted 84807 cycles.
+
+[PERF] Encrypted 84805 cycles.
+
+[PERF] Encrypted 84806 cycles.
+
+[PERF] Encrypted 84801 cycles.
+
+[PERF] Encrypted 84693 cycles.
+
+[PERF] Encrypted 84816 cycles.
+
+[PERF] Encrypted 84749 cycles.
+
+[PERF] Encrypted 84749 cycles.
+
+=======================================
+
+AFTER AES ACCELERATION
+
+[PERF] Encrypted 563 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.
+
+[PERF] Encrypted 556 cycles.

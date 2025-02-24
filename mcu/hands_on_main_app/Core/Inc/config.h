@@ -30,7 +30,7 @@
 #define N_MELVECS 20
 
 // Enable performance measurements
-#define PERF_COUNT 0
+#define PERF_COUNT 1
 
 // Enable debug print
 #define DEBUGP 1
