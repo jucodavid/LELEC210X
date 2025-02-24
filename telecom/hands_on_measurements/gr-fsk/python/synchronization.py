@@ -28,37 +28,79 @@ from .utils import logging, measurements_logger
 
 
 def cfo_estimation(y, B, R, Fdev):
-    """
-    Estimate CFO using Moose algorithm, on first samples of preamble
-    """
-    N = 2
-    Nt = N * R
-    T = 1 / B
-    # TO DO: apply the Moose algorithm on these two blocks to estimate the CFO
-    """sum = 0
-    for i in range(Nt):
-        sum += y[i+Nt] * np.conj(y[i])
-    cfo_est = np.angle(sum) / (2 * np.pi * Nt/self.osr_rx/self.bit_rate)"""
-    sum_est = np.vdot(y[:Nt], y[Nt:2*Nt])
-    cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/R)
-    #cfo_est = 0  # Default value, to change
+    T = 1 / B  # Symbol period
 
-    return cfo_est
+    N = 6       #default 6
+    L = 32      #default 32
+    D = 4       #default 2
+    # Convert block size and preamble length to samples
+    Nt = N * R  # Block size in samples
+    Lt = L * R  # Preamble length to consider in samples
+    Dt = D * R  # Maximum distance between blocks in samples
+
+    # Ensure the preamble length is sufficient
+    if Lt > len(y):
+        raise ValueError("Preamble length L is larger than the received signal.")
+
+    # Extract the relevant part of the preamble
+    y_preamble = y[:Lt]
+
+    # Initialize a list to store CFO estimates
+    cfo_estimates = []
+
+    for k in range(2,11,2):
+        N = k
+        Nt = N * R
+        # Iterate over all possible pairs of blocks
+        for i in range(0, Lt - 2*Nt+1,R):  # Start of first block
+            for j in range(i + Nt, min(i + Nt + Dt, Lt - Nt + 1),2*R):  # Start of second block
+                # Extract the two blocks
+                block1 = y_preamble[i:i + Nt]
+                block2 = y_preamble[j:j + Nt]
+
+                # Apply the Moose algorithm
+                sum_est = np.vdot(block1, block2)
+                cfo_est = np.angle(sum_est) / (2 * np.pi * (j - i) * T / R)
+
+                # Store the CFO estimate
+                cfo_estimates.append(cfo_est)
+
+    # Average the CFO estimates
+    if len(cfo_estimates) == 0:
+        raise ValueError("No valid block pairs found for CFO estimation.")
+
+    avg_cfo_est = np.mean(cfo_estimates)
+    return avg_cfo_est
 
 
 def sto_estimation(y, B, R, Fdev):
     """
-    Estimate symbol timing (fractional) based on phase shifts
+    Estimates symbol timing (fractional) based on phase shifts.
     """
+
+    #preamble_length = 32 * R  # Length of the preamble in samples
+    #y_preamble = y[:preamble_length]  # Use only the preamble
+
+    # Computation of derivatives of phase function
     phase_function = np.unwrap(np.angle(y))
-    phase_derivative_sign = phase_function[1:] - phase_function[:-1]
-    sign_derivative = np.abs(phase_derivative_sign[1:] - phase_derivative_sign[:-1])
+    #phase_function = np.unwrap(np.angle(y_preamble))
+
+    phase_derivative_1 = phase_function[2:] - phase_function[:-2]
+    #phase_derivative_1 = np.diff(phase_function)
+    phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
+    #phase_derivative_2 = np.abs(np.diff(phase_derivative_1))
 
     sum_der_saved = -np.inf
     save_i = 0
-
     for i in range(0, R):
-        sum_der = np.sum(sign_derivative[i::R])
+        #sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
+        sum_der = (
+            np.sum(phase_derivative_2[max(i - 2, 0)::R]) +  # i-2
+            np.sum(phase_derivative_2[max(i - 1, 0)::R]) +  # i-1
+            np.sum(phase_derivative_2[i::R]) +  # i
+            np.sum(phase_derivative_2[min(i + 1, R - 1)::R])+  # i+1
+            np.sum(phase_derivative_2[min(i + 2, R - 1)::R])  # i+2
+        )
 
         if sum_der > sum_der_saved:
             sum_der_saved = sum_der
