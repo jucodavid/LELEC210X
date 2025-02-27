@@ -1,20 +1,39 @@
 # UTILS
-## usbipd
 
+## gnu radio
+```bash
+cd LELE210X/telecom/hands_on_measurements/gr-fsk
+wsl
+gnuradio-companion
+```
+
+### gnu radio modifications
+```bash
+cd LELE210X/telecom/hands_on_measurements/gr-fsk/build
+wsl
+sudo make install
+```
+Eventually, when everything brakes, delete de build directory and reconstruct it.
+```bash
+mkdir build
+cd build
+cmake ..
+sudo make install
+sudo ldconfig
+```
+And replace the .grc file in apps by clean ones from the teching staff github.
+
+> You should then reconfigure it. As for now, `carrier_freq = 862e6` and `fdev = data_rate/2`.
+
+## usbipd
 ```bash
 usbipd list
 usbipd attach --wsl --busid
 ```
 
-## gnu radio
-```bash
-cd telecom/hands_on_measurements/gr-fsk
-wsl gnuradio-companion
-```
-
 ## leaderboard
 ```bash
-cd leaderboard
+cd LELE210X/leaderboard
 rye run leaderboard serve --open
 ```
 On local:

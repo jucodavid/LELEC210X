@@ -5,6 +5,7 @@
 #include "aes_ref.h"
 #include "config.h"
 #include "packet.h"
+#include "aes.h"
 #include "main.h"
 #include "utils.h"
 #include <string.h>
@@ -46,9 +47,17 @@ void tag_cbc_mac(uint8_t *tag, const uint8_t *msg, size_t msg_len) {
 		for (size_t j = 0; j < 16; j++) {
 			state[j] ^= block[j];
 		}
-
+		start_cycle_count();
 		// Encrypt the state with AES
-		AES128_encrypt(state, AES_Key);
+//		AES128_encrypt(state, AES_Key);
+		uint8_t buffer[16];
+		memcpy(buffer, state, 16);
+
+
+		// To implement
+		// HAL_StatusTypeDef HAL_CRYPEx_AES(CRYP_HandleTypeDef *hcryp, uint8_t *pInputData, uint16_t Size, uint8_t *pOutputData, uint32_t Timeout)
+		HAL_CRYPEx_AES(&hcryp, buffer, 16, state, HAL_MAX_DELAY);
+		stop_cycle_count("Encrypted");
 	}
 
     // Copy the result of CBC-MAC-AES to the tag.
