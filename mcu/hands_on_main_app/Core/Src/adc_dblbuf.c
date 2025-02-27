@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "s2lp.h"
 #include "packet.h"
+#include <inttypes.h>
 
 
 static volatile uint16_t ADCDoubleBuf[2*ADC_BUF_SIZE]; /* ADC group regular conversion data (array of data) */
@@ -18,6 +19,10 @@ static q15_t mel_vectors[N_MELVECS][MELVEC_LENGTH];
 static uint32_t packet_cnt = 0;
 
 static volatile int32_t rem_n_bufs = 0;
+
+static volatile uint8_t in_routine = 0;
+
+static uint16_t threshold = THRESHOLD;
 
 int StartADCAcq(int32_t n_bufs) {
 	rem_n_bufs = n_bufs;
@@ -95,11 +100,12 @@ static void send_spectrogram() {
 //	print_encoded_packet(packet);
 }
 
-static void ADC_Callback(int buf_cplt) {
+static void routine(int buf_cplt) {
 	if (rem_n_bufs != -1) {
-		rem_n_bufs--;
-	}
+			rem_n_bufs--;
+		}
 	if (rem_n_bufs == 0) {
+		in_routine = 0;
 		StopADCAcq();
 	} else if (ADCDataRdy[1-buf_cplt]) {
 		DEBUG_PRINT("Error: ADC Data buffer full\r\n");
@@ -116,6 +122,43 @@ static void ADC_Callback(int buf_cplt) {
 //		stop_cycle_count("Total FV");
 		send_spectrogram();
 	}
+}
+
+static int check_for_event(int buf_cplt) {
+#if (EVENT_DETECTION_MODE == HARD_THRESHOLD)
+	q15_t max = 0;
+	uint32_t ignored = 0;
+	arm_max_q15((q15_t *)ADCData[buf_cplt], SAMPLES_PER_MELVEC, &max, &ignored);
+	if (max > threshold) {
+		DEBUG_PRINT("Max value in buffer is %" PRId16 ". Found an event, start the routine.\r\n", max);
+		return 1;
+	}
+	return 0;
+#elif (EVENT_DETECTION_MODE == SOFT_THRESHOLD)
+#error "Not Yet implemented."
+#elif (EVENT_DETECTION_MODE == HW_HARD_THRESHOLD)
+#error "Not Yet implemented."
+#else
+#error "Wrong value for EVENT_DETECTION_MODE."
+#endif
+}
+
+static void ADC_Callback(int buf_cplt) {
+#if (EVENT_DETECTION == 1)
+	if (in_routine == 0) {
+		if (check_for_event(buf_cplt) == 1) {
+			in_routine = 1;
+		} else {
+			return;
+		}
+
+	}
+	routine(buf_cplt);
+#elif (EVENT_DETECTION == 0)
+	routine(buf_cplt);
+#else
+#error "Wrong value for EVENT_DETECTION."
+#endif
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)

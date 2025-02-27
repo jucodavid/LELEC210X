@@ -22,7 +22,30 @@
 
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 0
+#define CONTINUOUS_ACQ 1
+
+// Event detection enable/disable
+#define EVENT_DETECTION 1
+
+// Event detection mode
+#define HARD_THRESHOLD 0
+#define SOFT_THRESHOLD 1
+#define HW_HARD_THRESHOLD 2
+
+// Event detection mode selection
+#define EVENT_DETECTION_MODE HARD_THRESHOLD
+//#define EVENT_DETECTION_MODE SOFT_THRESHOLD
+//#define EVENT_DETECTION_MODE HW_HARD_THRESHOLD
+
+// Event detection parameters
+// 	  Hard threshold mode
+#define THRESHOLD 2500
+
+// 	  Soft threashold mode
+
+
+//    Harware Hard threshold mode
+
 
 // Spectrogram parameters
 #define SAMPLES_PER_MELVEC 512
@@ -30,7 +53,7 @@
 #define N_MELVECS 20
 
 // Enable performance measurements
-#define PERF_COUNT 1
+#define PERF_COUNT 0
 
 // Enable debug print
 #define DEBUGP 1

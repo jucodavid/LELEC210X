@@ -30,6 +30,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
 #include "arm_math.h"
 #include "adc_dblbuf.h"
 #include "retarget.h"
@@ -94,12 +95,10 @@ static void acquire_and_send_packet() {
 	}
 }
 
-void run(void)
-{
+void run(void) {
 	btn_press = 0;
 
-	while (1)
-	{
+	while (1) {
 	  while (!btn_press) {
 		  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
 		  HAL_Delay(200);
@@ -108,6 +107,9 @@ void run(void)
 	  }
 	  btn_press = 0;
 #if (CONTINUOUS_ACQ == 1)
+#if (EVENT_DETECTION == 1)
+	  DEBUG_PRINT("Waiting for events. Threshold is set at %" PRIu16 "\r\n", THRESHOLD);
+#endif
 	  while (!btn_press) {
 		  acquire_and_send_packet();
 	  }
