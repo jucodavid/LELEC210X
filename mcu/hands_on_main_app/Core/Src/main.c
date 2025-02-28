@@ -108,7 +108,9 @@ void run(void) {
 	  btn_press = 0;
 #if (CONTINUOUS_ACQ == 1)
 #if (EVENT_DETECTION == 1)
-	  DEBUG_PRINT("Waiting for events. Threshold is set at %" PRIu16 "\r\n", THRESHOLD);
+#if (EVENT_DETECTION_MODE == HARD_THRESHOLD)
+	  DEBUG_PRINT("Waiting for events. Event detection mode is set to Hard threshold. Threshold is set at %" PRIu16 ". Metric checked is %" PRIu16 " (0: Mean, 1: Max, 2: Power)\r\n", THRESHOLD, HT_METRIC);
+#endif
 #endif
 	  while (!btn_press) {
 		  acquire_and_send_packet();

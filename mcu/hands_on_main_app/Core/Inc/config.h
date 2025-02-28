@@ -27,7 +27,7 @@
 // Event detection enable/disable
 #define EVENT_DETECTION 1
 
-// Event detection mode
+// Event detection modes
 #define HARD_THRESHOLD 0
 #define SOFT_THRESHOLD 1
 #define HW_HARD_THRESHOLD 2
@@ -39,7 +39,15 @@
 
 // Event detection parameters
 // 	  Hard threshold mode
-#define THRESHOLD 2500
+//        Hard threshold modes
+#define HT_MEAN 0
+#define HT_MAX 1
+#define HT_POWER 2
+
+#define THRESHOLD 2500 // Mean : 2040; MAX : 2500; ENERGY :
+//#define HT_METRIC HT_MEAN
+#define HT_METRIC HT_MAX
+//#define HT_METRIC HT_POWER
 
 // 	  Soft threashold mode
 

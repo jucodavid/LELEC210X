@@ -126,14 +126,35 @@ static void routine(int buf_cplt) {
 
 static int check_for_event(int buf_cplt) {
 #if (EVENT_DETECTION_MODE == HARD_THRESHOLD)
+#if (HT_METRIC == HT_MEAN)
+	q15_t mean = 0;
+	arm_mean_q15((q15_t *)ADCData[buf_cplt], SAMPLES_PER_MELVEC, &mean);
+	if (mean > threshold) {
+		DEBUG_PRINT("Mean value in buffer is %" PRId16 ". Found an event, start the routine.\r\n",mean);
+		return 1;
+	}
+	return 0;
+#elif (HT_METRIC == HT_MAX)
 	q15_t max = 0;
 	uint32_t ignored = 0;
 	arm_max_q15((q15_t *)ADCData[buf_cplt], SAMPLES_PER_MELVEC, &max, &ignored);
 	if (max > threshold) {
-		DEBUG_PRINT("Max value in buffer is %" PRId16 ". Found an event, start the routine.\r\n", max);
+		DEBUG_PRINT("Metric value in buffer is %" PRId16 ". Found an event, start the routine.\r\n",max);
 		return 1;
 	}
 	return 0;
+#elif (HT_METRIC == HT_POWER)
+#error "Doesn't work currently."
+	q63_t power = 0;
+	arm_power_q15((q15_t *)ADCData[buf_cplt], SAMPLES_PER_MELVEC, &power);
+	if (power > (q63_t)threshold) {
+			DEBUG_PRINT("Metric value in buffer is %lld. Found an event, start the routine.\r\n", power);
+			return 1;
+		}
+	return 0;
+#else
+#error "Wrong value for HT_METRIC."
+#endif
 #elif (EVENT_DETECTION_MODE == SOFT_THRESHOLD)
 #error "Not Yet implemented."
 #elif (EVENT_DETECTION_MODE == HW_HARD_THRESHOLD)
