@@ -157,8 +157,6 @@ static int check_for_event(int buf_cplt) {
 #endif
 #elif (EVENT_DETECTION_MODE == SOFT_THRESHOLD)
 #error "Not Yet implemented."
-#elif (EVENT_DETECTION_MODE == HW_HARD_THRESHOLD)
-#error "Not Yet implemented."
 #else
 #error "Wrong value for EVENT_DETECTION_MODE."
 #endif

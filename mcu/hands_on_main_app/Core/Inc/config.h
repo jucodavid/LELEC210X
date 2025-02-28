@@ -35,7 +35,6 @@
 // Event detection mode selection
 #define EVENT_DETECTION_MODE HARD_THRESHOLD
 //#define EVENT_DETECTION_MODE SOFT_THRESHOLD
-//#define EVENT_DETECTION_MODE HW_HARD_THRESHOLD
 
 // Event detection parameters
 // 	  Hard threshold mode
