@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 measurements_logger = logging.getLogger("measurements")
 measurements_logger.propagate = False
 measurements_logger.addHandler(
-    logging.FileHandler(filename="measurements.txt", mode="w")
+    logging.FileHandler(filename="gnuradio_measurements.txt", mode="w")
 )
 
 
