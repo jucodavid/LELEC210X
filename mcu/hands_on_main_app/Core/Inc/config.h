@@ -24,6 +24,36 @@
 // In non-continuous mode, we send a single packet on button press.
 #define CONTINUOUS_ACQ 1
 
+// Event detection enable/disable
+#define EVENT_DETECTION 1
+
+// Event detection modes
+#define HARD_THRESHOLD 0
+#define SOFT_THRESHOLD 1
+#define HW_HARD_THRESHOLD 2
+
+// Event detection mode selection
+#define EVENT_DETECTION_MODE HARD_THRESHOLD
+//#define EVENT_DETECTION_MODE SOFT_THRESHOLD
+
+// Event detection parameters
+// 	  Hard threshold mode
+//        Hard threshold modes
+#define HT_MEAN 0
+#define HT_MAX 1
+#define HT_POWER 2
+
+#define THRESHOLD 2500 // Mean : 2040; MAX : 2500; ENERGY :
+//#define HT_METRIC HT_MEAN
+#define HT_METRIC HT_MAX
+//#define HT_METRIC HT_POWER
+
+// 	  Soft threashold mode
+
+
+//    Harware Hard threshold mode
+
+
 // Spectrogram parameters
 #define SAMPLES_PER_MELVEC 512
 #define MELVEC_LENGTH 20

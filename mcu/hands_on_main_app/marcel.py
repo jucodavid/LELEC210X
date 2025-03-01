@@ -19,10 +19,10 @@ MELVEC_LENGTH = 20
 N_MELVECS = 20
 TAG_LENGTH = 16
 
-# HOST_ADRESS = "http://localhost:5000"
-HOST_ADRESS = "http://lelec210x.sipr.ucl.ac.be"
-# TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
-TEAM_KEY = "a5vIbTLb5gDwxC2VXEj2lLuv4UAGSPmKm-iyCJVQ"
+HOST_ADRESS = "http://localhost:5000"
+# HOST_ADRESS = "http://lelec210x.sipr.ucl.ac.be"
+TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
+# TEAM_KEY = "a5vIbTLb5gDwxC2VXEj2lLuv4UAGSPmKm-iyCJVQ"
 
 
 def iint(x):
