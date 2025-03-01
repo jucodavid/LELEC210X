@@ -33,7 +33,7 @@ usbipd attach --wsl --busid
 
 ## leaderboard
 ```bash
-cd LELE210X/leaderboard
+cd LELEC210X/leaderboard
 rye run leaderboard serve --open
 ```
 On local:
