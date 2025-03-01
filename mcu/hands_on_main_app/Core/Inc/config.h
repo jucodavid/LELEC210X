@@ -22,7 +22,7 @@
 
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 0
+#define CONTINUOUS_ACQ 1
 
 // Spectrogram parameters
 #define SAMPLES_PER_MELVEC 512
@@ -30,7 +30,7 @@
 #define N_MELVECS 20
 
 // Enable performance measurements
-#define PERF_COUNT 1
+#define PERF_COUNT 0
 
 // Enable debug print
 #define DEBUGP 1
