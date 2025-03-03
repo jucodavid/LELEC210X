@@ -38,7 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define ADC_BUF_SIZE 15000
+#define ADC_BUF_SIZE 27100
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -50,13 +50,14 @@
 
 /* USER CODE BEGIN PV */
 volatile int state;
+volatile int is_listening;
 volatile uint16_t ADCBuffer[2*ADC_BUF_SIZE]; /* ADC group regular conversion data (array of data) */
 volatile uint16_t* ADCData1;
 volatile uint16_t* ADCData2;
 volatile uint16_t signalPower;
 volatile uint16_t lastSample = 0;
 
-char hex_encoded_buffer[4*ADC_BUF_SIZE+1];
+char hex_encoded_buffer[8*ADC_BUF_SIZE+1];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -69,7 +70,7 @@ uint32_t get_signal_power(uint16_t *buffer, size_t len);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
+/*void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
 	signalPower = get_signal_power(ADCData1, ADC_BUF_SIZE);
 	printf("%d", signalPower);
 	printf("\n");
@@ -84,9 +85,9 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc){
 		lastSample = 1;
 	}
 	//print_buffer(ADCData1);
-}
+}*/
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
-	signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
+	/*signalPower = get_signal_power(ADCData2, ADC_BUF_SIZE);
 	printf("%d", signalPower);
 	printf("\n");
 	if(lastSample == 1){
@@ -98,13 +99,19 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc){
 	}
 	if(signalPower > 50000){
 		lastSample = 1;
-	}
+	}*/
+	HAL_TIM_Base_Stop(&htim3);
+	HAL_ADC_Stop_DMA(&hadc1);
+	printf("Stop listening, sending the buffer.\n");
+	print_buffer(ADCData1);
+	//print_buffer(ADCData2);
 }
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin == B1_Pin) {
 		state = 1-state;
 	}
 	if (state == 1){
+		printf("Is listening.\n");
 		HAL_TIM_Base_Start(&htim3);
 		HAL_ADC_Start_DMA(&hadc1, ADCData1, ADC_BUF_SIZE*2);
 		state = 0;
@@ -120,7 +127,7 @@ void hex_encode(char* s, const uint8_t* buf, size_t len) {
 }
 
 void print_buffer(uint16_t *buffer) {
-	hex_encode(hex_encoded_buffer, (uint8_t*)buffer, 2*ADC_BUF_SIZE);
+	hex_encode(hex_encoded_buffer, (uint8_t*)buffer, 4*ADC_BUF_SIZE);
 	printf("SND:HEX:%s\r\n", hex_encoded_buffer);
 }
 
@@ -170,8 +177,9 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   RetargetInit(&hlpuart1);
-  printf("Hello world!\r\n");
+  printf("Ready for the acquisition!\r\n");
   state=0;
+  is_listening=0;
   ADCData1 = &ADCBuffer[0];
   ADCData2 = &ADCBuffer[ADC_BUF_SIZE];
   /* USER CODE END 2 */
