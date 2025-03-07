@@ -132,7 +132,7 @@ class Chain:
         return bits_hat
 
     # Rx methods
-    bypass_preamble_detect: bool = True
+    bypass_preamble_detect: bool = False
 
     def preamble_detect(self, y):
         """
@@ -323,7 +323,7 @@ class Chain:
         avg_cfo_est = np.mean(cfo_estimates)
         return avg_cfo_est
 
-    bypass_sto_estimation = True                                                 #HERE <----
+    bypass_sto_estimation = False                                                 #HERE <----
 
     def sto_estimation(self, y):
         """
