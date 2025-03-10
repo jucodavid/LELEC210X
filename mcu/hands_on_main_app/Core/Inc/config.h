@@ -18,17 +18,17 @@
 #define ENABLE_RADIO 1
 
 // General UART enable/disable (disable for low-power operation)
-#define ENABLE_UART 1
+#define ENABLE_UART 0
 
 // Enable performance measurements
 #define PERF_COUNT 0
 
 // Enable debug print
-#define DEBUGP 1
+#define DEBUGP 0
 
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 1
+#define CONTINUOUS_ACQ 0
 
 // Event detection enable/disable
 #define EVENT_DETECTION 1
