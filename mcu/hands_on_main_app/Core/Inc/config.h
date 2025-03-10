@@ -31,7 +31,7 @@
 #define CONTINUOUS_ACQ 0
 
 // Event detection enable/disable
-#define EVENT_DETECTION 1
+#define EVENT_DETECTION 0
 
 // Event detection modes
 #define HARD_THRESHOLD 0
