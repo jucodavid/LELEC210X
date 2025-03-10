@@ -19,6 +19,7 @@ MELVEC_LENGTH = 20
 N_MELVECS = 20
 TAG_LENGTH = 16
 
+
 HOST_ADRESS = "http://localhost:5000"
 # HOST_ADRESS = "http://lelec210x.sipr.ucl.ac.be"
 TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
@@ -59,6 +60,9 @@ def submit(guess):
 if __name__ == "__main__":
     model_dir = "classification/data/models/"
     filename = "model_rf_new.pickle"
+    memory_length = 2 #number of samples used for memory
+    memory = True # use of memory
+    classnames = ['chainsaw','fire','fireworks','gunshot']
     model = pickle.load(open(model_dir + filename, "rb"))
 
     msg_counter = 0
@@ -66,19 +70,30 @@ if __name__ == "__main__":
 
     input_stream = reader()
     for packet in input_stream:
-        msg_counter += 1
+    #     predictions = np.zeros((memory_length, 4))
+    #     for i in range(memory_length):
+    #         msg_counter += 1
 
+    #         melvec = packet_parse(packet)
+    #         # print(melvec)
+    
+    #         mat = np.zeros((2, len(melvec)))
+    #         mat[0] = melvec / np.max(melvec)
+    #         predictions[i] = model.predict_proba(mat)[0]
+        
+    #     predictions = np.mean(predictions, axis=0)
+        msg_counter += 1
         melvec = packet_parse(packet)
         # print(melvec)
-
         mat = np.zeros((2, len(melvec)))
         mat[0] = melvec / np.max(melvec)
-        prediction = model.predict(mat)[0]
-
-        submit(prediction)
+        predictions = model.predict_proba(mat)[0]
+        if (np.max(predictions) > np.mean(predictions) + 0.2):
+            submit(classnames[np.argmax(predictions)])
+        
 
         print(f"MEL Spectrogram #{msg_counter}")
-        print(f"Class predicted: {prediction}")
+        print(f"Class predicted: {classnames[np.argmax(predictions)]} with probability {np.max(predictions)}")
         plot_specgram(
             melvec.reshape((N_MELVECS, MELVEC_LENGTH)).T,
             ax=plt.gca(),
