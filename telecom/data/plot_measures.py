@@ -121,13 +121,14 @@ fc2 = [62.5e3,125e3]
 SNR_f2 = [[28.5,29.3,29.7,30.7,31.5,32.8,33.6,34.5,35.3,36,37.1,38.1,39.1],
          [28.3,28.7,29.2,30,30.5,31.2,32,32.6,33.5,34.2,35.4,36.2,37.3]]
 
-#merge_files('measurements_-25_-21_1000_001.txt', 'output1.txt', 'output.txt')
+#merge_files('2025_-60_-50_300_001.txt', 'output25_-50_-20.txt', 'output25_-60_-20.txt')
 
 field_names = ['CFO', 'STO', 'SNR', 'TXP', 'BER', 'INVALID']
-per_data = pd.read_csv('PER-SNR.csv', sep=',', skiprows=1,names=field_names)
+#per_data = pd.read_csv('PER-SNR-2.csv', sep=',', skiprows=1,names=field_names)
+per_data = pd.read_csv('measures_df.csv', sep=',', skiprows=1,names=field_names)
 #print(per_data)
 
-#plot_per_vs_snr(per_data)
+plot_per_vs_snr(per_data)
 mini,maxi = 0,30
 #plot_per_vs_snr2(per_data, 50,15,30)
 
@@ -136,7 +137,9 @@ mini,maxi = 0,30
 
 #create_plot(x_dist, SNR_dist, 'SNR vs Distance', 'Distance (cm)', 'SNR (dB)')
 #plot_SNR_f_vs_f_dBm(f_dBm, fc2, SNR_f2)
-#plot_per_vs_snr2(per_data, 25,mini, maxi)
+#for i in range(20,30):
+ #   plot_per_vs_snr2(per_data, i,mini, maxi)
+plot_per_vs_snr2(per_data, 25,mini, maxi)
 plot_cfo_histogram(per_data)
 
 

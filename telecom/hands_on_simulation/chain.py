@@ -24,7 +24,7 @@ class Chain:
     payload_len: int = 100 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
 
     # Simulation parameters
-    n_packets: int = 400  # Number of sent packets      HERE <----200 ou 800(pour le fun)
+    n_packets: int = 800  # Number of sent packets      HERE <----200 ou 800(pour le fun)
 
     # Channel parameters
     sto_val: float = 0
