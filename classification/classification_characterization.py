@@ -39,7 +39,7 @@ max_str_length = 20
 def play_all_sounds(dataset):
     
     for i in range(len(dataset)//5):
-        for j in ['birds', 'fire', 'chainsaw', 'handsaw', 'helicopter']:
+        for j in ['fire','chainsaw', 'fireworks', 'gunshot']:
             print("Playing sound number ", i)
             dataset.play([j,i])
             time.sleep(7)
@@ -58,13 +58,12 @@ def load_data(myds, classnames, dataset,distorsion_to_add = []):
     featveclen = len(myds["fire", 0])  # number of items in a feature vector
     nitems = len(myds)  # number of sounds in the dataset
     naudio = dataset.naudio  # number of audio files in each class
-    nclass = dataset.nclass  # number of classes
+    nclass = len(classnames)  # number of classes
     aug_factor = len(distorsion_to_add)+1
     nb_sample = len(index)
     X_aug = np.zeros((aug_factor * nclass * nb_sample, featveclen))
     y_aug = np.zeros((aug_factor * nclass * nb_sample ), dtype=f"<U{max_str_length}")
-    
-    
+    print('a')
     for s in range(aug_factor):
         if s == 0:
             myds.mod_data_aug([])
@@ -76,9 +75,10 @@ def load_data(myds, classnames, dataset,distorsion_to_add = []):
                 featvec = myds[classname, idx]
                 X_aug[s * nclass * nb_sample + class_idx * nb_sample + count, :] = featvec
                 y_aug[s * nclass * nb_sample + class_idx * nb_sample + count] = classname
+                print('did it')
             count += 1
-    np.save(fm_dir + "feature_matrix_2D.npy", X_aug) #save the feature matrix
-    np.save(fm_dir + "labels.npy", y_aug) #save the labels
+    # np.save(fm_dir + "feature_matrix_2D.npy", X_aug) #save the feature matrix
+    # np.save(fm_dir + "labels.npy", y_aug) #save the labels
     return X_aug, y_aug
 
 # def index_to_augmentation(index, distorsion_to_add = ["noise"]):
@@ -112,10 +112,10 @@ def split_data(X, y):
         X, y, test_size=0.3, stratify=y
     ) 
     fm_dir = "data/feature_matrices/"
-    np.save(fm_dir + "X_train.npy", X_train)
-    np.save(fm_dir + "X_test.npy", X_test)
-    np.save(fm_dir + "y_train.npy", y_train)
-    np.save(fm_dir + "y_test.npy", y_test)
+    # np.save(fm_dir + "X_train.npy", X_train)
+    # np.save(fm_dir + "X_test.npy", X_test)
+    # np.save(fm_dir + "y_train.npy", y_train)
+    # np.save(fm_dir + "y_test.npy", y_test)
     return X_train, X_test, y_train, y_test
 
 def model_validation(X_train, y_train, X_test, y_test, best_est, best_depth, best_dims, classnames):
@@ -129,7 +129,7 @@ def model_validation(X_train, y_train, X_test, y_test, best_est, best_depth, bes
     print('la2')
     model.fit(X_train, y_train)
     #save the model in the pickle
-    pickle.dump(model, open("data/models/bestrfaug.pickle", "wb"))
+    pickle.dump(model, open("classification/data/models/testing.pickle", "wb"))
     prediction = model.predict(X_test)
     print("Accuracy on test set: ", accuracy(prediction, y_test))
     acc = accuracy(prediction, y_test)
@@ -139,7 +139,9 @@ def model_validation(X_train, y_train, X_test, y_test, best_est, best_depth, bes
 
 ds, cn, myds = load_dataset()
 # print(len(myds))
-X, y = load_data(myds, cn, ds)
+X, y = load_data(myds, ['fire','chainsaw', 'fireworks', 'gunshot'], ds)
+X_train, X_test, y_train, y_test = split_data(X, y)
+model, acc, conf = model_validation(X_train, y_train, X_test, y_test, 100, 10, 11, ['fire','chainsaw', 'fireworks', 'gunshot'])
 # print(len(y))
 # print(len(ds))
 # print(len(myds))
