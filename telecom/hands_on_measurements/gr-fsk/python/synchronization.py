@@ -27,50 +27,24 @@ from gnuradio import gr
 from .utils import logging, measurements_logger
 
 
-def cfo_estimation(y, B, R, Fdev):
-    T = 1 / B  # Symbol period
-
-    N = 6       #default 6
-    L = 32      #default 32
-    D = 4       #default 2
-    # Convert block size and preamble length to samples
-    Nt = N * R  # Block size in samples
-    Lt = L * R  # Preamble length to consider in samples
-    Dt = D * R  # Maximum distance between blocks in samples
-
-    # Ensure the preamble length is sufficient
-    if Lt > len(y):
-        raise ValueError("Preamble length L is larger than the received signal.")
-
-    # Extract the relevant part of the preamble
-    y_preamble = y[:Lt]
-
-    # Initialize a list to store CFO estimates
-    cfo_estimates = []
-
-    for k in range(2,11,2):
-        N = k
+def cfo_estimation(y,B,R,Fdev):
+    """
+    Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
+    """
+    y_preamb = y[:32*R]
+    T = 1/B
+    Nt = 2*R
+    t = np.arange(len(y_preamb)) / (B * R)
+    cfo = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/R)
+    cfo_tot = cfo
+    y_preamb *= np.exp(-1j * 2 * np.pi * cfo * t)
+    for N in range(4,17,2):
         Nt = N * R
-        # Iterate over all possible pairs of blocks
-        for i in range(0, Lt - 2*Nt+1,R):  # Start of first block
-            for j in range(i + Nt, min(i + Nt + Dt, Lt - Nt + 1),2*R):  # Start of second block
-                # Extract the two blocks
-                block1 = y_preamble[i:i + Nt]
-                block2 = y_preamble[j:j + Nt]
-
-                # Apply the Moose algorithm
-                sum_est = np.vdot(block1, block2)
-                cfo_est = np.angle(sum_est) / (2 * np.pi * (j - i) * T / R)
-
-                # Store the CFO estimate
-                cfo_estimates.append(cfo_est)
-
-    # Average the CFO estimates
-    if len(cfo_estimates) == 0:
-        raise ValueError("No valid block pairs found for CFO estimation.")
-
-    avg_cfo_est = np.mean(cfo_estimates)
-    return avg_cfo_est
+        sum_est = np.vdot(y_preamb[:Nt], y_preamb[Nt:2*Nt])
+        cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/R)
+        cfo_tot += cfo_est
+        y_preamb *= np.exp(-1j * 2 * np.pi * cfo_est * t)
+    return cfo_tot
 
 
 def sto_estimation(y, B, R, Fdev):

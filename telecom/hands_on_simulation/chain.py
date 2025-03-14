@@ -1,4 +1,5 @@
 from typing import Optional
+from scipy.optimize import minimize
 
 import numpy as np
 
@@ -42,7 +43,7 @@ class Chain:
 
     # Tx methods
 
-    def modulate(self, bits: np.array) -> np.array:
+    def modulate_BPSK(self, bits: np.array) -> np.array:
         """
         Modulates a stream of bits of size N
         with a given TX oversampling factor R (osr_tx).
@@ -62,7 +63,7 @@ class Chain:
 
         return x
 
-    def demodulate(self, y: np.array) -> np.array:
+    def demodulate_BPSK(self, y: np.array) -> np.array:
         """
         Demodulates a baseband BPSK signal.
 
@@ -84,7 +85,7 @@ class Chain:
         return bits_hat
 
 
-    def modulate_BPSK(self, bits: np.array) -> np.array:
+    def modulate_fsk_coh(self, bits: np.array) -> np.array:
         """
         Modulates a stream of bits of size N
         with a given TX oversampling factor R (osr_tx).
@@ -105,7 +106,7 @@ class Chain:
 
         return x
 
-    def demodulate_BPSK(self, y: np.array) -> np.array:
+    def demodulate_fsk_coh(self, y: np.array) -> np.array:
         """
         Demodulates a BPSK signal.
 
@@ -131,7 +132,7 @@ class Chain:
         return bits_hat
 
     # Rx methods
-    bypass_preamble_detect: bool = True
+    bypass_preamble_detect: bool = False
 
     def preamble_detect(self, y):
         """
@@ -148,42 +149,7 @@ class Chain:
         return None
 
     #bypass_cfo_estimation = False
-    bypass_cfo_estimation = True                                                 #HERE <----
-
-
-    def cfo_estimation_fft(self, y):
-        """
-        Estimates CFO using a zero-padded FFT method, with IFFT to refine the CFO estimation.
-        """
-
-        # Paramètres
-        N = 16  # Taille du bloc
-        Nt = N * self.osr_rx  # Nombre d'échantillons dans chaque bloc
-        T = 1 / self.bit_rate  # Période du symbole
-
-        # Extraire les deux blocs de taille Nt
-        block1 = y[:Nt]
-        block2 = y[Nt:2*Nt]
-        
-        # Appliquer un zero padding sur les blocs pour améliorer la résolution en fréquence
-        padding_size = 4096*2**3  # Taille de padding pour FFT (peut être ajustée)
-        block1_padded = np.pad(block1, (0, padding_size - len(block1)), mode='constant')
-        block2_padded = np.pad(block2, (0, padding_size - len(block2)), mode='constant')
-        
-        # Calculer la FFT des deux blocs zéro-padded
-        fft_block1 = np.fft.fft(block1_padded)
-        fft_block2 = np.fft.fft(block2_padded)
-        
-        # Trouver l'index de la fréquence maximale dans le domaine fréquentiel
-        #freq_diff = np.angle(np.vdot(fft_block1, fft_block2))  # Calcul de la phase sur les deux blocs en fréquence
-        ifft_block1 = np.fft.ifft(fft_block1)
-        ifft_block2 = np.fft.ifft(fft_block2)
-        freq_diff = np.vdot(ifft_block1, ifft_block2)  # Calcul de la phase sur les deux blocs en temporel
-        
-        # Estimer le CFO sur base de la différence de phase à la fréquence maximale
-        cfo_est = np.angle(freq_diff) / (2 * np.pi * Nt * T / self.osr_rx)
-
-        return cfo_est
+    bypass_cfo_estimation = False                                                 #HERE <----
 
 
     def cfo_estimation_Moose(self, y):
@@ -201,8 +167,108 @@ class Chain:
 
         return cfo_est
 
+    def cfo_estimation_offset(self, y):
+        """
+        Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
+        """
+        T = 1/self.bit_rate
+        B2 = 1/T/2
+        Nt = 2*self.osr_rx
+        cfo_previous = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/self.osr_rx)
+        offset = 0
+        for N in range(4,17,2):
+            Nt = N * self.osr_rx
+            if N%2 == 0:
+                sum_est = np.vdot(y[:Nt], y[Nt:2*Nt])
+                cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/self.osr_rx)
+            else:
+                sum_est = np.vdot(y[:Nt],y[Nt+self.osr_rx:2*Nt+self.osr_rx])
+                cfo_est = np.angle(sum_est) / (2 * np.pi * (Nt + self.osr_rx) * T/self.osr_rx)
+            cfo_est += offset
+            if np.abs(N*cfo_est - (N-2)*cfo_previous) >= B2:
+                cfo_est += B2/N
+                offset += B2/N
+            cfo_previous = cfo_est
+        return cfo_est
+
+    def cfo_estimation_offset2(self, y):
+        """
+        Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
+        """
+        T = 1/self.bit_rate
+        B2 = 1/T/2
+        Nt = 2*self.osr_rx
+        cfo_previous = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/self.osr_rx)
+        offset = 0
+        for N in range(4,17,2):
+            Nt = N * self.osr_rx
+            if N%2 == 0:
+                sum_est = np.vdot(y[:Nt], y[Nt:2*Nt])
+                cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/self.osr_rx)
+            else:
+                sum_est = np.vdot(y[:Nt],y[Nt+self.osr_rx:2*Nt+self.osr_rx])
+                cfo_est = np.angle(sum_est) / (2 * np.pi * (Nt + self.osr_rx) * T/self.osr_rx)
+            offset = int(np.round(offset / (B2 / N))) * B2/N
+            cfo_est += offset
+            if np.abs(N*cfo_est - (N-2)*cfo_previous) >= B2:
+                cfo_est += B2/N
+                offset += B2/N
+            cfo_previous = cfo_est
+        return cfo_est
+
+    def cfo_estimation_min(self, y):
+        """
+        Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
+        """
+        T = 1/self.bit_rate
+        B2 = 1/T/2
+        Nt = 2*self.osr_rx
+        cfo_previous = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/self.osr_rx)
+        offset = 0
+        for N in range(4,17,1):
+            Nt = N * self.osr_rx
+            if N%2 == 0:
+                sum_est = np.vdot(y[:Nt], y[Nt:2*Nt])
+                cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/self.osr_rx)
+            else:
+                sum_est = np.vdot(y[:Nt],y[Nt+self.osr_rx:2*Nt+self.osr_rx])
+                cfo_est = np.angle(sum_est) / (2 * np.pi * (Nt + self.osr_rx) * T/self.osr_rx)
+            cfo_est += offset
+            if np.abs(N*cfo_est - (N-2)*cfo_previous) >= B2:
+                cfo_est += B2/N
+                offset += B2/N
+            cfo_previous = cfo_est
+        correct_y = self.modulate(self.preamble)[:Nt]
+
+        def likelihood(cfo):
+            error = y[:Nt] - correct_y * np.exp(-1j * 2 * np.pi * cfo * np.arange(Nt) * T / self.osr_rx)
+            log_like = np.sum(np.abs(error)**2)
+            return log_like
+        result = minimize(likelihood,cfo_est, method='Nelder-Mead', options={'xatol': 1e-6, 'disp': False})
+        cfo_est = result.x[0]
+        return cfo_est
+
+
+    def cfo_estimation(self, y):
+        """
+        Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
+        """
+        y_preamb = y[:32*self.osr_rx]
+        T = 1/self.bit_rate
+        Nt = 2*self.osr_rx
+        t = np.arange(len(y_preamb)) / (self.bit_rate * self.osr_rx)
+        cfo = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/self.osr_rx)
+        cfo_tot = cfo
+        y_preamb *= np.exp(-1j * 2 * np.pi * cfo * t)
+        for N in range(4,17,2):
+            Nt = N * self.osr_rx
+            sum_est = np.vdot(y_preamb[:Nt], y_preamb[Nt:2*Nt])
+            cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/self.osr_rx)
+            cfo_tot += cfo_est
+            y_preamb *= np.exp(-1j * 2 * np.pi * cfo_est * t)
+        return cfo_tot
     
-    def cfo_estimation(self, y) -> float:
+    def cfo_estimation_average(self, y) -> float:
         """
         Estimates CFO using Moose algorithm, averaging over multiple block pairs.
 
@@ -257,32 +323,6 @@ class Chain:
         avg_cfo_est = np.mean(cfo_estimates)
         return avg_cfo_est
 
-    def cfo_estimation__fft(self, y):        #par fft
-        """
-        Estimates CFO using a frequency domain method (FFT-based).
-        This approach works well when the signal is coherent and has well-defined frequency components.
-        """
-        R = self.osr_rx  # Oversampling factor for receiver
-        N = 16 # 2 ou 6
-        Nt = N * self.osr_rx
-        T = 1 / self.bit_rate
-        fs = self.bit_rate * R  # Sampling frequency
-        #N = len(y)  # Length of the received signal
-        zero_pad_factor = 2**4  # Increase zero-padding factor for finer resolution
-        fft_size = Nt*zero_pad_factor  # FFT size, can be adjusted based on signal length
-        signal = np.pad(y[:Nt], (0, fft_size - Nt), mode='constant')
-
-        # Perform FFT on the received signal
-        Y_fft = np.fft.fft(signal, fft_size)
-        # Find the peak in the frequency spectrum and calculate the CFO
-        freq_bins = np.fft.fftfreq(fft_size, fs**-1)
-        peak_bin = np.argmax(np.abs(Y_fft))
-
-        # Estimate CFO based on the peak frequency bin
-        cfo_est = freq_bins[peak_bin]
-
-        return cfo_est
-
     bypass_sto_estimation = False                                                 #HERE <----
 
     def sto_estimation(self, y):
@@ -321,7 +361,7 @@ class Chain:
 
         return np.mod(save_i + 1, R)
 
-    def modulate_fsk_noncoh(self, bits: np.array) -> np.array:
+    def modulate(self, bits: np.array) -> np.array:
         """
         Modulates a stream of bits of size N
         with a given TX oversampling factor R (osr_tx).
@@ -354,7 +394,7 @@ class Chain:
 
         return x
 
-    def demodulate_fsk_noncoh(self, y):
+    def demodulate(self, y):
         """
         Non-coherent demodulator.
         """
@@ -375,52 +415,6 @@ class Chain:
 
         r0 = np.abs(np.dot(y, eS1))
         r1 = np.abs(np.dot(y, eS0)) 
-        bits_hat = (r1 > r0).astype(int)
-
-        return bits_hat
-
-    def modulate_fsk_coh(self, bits: np.array) -> np.array:
-        """
-        Modulates a stream of bits of size N
-        with a given TX oversampling factor R (osr_tx).
-
-        Uses Continuous-Phase FSK modulation.
-
-        :param bits: The bit stream, (N,).
-        :return: The modulates bit sequence, (N * R,).
-        """
-        fd = self.freq_dev  # Frequency deviation, Delta_f
-        B = self.bit_rate  # B=1/T
-        R = self.osr_tx  # Oversampling factor
-
-        x = np.zeros(len(bits) * R, dtype=np.complex64)
-        ph = 2 * np.pi * fd * (np.arange(R) / R) / B  # Phase of reference waveform
-
-        for i, b in enumerate(bits):
-            x[i * R : (i + 1) * R] = np.exp(1j * (1 if b else -1) * ph)  # Sent waveforms, with starting phase coming from previous symbol
-        return x
-
-    def demodulate_fsk_coh(self, y):
-        """
-        Non-coherent demodulator.
-        """
-        R = self.osr_rx  # Receiver oversampling factor
-        nb_syms = len(y) // R  # Number of CPFSK symbols in y
-
-        # Group symbols together, in a matrix. Each row contains the R samples over one symbol period
-        y = np.resize(y, (nb_syms, R))
-        # print(y)
-        # TO DO: generate the reference waveforms used for the correlation
-        # hint: look at what is done in modulate() in chain.py
-
-        eS0 = np.exp(-2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
-        eS1 = np.exp( 2j * np.pi * self.freq_dev * np.arange(R) / self.bit_rate / R)
-
-        # TO DO: compute the correlations with the two reference waveforms (r0 and r1)
-        #bits_hat = np.zeros(nb_syms, dtype=int)  # Default value, all bits=0. TO CHANGE!
-
-        r0 = np.real(np.dot(y, eS1))
-        r1 = np.real(np.dot(y, eS0)) 
         bits_hat = (r1 > r0).astype(int)
 
         return bits_hat

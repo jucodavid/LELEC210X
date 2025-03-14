@@ -12,7 +12,7 @@
 #define EVAL_RADIO 1
 
 //#define RUN_CONFIG EVAL_RADIO
-#define RUN_CONFIG MAIN_APP
+#define RUN_CONFIG EVAL_RADIO
 
 // Radio parameters
 #define ENABLE_RADIO 1
