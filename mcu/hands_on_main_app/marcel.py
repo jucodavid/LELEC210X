@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from classification.utils.plots import plot_specgram
 import pickle
-
+import time
 
 import requests
 import json
@@ -54,7 +54,7 @@ def reader() -> Iterator[str]:
 def submit(guess):
     response = requests.post(f"{HOST_ADRESS}/lelec210x/leaderboard/submit/{TEAM_KEY}/{guess}", timeout=1)
     response_as_dict = json.loads(response.text)
-    print(f"Response: {response_as_dict}")
+    return (f"Response: {response_as_dict}")
 
 
 if __name__ == "__main__":
@@ -62,41 +62,63 @@ if __name__ == "__main__":
     filename = "model_Q2.pickle"
     memory_length = 2 #number of samples used for memory
     memory = True # use of memory
+    predictions = np.zeros(4)
+    packet_counter = 0
     classnames = ['chainsaw','fire','fireworks','gunshot']
     model = pickle.load(open(model_dir + filename, "rb"))
-
+    last = time.time()
     msg_counter = 0
     plt.figure(figsize=(4, 3))
 
     input_stream = reader()
-    for packet in input_stream:
-
-
-        predictions = np.zeros((memory_length, 4))
-        for i in range(memory_length):
-            msg_counter += 1
-
-            melvec = packet_parse(packet)
-            # print(melvec)
     
-            mat = np.zeros((2, len(melvec)))
-            mat[0] = melvec / np.max(melvec)
-            predictions[i] = model.predict_proba(mat)[0]
+    
+    
+        
+    for packet in input_stream:
+        waiting = time.time()
+        if waiting - last > 5:
+            packet_counter = 0
+            predictions = np.zeros(4)
+        last = time.time()
+
+        # predictions = np.zeros((memory_length, 4))
+        # for i in range(memory_length):
+        #     msg_counter += 1
+
+        #     melvec = packet_parse(packet)
+        #     # print(melvec)
+    
+        #     mat = np.zeros((2, len(melvec)))
+        #     mat[0] = melvec / np.max(melvec)
+        #     predictions[i] = model.predict_proba(mat)[0]
 
         
-        predictions = np.mean(predictions, axis=0)
+        # predictions = np.mean(predictions, axis=0)
 
 
-        # msg_counter += 1
-        # melvec = packet_parse(packet)
-        # # print(melvec)
-        # mat = np.zeros((2, len(melvec)))
-        # mat[0] = melvec / np.max(melvec)
-        # predictions = model.predict_proba(mat)[0]
-
-
-        if (np.max(predictions) > np.mean(predictions) + 0.2):
-            submit(classnames[np.argmax(predictions)])
+        msg_counter += 1
+        melvec = packet_parse(packet)
+        # print(melvec)
+        mat = np.zeros((2, len(melvec)))
+        mat[0] = melvec / np.max(melvec)
+        prediction = model.predict_proba(mat)[0]
+        
+        
+        if packet_counter < memory_length - 1:
+            predictions += prediction
+            packet_counter += 1
+        else:
+            predictions += prediction
+            packet_counter += 1
+            predictions /= memory_length
+            if (np.max(predictions) > np.mean(predictions) + 0.2):
+                rep = submit(classnames[np.argmax(predictions)])
+                print(rep)
+            else:
+                print('Not enough confidence to submit')
+            
+            
         
 
         print(f"MEL Spectrogram #{msg_counter}")
