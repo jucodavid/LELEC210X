@@ -120,7 +120,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 864e6
+    value: 862e6
   states:
     bus_sink: false
     bus_source: false
