@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import serial
 import soundfile as sf
+import pickle
 from serial.tools import list_ports
 
 PRINT_PREFIX = "SND:HEX:"
@@ -27,7 +28,7 @@ def parse_buffer(line):
 
 
 def reader(port=None):
-    ser = serial.Serial(port=port, baudrate=115200)
+    ser = serial.Serial(port=port, baudrate=230400)
     while True:
         line = ""
         while not line.endswith("\n"):
@@ -72,15 +73,29 @@ if __name__ == "__main__":
         msg_counter = 0
 
         for msg in input_stream:
-            print(f"Acquisition #{msg_counter}")
+            name = input("what is the name of the sound ? : ")
 
             buffer_size = len(msg)
-            print("Buffer size is {}\n".format(buffer_size))
+            print("Buffer size is {}".format(buffer_size))
             times = np.linspace(0, buffer_size - 1, buffer_size) * 1 / FREQ_SAMPLING
             voltage_mV = msg * VDD / VAL_MAX_ADC * 1e3
+            try:
+                with open("Pickle/sound_list", "rb") as f:
+                    sound_list = pickle.load(f)
+                    sound_list.append(name)
+            except:
+                with open("Pickle/sound_list", "wb") as f:
+                    sound_list = [name]
+                    pickle.dump(sound_list, f)
+            with open("Pickle/sound_list", "wb") as f:
+                pickle.dump(sound_list, f)
+            with open("Pickle/{}".format(name), "wb") as f:
+                pickle.dump(msg, f)
+
+            print("Audio successfully pickled!")
 
             plt.plot(times, voltage_mV)
-            plt.title(f"Acquisition #{msg_counter}")
+            plt.title(name)
             plt.xlabel("Time (s)")
             plt.ylabel("Voltage (mV)")
             plt.ylim([0, 3300])
@@ -88,7 +103,7 @@ if __name__ == "__main__":
             # plt.pause(0.001)
             # plt.cla()
 
-            generate_audio(msg, f"acq-{msg_counter}")
+            generate_audio(msg, name)
 
             msg_counter += 1
             # begin merde
