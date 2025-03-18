@@ -20,6 +20,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+<<<<<<< Updated upstream
+=======
+#include "aes.h"
+#include "comp.h"
+#include "dac.h"
+>>>>>>> Stashed changes
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
@@ -62,7 +68,7 @@
 /* USER CODE BEGIN PV */
 
 volatile uint8_t btn_press;
-
+volatile uint16_t hw_threshold = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -83,6 +89,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		S2LP_IRQ_Handler();
 }
 
+
 static void acquire_and_send_packet() {
 	if (StartADCAcq(N_MELVECS) != HAL_OK) {
 		DEBUG_PRINT("Error while enabling the DMA\r\n");
@@ -92,18 +99,43 @@ static void acquire_and_send_packet() {
 	}
 }
 
+<<<<<<< Updated upstream
 void run(void)
 {
+=======
+void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
+{
+  if (hcomp->Instance == COMP2)
+  {
+    /* Toggle an LED or process the comparator event */
+    //HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+	//acquire_and_send_packet();
+	if(IsADCFinished()){
+		btn_press = 1;
+	}
+	//acquire_and_send_packet();
+  }
+}
+
+void run(void) {
+>>>>>>> Stashed changes
 	btn_press = 0;
 
 	while (1)
 	{
 	  while (!btn_press) {
+		  /*
 		  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
 		  HAL_Delay(200);
 		  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
 		  HAL_Delay(200);
+		  */
+		  __WFI();
 	  }
+	  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
+	  HAL_Delay(200);
+	  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
+	  HAL_Delay(200);
 	  btn_press = 0;
 #if (CONTINUOUS_ACQ == 1)
 	  while (!btn_press) {
@@ -118,6 +150,15 @@ void run(void)
 	}
 }
 
+void init_hw_threshold(uint16_t offset){
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADCDoubleBuf, 2*ADC_BUF_SIZE);
+	while(first_buf == 1){
+		__WFI();
+	}
+	HAL_ADC_Stop_DMA(&hadc1);
+	hw_threshold = (uint16_t)(mean_buf);
+	hw_threshold += offset;
+}
 /* USER CODE END 0 */
 
 /**
@@ -152,13 +193,32 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM3_Init();
   MX_ADC1_Init();
+<<<<<<< Updated upstream
+=======
+  MX_AES_Init();
+  MX_DAC1_Init();
+  MX_TIM6_Init();
+  MX_COMP2_Init();
+>>>>>>> Stashed changes
   /* USER CODE BEGIN 2 */
+  init_hw_threshold(0);
+  DEBUG_PRINT("The hardware threshold is set at %" PRIu16 "\r\n", hw_threshold);
+  uint32_t dac_value[4];
+  for (int i = 0; i< 4; i++){
+	//dac_value[i] = hw_threshold;
+  	dac_value[i] = 3096;
+  }
+
+  HAL_TIM_Base_Start(&htim6);
+  HAL_DAC_Start_DMA(&hdac1, DAC1_CHANNEL_1, dac_value, 4, DAC_ALIGN_12B_R);
+  HAL_COMP_Start_IT(&hcomp2);
   if (ENABLE_UART) {
 	  MX_LPUART1_UART_Init();
   }
 
   RetargetInit(&hlpuart1);
   DEBUG_PRINT("Hello world\r\n");
+
 
 #if ENABLE_RADIO
   // Enable S2LP Radio

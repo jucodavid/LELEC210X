@@ -8,7 +8,7 @@
 #include "packet.h"
 
 
-static volatile uint16_t ADCDoubleBuf[2*ADC_BUF_SIZE]; /* ADC group regular conversion data (array of data) */
+
 static volatile uint16_t* ADCData[2] = {&ADCDoubleBuf[0], &ADCDoubleBuf[ADC_BUF_SIZE]};
 static volatile uint8_t ADCDataRdy[2] = {0, 0};
 
@@ -19,6 +19,14 @@ static uint32_t packet_cnt = 0;
 
 static volatile int32_t rem_n_bufs = 0;
 
+<<<<<<< Updated upstream
+=======
+static volatile uint8_t in_routine = 0;
+
+static uint16_t threshold = THRESHOLD;
+
+
+>>>>>>> Stashed changes
 int StartADCAcq(int32_t n_bufs) {
 	rem_n_bufs = n_bufs;
 	cur_melvec = 0;
@@ -118,7 +126,12 @@ static void ADC_Callback(int buf_cplt) {
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-	ADC_Callback(1);
+	if(first_buf == 1){
+		arm_mean_q15((q15_t *)ADCDoubleBuf, 2*ADC_BUF_SIZE, &mean_buf);
+		first_buf = 0;
+	} else {
+		ADC_Callback(1);
+	}
 }
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
