@@ -39,8 +39,11 @@
 /*#define HAL_CRYP_MODULE_ENABLED   */
 /*#define HAL_CAN_MODULE_ENABLED   */
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /*#define HAL_COMP_MODULE_ENABLED   */
 =======
+=======
+>>>>>>> Stashed changes
 #define HAL_COMP_MODULE_ENABLED
 /*#define HAL_I2C_MODULE_ENABLED   */
 >>>>>>> Stashed changes

@@ -26,6 +26,9 @@ static volatile uint8_t in_routine = 0;
 static uint16_t threshold = THRESHOLD;
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 int StartADCAcq(int32_t n_bufs) {
 	rem_n_bufs = n_bufs;

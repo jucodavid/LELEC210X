@@ -25,6 +25,9 @@
 #include "aes.h"
 #include "comp.h"
 #include "dac.h"
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 #include "dma.h"
 #include "spi.h"
@@ -100,9 +103,12 @@ static void acquire_and_send_packet() {
 }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 void run(void)
 {
 =======
+=======
+>>>>>>> Stashed changes
 void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
 {
   if (hcomp->Instance == COMP2)
@@ -199,6 +205,9 @@ int main(void)
   MX_DAC1_Init();
   MX_TIM6_Init();
   MX_COMP2_Init();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   /* USER CODE BEGIN 2 */
   init_hw_threshold(0);
