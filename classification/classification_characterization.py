@@ -39,7 +39,7 @@ max_str_length = 20
 def play_all_sounds(dataset):
     
     for i in range(len(dataset)//5):
-        for j in ['fire','chainsaw', 'fireworks', 'gunshot']:
+        for j in ['background','fire','chainsaw', 'fireworks', 'gunshot']:
             print("Playing sound number ", i)
             dataset.play([j,i])
             time.sleep(7)
@@ -129,7 +129,7 @@ def model_validation(X_train, y_train, X_test, y_test, best_est, best_depth, bes
     print('la2')
     model.fit(X_train, y_train)
     #save the model in the pickle
-    pickle.dump(model, open("classification/data/models/model_new_data.pickle", "wb"))
+    pickle.dump(model, open("classification/data/models/model_new_data_bg.pickle", "wb"))
     prediction = model.predict(X_test)
     print("Accuracy on test set: ", accuracy(prediction, y_test))
     acc = accuracy(prediction, y_test)
@@ -140,11 +140,11 @@ print('go')
 ds, cn, myds = load_dataset()
 print('go1')
 # print(len(myds))
-X, y = load_data(myds, ['fire','chainsaw', 'fireworks', 'gunshot'], ds)
+X, y = load_data(myds, ['background','fire','chainsaw', 'fireworks', 'gunshot'], ds)
 print('go2')
 X_train, X_test, y_train, y_test = split_data(X, y)
 print('go3')
-model, acc, conf = model_validation(X_train, y_train, X_test, y_test, 100, 10, 11, ['fire','chainsaw', 'fireworks', 'gunshot'])
+model, acc, conf = model_validation(X_train, y_train, X_test, y_test, 100, 10, 11, ['background','fire','chainsaw', 'fireworks', 'gunshot'])
 print('go4')
 # print(len(y))
 # print(len(ds))
