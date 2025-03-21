@@ -47,7 +47,7 @@ def play_all_sounds(dataset):
 def load_dataset():
     dataset = Dataset()
     classnames = dataset.list_classes()
-    myds = Feature_vector_DS(dataset, Nft=512, nmel=20, duration=5000)
+    myds = Feature_vector_DS(dataset, Nft=512, nmel=20, duration=950)
     return dataset, classnames, myds
 
 def load_data(myds, classnames, dataset,distorsion_to_add = []):  
