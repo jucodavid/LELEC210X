@@ -21,7 +21,7 @@ def get_cls_from_path(file: Path) -> str:
 
 class Dataset:
     def __init__(
-        self, folder: Path = Path(__file__).parent / "soundfiles", format: str = "wav"
+        self, folder: Path = Path(__file__).parent / "sampled_audio_files", format: str = "ogg"
     ):
         """
         Initialize a dataset from a given folder, including
