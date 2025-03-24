@@ -18,20 +18,20 @@
 #define ENABLE_RADIO 1
 
 // General UART enable/disable (disable for low-power operation)
-#define ENABLE_UART 1
+#define ENABLE_UART 0
 
 // Enable performance measurements
 #define PERF_COUNT 0
 
 // Enable debug print
-#define DEBUGP 1
+#define DEBUGP 0
 
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 1
+#define CONTINUOUS_ACQ 0
 
 // Event detection enable/disable
-#define EVENT_DETECTION 1
+#define EVENT_DETECTION 0
 
 // Event detection modes
 #define HARD_THRESHOLD 0
@@ -49,7 +49,7 @@
 #define HT_MAX 1
 #define HT_POWER 2
 
-#define THRESHOLD 2500 // Mean : 2040; MAX : 2500; ENERGY :
+#define THRESHOLD 2400 // Mean : 2040; MAX : 2500; ENERGY :
 //#define HT_METRIC HT_MEAN
 #define HT_METRIC HT_MAX
 //#define HT_METRIC HT_POWER

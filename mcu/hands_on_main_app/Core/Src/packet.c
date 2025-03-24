@@ -54,8 +54,6 @@ void tag_cbc_mac(uint8_t *tag, const uint8_t *msg, size_t msg_len) {
 		memcpy(buffer, state, 16);
 
 
-		// To implement
-		// HAL_StatusTypeDef HAL_CRYPEx_AES(CRYP_HandleTypeDef *hcryp, uint8_t *pInputData, uint16_t Size, uint8_t *pOutputData, uint32_t Timeout)
 		HAL_CRYPEx_AES(&hcryp, buffer, 16, state, HAL_MAX_DELAY);
 		stop_cycle_count("Encrypted");
 	}
