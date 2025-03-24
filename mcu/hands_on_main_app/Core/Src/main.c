@@ -96,7 +96,14 @@ static void acquire_and_send_packet() {
 }
 
 void run(void) {
+#if (AUTORUN == 0)
 	btn_press = 0;
+#elif (AUTORUN == 1)
+	DEBUG_PRINT("Autorun mode engaged.\r\n");
+	btn_press = 1;
+#else
+#error "Wrong value for AUTORUN"
+#endif
 
 	while (1) {
 	  while (!btn_press) {
