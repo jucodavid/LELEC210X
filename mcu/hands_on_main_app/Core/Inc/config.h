@@ -28,10 +28,10 @@
 
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 1
+#define CONTINUOUS_ACQ 0
 
 // Event detection enable/disable
-#define EVENT_DETECTION 1
+#define EVENT_DETECTION 0
 
 // Event detection modes
 #define HARD_THRESHOLD 0
