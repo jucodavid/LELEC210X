@@ -13,7 +13,7 @@ cd LELEC210X/telecom/hands_on_measurements/gr-fsk/build
 wsl
 sudo make install
 ```
-Eventually, when everything brakes, delete de build directory and reconstruct it.
+Eventually, when everything brakes, delete the build directory and reconstruct it.
 ```bash
 mkdir build
 cd build

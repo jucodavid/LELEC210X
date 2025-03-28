@@ -1,3 +1,5 @@
+import argparse
+
 import zmq
 from collections.abc import Iterator
 
@@ -58,6 +60,13 @@ def submit(guess):
 
 
 if __name__ == "__main__":
+
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("-s", "--server", help="Server selection for submitting answers. LOCAL --> localhost:5000; UCL --> lelec210x.sipr.ucl.ac.be")
+    args = argParser.parse_args()
+
+    if args.server is None:
+
     model_dir = "classification/data/models/"
     filename = "model_Q2.pickle"
     memory_length = 2 #number of samples used for memory
