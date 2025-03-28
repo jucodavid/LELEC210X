@@ -66,14 +66,15 @@ if __name__ == "__main__":
     args = argParser.parse_args()
 
     if args.server is None:
+        pass
 
     model_dir = "classification/data/models/"
     filename = "model_new_data_bg.pickle"
     memory_length = 2 #number of samples used for memory
     memory = True # use of memory
-    predictions = np.zeros(4)
     packet_counter = 0
     classnames = ['background','chainsaw','fire','fireworks','gunshot']
+    predictions = np.zeros(len(classnames))
     model = pickle.load(open(model_dir + filename, "rb"))
     last = time.time()
     msg_counter = 0
@@ -88,7 +89,8 @@ if __name__ == "__main__":
         waiting = time.time()
         if waiting - last > 5:
             packet_counter = 0
-            predictions = np.zeros(4)
+            predictions[:] = 0
+            print("reset predictions")
         last = time.time()
 
         # predictions = np.zeros((memory_length, 4))
