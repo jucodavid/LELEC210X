@@ -59,7 +59,7 @@ def submit(guess):
 
 if __name__ == "__main__":
     model_dir = "classification/data/models/"
-    filename = "model_Q2.pickle"
+    filename = "model_new_data_bg.pickle"
     memory_length = 2 #number of samples used for memory
     memory = True # use of memory
     predictions = np.zeros(4)
