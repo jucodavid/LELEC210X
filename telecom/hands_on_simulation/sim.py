@@ -251,7 +251,7 @@ def run_sim(chain: Chain):
     ax.plot(np.arange(len(Cu)), np.abs(Cu))
     ax.grid(True)
     ax.set_title("Correlation")
-
+    """
     print(Cu)
     print(sum_Cu)
     print(R**2 / sum_Cu)
@@ -260,7 +260,7 @@ def run_sim(chain: Chain):
     print(SNR_th)
     print(SNRs_dB - shift_SNR_filter + shift_SNR_out)
     print(shift_SNR_out)
-    print(shift_SNR_filter)
+    print(shift_SNR_filter)"""
     ### Plot dashboard
 
     fig, ax1 = plt.subplots()
@@ -320,10 +320,22 @@ def run_sim(chain: Chain):
             0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
             0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
             0.00000000e+00]
+    x_me2 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    y_me2 = [1.00000000e+00, 1.00000000e+00, 1.00000000e+00, 1.00000000e+00,
+            1.00000000e+00,1.00000000e+00, 1.00000000e+00, 1.00000000e+00,
+            1.00000000e+00, 8.80000000e-01, 5.55635492e-01, 2.98747856e-01,
+            2.77703349e-02, 6.98140704e-04,1e-04, 0.00000000e+00]
+    x_me3 = [2.7762,3.7486,4.721,5.693,6.6658,7.6382,8.61,9.583,10.55,
+            11.528,12.5,13.472,15]
+    y_me3 = [1.00000000e+00,1.00000000e+00,1.00000000e+00,1.00000000e+00,
+            1.00000000e+00,1.00000000e+00,1.00000000e+00,9.20630000e-01,
+            5.99220000e-01,9.01160000e-02,5.98800000e-03,4.45290000e-04
+            ,0.00000000e+00]
     # Packet error rate
     fig, ax = plt.subplots(constrained_layout=True)
     ax.plot(SNRs_dB + shift_SNR_out, PER, "-s", label="Simulation")
-    ax.plot(x_me, y_me,"-s", label="Measures")
+    ax.plot(x_me, y_me,"-s", label="Measures Q1")
+    ax.plot(x_me3, y_me3,"-s", label="Measures Q2")
     ax.plot(SNR_th, 1 - (1 - BER_th) ** chain.payload_len, label="AWGN Th. FSK")
     ax.plot(
         SNR_th,
@@ -410,5 +422,5 @@ def run_sim(chain: Chain):
 if __name__ == "__main__":
     from chain import BasicChain
 
-    chain = BasicChain()
+    chain = Chain()
     run_sim(chain)

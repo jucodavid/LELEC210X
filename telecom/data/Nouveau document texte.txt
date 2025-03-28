@@ -1,2 +1,0 @@
-Enlever les lignes correspondant à -12 -10 dBm du measurements -20 -10
-pcq y avait trop derreurs

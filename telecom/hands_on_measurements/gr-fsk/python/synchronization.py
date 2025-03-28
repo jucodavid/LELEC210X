@@ -27,38 +27,54 @@ from gnuradio import gr
 from .utils import logging, measurements_logger
 
 
-def cfo_estimation(y, B, R, Fdev):
+def cfo_estimation(y,B,R,Fdev):
     """
-    Estimate CFO using Moose algorithm, on first samples of preamble
+    Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
     """
-    N = 2
-    Nt = N * R
-    T = 1 / B
-    # TO DO: apply the Moose algorithm on these two blocks to estimate the CFO
-    """sum = 0
-    for i in range(Nt):
-        sum += y[i+Nt] * np.conj(y[i])
-    cfo_est = np.angle(sum) / (2 * np.pi * Nt/self.osr_rx/self.bit_rate)"""
-    sum_est = np.vdot(y[:Nt], y[Nt:2*Nt])
-    cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/R)
-    #cfo_est = 0  # Default value, to change
-
-    return cfo_est
+    y_preamb = y[:32*R]
+    T = 1/B
+    Nt = 2*R
+    t = np.arange(len(y_preamb)) / (B * R)
+    cfo = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/R)
+    cfo_tot = cfo
+    y_preamb *= np.exp(-1j * 2 * np.pi * cfo * t)
+    for N in range(4,17,2):
+        Nt = N * R
+        sum_est = np.vdot(y_preamb[:Nt], y_preamb[Nt:2*Nt])
+        cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/R)
+        cfo_tot += cfo_est
+        y_preamb *= np.exp(-1j * 2 * np.pi * cfo_est * t)
+    return cfo_tot
 
 
 def sto_estimation(y, B, R, Fdev):
     """
-    Estimate symbol timing (fractional) based on phase shifts
+    Estimates symbol timing (fractional) based on phase shifts.
     """
+
+    #preamble_length = 32 * R  # Length of the preamble in samples
+    #y_preamble = y[:preamble_length]  # Use only the preamble
+
+    # Computation of derivatives of phase function
     phase_function = np.unwrap(np.angle(y))
-    phase_derivative_sign = phase_function[1:] - phase_function[:-1]
-    sign_derivative = np.abs(phase_derivative_sign[1:] - phase_derivative_sign[:-1])
+    #phase_function = np.unwrap(np.angle(y_preamble))
+
+    phase_derivative_1 = phase_function[2:] - phase_function[:-2]
+    #phase_derivative_1 = np.diff(phase_function)
+    phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
+    #phase_derivative_2 = np.abs(np.diff(phase_derivative_1))
 
     sum_der_saved = -np.inf
     save_i = 0
-
     for i in range(0, R):
-        sum_der = np.sum(sign_derivative[i::R])
+        #sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
+        sum_der = (
+            np.sum(phase_derivative_2[max(i - 2, 0)::R]) +  # i-2
+            np.sum(phase_derivative_2[max(i - 1, 0)::R]) +  # i-1
+            np.sum(phase_derivative_2[i::R]) +  # i
+            np.sum(phase_derivative_2[min(i + 1, R - 1)::R])+  # i+1
+            np.sum(phase_derivative_2[min(i + 2, R - 1)::R])  # i+2
+        )
 
         if sum_der > sum_der_saved:
             sum_der_saved = sum_der

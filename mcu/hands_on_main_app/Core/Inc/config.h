@@ -14,24 +14,34 @@
 //#define RUN_CONFIG EVAL_RADIO
 #define RUN_CONFIG MAIN_APP
 
+
 // Radio parameters
 #define ENABLE_RADIO 1
+
 
 // General UART enable/disable (disable for low-power operation)
 #define ENABLE_UART 0
 
+
 // Enable performance measurements
 #define PERF_COUNT 0
+
 
 // Enable debug print
 #define DEBUGP 0
 
+
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 0
+#define CONTINUOUS_ACQ 1
+
+
+// Autorun mode, start without using the blue button
+#define AUTORUN 1
+
 
 // Event detection enable/disable
-#define EVENT_DETECTION 0
+#define EVENT_DETECTION 1
 
 // Event detection modes
 #define HARD_THRESHOLD 0
@@ -58,6 +68,7 @@
 
 
 //    Harware Hard threshold mode
+
 
 
 // Spectrogram parameters

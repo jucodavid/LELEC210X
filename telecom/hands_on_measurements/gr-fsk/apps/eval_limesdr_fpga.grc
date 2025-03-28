@@ -108,14 +108,14 @@ blocks:
     label: ''
     'true': '1'
     type: int
-    value: '1'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1352, 580.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: carrier_freq
   id: variable
   parameters:
@@ -156,7 +156,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: data_rate/4
+    value: data_rate/2
   states:
     bus_sink: false
     bus_source: false
