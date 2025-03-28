@@ -22,9 +22,9 @@ N_MELVECS = 20
 TAG_LENGTH = 16
 
 
-HOST_ADRESS = "http://localhost:5000"
+# HOST_ADRESS = "http://localhost:5000"
 # HOST_ADRESS = "http://lelec210x.sipr.ucl.ac.be"
-TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
+# TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
 # TEAM_KEY = "a5vIbTLb5gDwxC2VXEj2lLuv4UAGSPmKm-iyCJVQ"
 
 
@@ -62,16 +62,38 @@ def submit(guess):
 if __name__ == "__main__":
 
     argParser = argparse.ArgumentParser()
-    argParser.add_argument("-s", "--server", help="Server selection for submitting answers. LOCAL --> localhost:5000; UCL --> lelec210x.sipr.ucl.ac.be")
+    argParser.add_argument("-s", "--server", help="Server selection for submitting answers. LOCAL -> localhost:5000 UCL -> lelec210x.sipr.ucl.ac.be")
+    argParser.add_argument("-m", "--memory", action='store_true', help="Use of memory for classification")
+    argParser.add_argument("-ml", "--memory_length", help="Number of takes used for memory")
+
     args = argParser.parse_args()
 
     if args.server is None:
-        pass
+        print("No server specified")
+        print("fallback to localhost:5000 server")
+        HOST_ADRESS = "http://localhost:5000"
+        TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
+    elif args.server == "LOCAL":
+        HOST_ADRESS = "http://localhost:5000"
+        TEAM_KEY = "X6wLG0KYZwh0Op0BIiq0GdmEy4x7Ot3BDlRyecx-"
+    elif args.server == "UCL":
+        HOST_ADRESS = "http://lelec210x.sipr.ucl.ac.be"
+        TEAM_KEY = "a5vIbTLb5gDwxC2VXEj2lLuv4UAGSPmKm-iyCJVQ"
+
+    if args.memory is not None:
+        memory = args.memory
+    else:
+        memory = True
+
+    if args.memory_length is not None:
+        memory_length = int(args.memory_length)
+        print(memory_length)
+    else:
+        memory_length = 2
 
     model_dir = "classification/data/models/"
     filename = "model_new_data_bg.pickle"
-    memory_length = 2 #number of samples used for memory
-    memory = True # use of memory
+
     packet_counter = 0
     classnames = ['background','chainsaw','fire','fireworks','gunshot']
     predictions = np.zeros(len(classnames))
@@ -82,9 +104,6 @@ if __name__ == "__main__":
 
     input_stream = reader()
     
-    
-    
-        
     for packet in input_stream:
         waiting = time.time()
         if waiting - last > 5:
