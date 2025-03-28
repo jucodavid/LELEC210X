@@ -64,7 +64,7 @@ if __name__ == "__main__":
     memory = True # use of memory
     predictions = np.zeros(4)
     packet_counter = 0
-    classnames = ['chainsaw','fire','fireworks','gunshot']
+    classnames = ['background','chainsaw','fire','fireworks','gunshot']
     model = pickle.load(open(model_dir + filename, "rb"))
     last = time.time()
     msg_counter = 0

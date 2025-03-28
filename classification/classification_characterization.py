@@ -42,7 +42,7 @@ def play_all_sounds(dataset):
         for j in ['background','fire','chainsaw', 'fireworks', 'gunshot']:
             print("Playing sound number ", i)
             dataset.play([j,i])
-            time.sleep(7)
+            time.sleep(5)
         
 def load_dataset():
     dataset = Dataset()
