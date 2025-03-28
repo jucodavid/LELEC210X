@@ -68,12 +68,12 @@ if __name__ == "__main__":
     if args.server is None:
 
     model_dir = "classification/data/models/"
-    filename = "model_Q2.pickle"
+    filename = "model_new_data_bg.pickle"
     memory_length = 2 #number of samples used for memory
     memory = True # use of memory
     predictions = np.zeros(4)
     packet_counter = 0
-    classnames = ['chainsaw','fire','fireworks','gunshot']
+    classnames = ['background','chainsaw','fire','fireworks','gunshot']
     model = pickle.load(open(model_dir + filename, "rb"))
     last = time.time()
     msg_counter = 0
