@@ -20,7 +20,7 @@
 
 
 // General UART enable/disable (disable for low-power operation)
-#define ENABLE_UART 0
+#define ENABLE_UART 1
 
 
 // Enable performance measurements
@@ -28,20 +28,20 @@
 
 
 // Enable debug print
-#define DEBUGP 0
+#define DEBUGP 1
 
 
 // In continuous mode, we start and stop continuous acquisition on button press.
 // In non-continuous mode, we send a single packet on button press.
-#define CONTINUOUS_ACQ 1
+#define CONTINUOUS_ACQ 0
 
 
 // Autorun mode, start without using the blue button
-#define AUTORUN 1
+#define AUTORUN 0
 
 
 // Event detection enable/disable
-#define EVENT_DETECTION 1
+#define EVENT_DETECTION 0
 
 // Event detection modes
 #define HARD_THRESHOLD 0
@@ -49,7 +49,7 @@
 #define HW_HARD_THRESHOLD 2
 
 // Event detection mode selection
-#define EVENT_DETECTION_MODE HARD_THRESHOLD
+#define EVENT_DETECTION_MODE HW_HARD_THRESHOLD
 //#define EVENT_DETECTION_MODE SOFT_THRESHOLD
 
 // Event detection parameters
@@ -60,6 +60,7 @@
 #define HT_POWER 2
 
 #define THRESHOLD 2400 // Mean : 2040; MAX : 2500; ENERGY :
+#define HW_THRESHOLD 2474 // Sound level is at 1.68V, 0 is 0V 4095 is 3.31V
 //#define HT_METRIC HT_MEAN
 #define HT_METRIC HT_MAX
 //#define HT_METRIC HT_POWER

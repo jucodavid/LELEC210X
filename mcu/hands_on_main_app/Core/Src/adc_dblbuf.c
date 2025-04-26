@@ -91,7 +91,9 @@ static void send_spectrogram() {
 //	stop_cycle_count("Encode packet");
 
 //	start_cycle_count();
+	DEBUG_PRINT("S2LP send");
 	S2LP_Send(packet, PACKET_LENGTH);
+	DEBUG_PRINT("S2LP sended");
 //	stop_cycle_count("Radio WFI");
 
 	start_cycle_count();
@@ -101,6 +103,7 @@ static void send_spectrogram() {
 }
 
 static void routine(int buf_cplt) {
+	DEBUG_PRINT("Prout");
 	if (rem_n_bufs != -1) {
 			rem_n_bufs--;
 		}
@@ -120,7 +123,9 @@ static void routine(int buf_cplt) {
 	if (rem_n_bufs == 0) {
 //		print_spectrogram();
 //		stop_cycle_count("Total FV");
+		DEBUG_PRINT("Sending the spectro");
 		send_spectrogram();
+		DEBUG_PRINT("Spectro sended");
 	}
 }
 
@@ -157,6 +162,7 @@ static int check_for_event(int buf_cplt) {
 #endif
 #elif (EVENT_DETECTION_MODE == SOFT_THRESHOLD)
 #error "Not Yet implemented."
+#elif (EVENT_DETECTION_MODE == HW_HARD_THRESHOLD)
 #else
 #error "Wrong value for EVENT_DETECTION_MODE."
 #endif
@@ -164,6 +170,7 @@ static int check_for_event(int buf_cplt) {
 
 static void ADC_Callback(int buf_cplt) {
 #if (EVENT_DETECTION == 1)
+
 	if (in_routine == 0) {
 		if (check_for_event(buf_cplt) == 1) {
 			in_routine = 1;

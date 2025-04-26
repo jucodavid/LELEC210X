@@ -21,6 +21,8 @@
 #include "main.h"
 #include "adc.h"
 #include "aes.h"
+#include "comp.h"
+#include "dac.h"
 #include "dma.h"
 #include "spi.h"
 #include "tim.h"
@@ -85,14 +87,25 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		S2LP_IRQ_Handler();
 }
 
+/*
+void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
+{
+    if (hcomp->Instance == COMP2)
+    {
+    	btn_press = 1;
+    }
+}*/
+
 static void acquire_and_send_packet() {
 //	start_cycle_count();
 	if (StartADCAcq(N_MELVECS) != HAL_OK) {
 		DEBUG_PRINT("Error while enabling the DMA\r\n");
 	}
+	DEBUG_PRINT("Start of the ADC");
 	while (!IsADCFinished()) {
 		__WFI();
 	}
+	DEBUG_PRINT("Finished");
 }
 
 void run(void) {
@@ -167,7 +180,17 @@ int main(void)
   MX_TIM3_Init();
   MX_ADC1_Init();
   MX_AES_Init();
+  MX_DAC1_Init();
+  MX_COMP2_Init();
   /* USER CODE BEGIN 2 */
+  if (EVENT_DETECTION_MODE == HW_HARD_THRESHOLD){
+	  HAL_DAC_Start(&hdac1, DAC_CHANNEL_1);
+	  HAL_COMP_Start_IT(&hcomp2);
+	  uint32_t var = HW_THRESHOLD;
+	  HAL_DAC_SetValue(&hdac1, DAC_CHANNEL_1, DAC_ALIGN_12B_R, var);
+  }
+
+
   if (ENABLE_UART) {
 	  MX_LPUART1_UART_Init();
   }
