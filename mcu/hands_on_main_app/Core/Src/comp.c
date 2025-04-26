@@ -43,7 +43,7 @@ void MX_COMP2_Init(void)
   hcomp2.Init.OutputPol = COMP_OUTPUTPOL_NONINVERTED;
   hcomp2.Init.Hysteresis = COMP_HYSTERESIS_NONE;
   hcomp2.Init.BlankingSrce = COMP_BLANKINGSRC_NONE;
-  hcomp2.Init.Mode = COMP_POWERMODE_HIGHSPEED;
+  hcomp2.Init.Mode = COMP_POWERMODE_ULTRALOWPOWER;
   hcomp2.Init.WindowMode = COMP_WINDOWMODE_DISABLE;
   hcomp2.Init.TriggerMode = COMP_TRIGGERMODE_IT_RISING;
   if (HAL_COMP_Init(&hcomp2) != HAL_OK)
@@ -68,16 +68,8 @@ void HAL_COMP_MspInit(COMP_HandleTypeDef* compHandle)
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**COMP2 GPIO Configuration
-    PB11     ------> COMP2_OUT
     PB4 (NJTRST)     ------> COMP2_INP
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_11;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF12_COMP2;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
     GPIO_InitStruct.Pin = GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -102,10 +94,9 @@ void HAL_COMP_MspDeInit(COMP_HandleTypeDef* compHandle)
   /* USER CODE END COMP2_MspDeInit 0 */
 
     /**COMP2 GPIO Configuration
-    PB11     ------> COMP2_OUT
     PB4 (NJTRST)     ------> COMP2_INP
     */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_11|GPIO_PIN_4);
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_4);
 
     /* COMP2 interrupt Deinit */
     HAL_NVIC_DisableIRQ(COMP_IRQn);

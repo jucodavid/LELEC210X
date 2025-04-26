@@ -91,9 +91,7 @@ static void send_spectrogram() {
 //	stop_cycle_count("Encode packet");
 
 //	start_cycle_count();
-	DEBUG_PRINT("S2LP send");
 	S2LP_Send(packet, PACKET_LENGTH);
-	DEBUG_PRINT("S2LP sended");
 //	stop_cycle_count("Radio WFI");
 
 	start_cycle_count();
@@ -103,7 +101,6 @@ static void send_spectrogram() {
 }
 
 static void routine(int buf_cplt) {
-	DEBUG_PRINT("Prout");
 	if (rem_n_bufs != -1) {
 			rem_n_bufs--;
 		}
@@ -123,9 +120,7 @@ static void routine(int buf_cplt) {
 	if (rem_n_bufs == 0) {
 //		print_spectrogram();
 //		stop_cycle_count("Total FV");
-		DEBUG_PRINT("Sending the spectro");
 		send_spectrogram();
-		DEBUG_PRINT("Spectro sended");
 	}
 }
 
