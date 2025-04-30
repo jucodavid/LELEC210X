@@ -24,7 +24,7 @@
 
 
 // Enable performance measurements
-#define PERF_COUNT 0
+#define PERF_COUNT 1
 
 
 // Enable debug print
@@ -59,8 +59,8 @@
 #define HT_MAX 1
 #define HT_POWER 2
 
-#define THRESHOLD 2400 // Mean : 2040; MAX : 2500; ENERGY :
-#define HW_THRESHOLD 2474 // Sound level is at 1.68V, 0 is 0V 4095 is 3.31V
+#define THRESHOLD 2700 // Mean : 2040; MAX : 2500; ENERGY :
+#define HW_THRESHOLD 2550 // Sound level is at 1.68V, 0 is 0V 4095 is 3.31V
 //#define HT_METRIC HT_MEAN
 #define HT_METRIC HT_MAX
 //#define HT_METRIC HT_POWER

@@ -52,6 +52,19 @@ void Spectrogram_Format(q15_t *buf)
 	stop_cycle_count("0.2");
 }
 
+void Sparse_Compute(q15_t *hz2mel_mat, q15_t *zero_index, q15_t *buf, q15_t *melvec)
+{
+    for (int i = 0; i < MELVEC_LENGTH; i++)
+    {
+        q15_t sum = 0;
+        for (int j = zero_index[2*i]; j < zero_index[2*i+1]; j++)
+        {
+            sum += hz2mel_mat[i*(SAMPLES_PER_MELVEC/2) + j] * buf[j];
+        }
+        melvec[i] = sum;
+    }
+}
+
 // Compute spectrogram of samples and transform into MEL vectors.
 void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 {
@@ -133,6 +146,8 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	// /!\ In order to avoid overflows completely the input signals should be scaled down. Scale down one of the input matrices by log2(numColsA) bits to avoid overflows,
 	// as a total of numColsA additions are computed internally for each output element. Because our hz2mel_mat matrix contains lots of zeros in its rows, this is not necessary.
 	
+
+	/*
 	arm_matrix_instance_q15 hz2mel_inst, fftmag_inst, melvec_inst;
 
 	arm_mat_init_q15(&hz2mel_inst, MELVEC_LENGTH, SAMPLES_PER_MELVEC/2, hz2mel_mat);
@@ -140,5 +155,18 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	arm_mat_init_q15(&melvec_inst, MELVEC_LENGTH, 1, melvec);
 
 	arm_mat_mult_fast_q15(&hz2mel_inst, &fftmag_inst, &melvec_inst, buf_tmp);
+	*/
+
+
+	//Sparse_Compute(&hz2mel_mat, &zero_index, &buf, &melvec);
+
+	q63_t result;
+	q15_t result_q15;
+	for(int i = 0; i < MELVEC_LENGTH; i++){
+		arm_dot_prod_q15(&new_hz2mel_mat[new_starts[i]], &buf[zero_index[2*i]], new_lengths[i], &result);
+		result_q15 = (q15_t)__SSAT((result >> 15), 16);
+		melvec[i] = result_q15;
+	}
+
 	stop_cycle_count("4");
 }

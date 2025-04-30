@@ -49,7 +49,7 @@ void tag_cbc_mac(uint8_t *tag, const uint8_t *msg, size_t msg_len) {
 		}
 		start_cycle_count();
 		// Encrypt the state with AES
-//		AES128_encrypt(state, AES_Key);
+		//AES128_encrypt(state, AES_Key);
 		uint8_t buffer[16];
 		memcpy(buffer, state, 16);
 

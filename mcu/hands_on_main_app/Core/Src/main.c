@@ -66,6 +66,7 @@
 /* USER CODE BEGIN PV */
 
 volatile uint8_t btn_press;
+volatile uint8_t record_send = 0;
 
 /* USER CODE END PV */
 
@@ -87,14 +88,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		S2LP_IRQ_Handler();
 }
 
-
+# if (EVENT_DETECTION_MODE == HW_HARD_THRESHOLD)
 void HAL_COMP_TriggerCallback(COMP_HandleTypeDef *hcomp)
 {
-    if (hcomp->Instance == COMP2)
+    if ((hcomp->Instance == COMP2) && (record_send == 0))
     {
     	btn_press = 1;
     }
 }
+# endif
 
 static void acquire_and_send_packet() {
 //	start_cycle_count();
@@ -117,13 +119,19 @@ void run(void) {
 #endif
 
 	while (1) {
+		record_send = 0;
 	  while (!btn_press) {
-		  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
-		  HAL_Delay(200);
-		  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
-		  HAL_Delay(200);
+		  __WFI();
+		  //HAL_Delay(200);
+		  /*
+			  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_SET);
+			  HAL_Delay(200);
+			  HAL_GPIO_WritePin(GPIOB, LD2_Pin, GPIO_PIN_RESET);
+			  HAL_Delay(200);
+		  */
 	  }
-	  btn_press = 0;
+	  record_send = 1;
+
 #if (CONTINUOUS_ACQ == 1)
 #if (EVENT_DETECTION == 1)
 #if (EVENT_DETECTION_MODE == HARD_THRESHOLD)
@@ -136,9 +144,11 @@ void run(void) {
 	  btn_press = 0;
 #elif (CONTINUOUS_ACQ == 0)
 	  acquire_and_send_packet();
+
 #else
 #error "Wrong value for CONTINUOUS_ACQ."
 #endif
+	btn_press = 0;
 	}
 }
 
