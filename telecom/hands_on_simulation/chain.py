@@ -21,10 +21,10 @@ class Chain:
     preamble: np.ndarray = PREAMBLE
     sync_word: np.ndarray = SYNC_WORD
 
-    payload_len: int = 100 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
+    payload_len: int = 5 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
 
     # Simulation parameters
-    n_packets: int = 800  # Number of sent packets      HERE <----200 ou 800(pour le fun)
+    n_packets: int = 1500  # Number of sent packets      HERE <----200 ou 800(pour le fun)
 
     # Channel parameters
     sto_val: float = 0
@@ -39,7 +39,8 @@ class Chain:
 
     # Lowpass filter parameters
     numtaps: int = 31
-    cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...     HERE <----
+    #cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...     HERE <----  66,7kHz pour le moment
+    cutoff: float = 150.00e3
 
     # Tx methods
 
@@ -132,7 +133,7 @@ class Chain:
         return bits_hat
 
     # Rx methods
-    bypass_preamble_detect: bool = False
+    bypass_preamble_detect: bool = True
 
     def preamble_detect(self, y):
         """
@@ -149,15 +150,15 @@ class Chain:
         return None
 
     #bypass_cfo_estimation = False
-    bypass_cfo_estimation = False                                                 #HERE <----
+    bypass_cfo_estimation = True                                                #HERE <----
 
 
-    def cfo_estimation_Moose(self, y):
+    def cfo_estimation_Q1(self, y):
         """
         Estimates CFO using Moose algorithm, on first samples of preamble.
         """
         # TO DO: extract 2 blocks of size N*R at the start of y
-        N = 8 # 2 ou 6
+        N = 2 # 2 ou 6
         Nt = N * self.osr_rx
         T = 1 / self.bit_rate
         # TO DO: apply the Moose algorithm on these two blocks to estimate the CFO
@@ -260,13 +261,15 @@ class Chain:
         cfo = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/self.osr_rx)
         cfo_tot = cfo
         y_preamb *= np.exp(-1j * 2 * np.pi * cfo * t)
+        cfo_list = []
         for N in range(4,17,2):
             Nt = N * self.osr_rx
             sum_est = np.vdot(y_preamb[:Nt], y_preamb[Nt:2*Nt])
             cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/self.osr_rx)
             cfo_tot += cfo_est
+            cfo_list.append(cfo_est)
             y_preamb *= np.exp(-1j * 2 * np.pi * cfo_est * t)
-        return cfo_tot
+        return cfo_tot,np.array(cfo_list)
     
     def cfo_estimation_average(self, y) -> float:
         """
@@ -323,7 +326,66 @@ class Chain:
         avg_cfo_est = np.mean(cfo_estimates)
         return avg_cfo_est
 
-    bypass_sto_estimation = False                                                 #HERE <----
+    bypass_sto_estimation = True                                               #HERE <----
+
+    def sto_estimation_Q1(self, y):
+        """
+        Estimates symbol timing (fractional) based on phase shifts.
+        """
+        R = self.osr_rx
+
+        # Computation of derivatives of phase function
+        phase_function = np.unwrap(np.angle(y))
+        phase_derivative_1 = phase_function[1:] - phase_function[:-1]
+        phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
+
+        sum_der_saved = -np.inf
+        save_i = 0
+        for i in range(0, R):
+            sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
+
+            if sum_der > sum_der_saved:
+                sum_der_saved = sum_der
+                save_i = i
+
+        return np.mod(save_i + 1, R)
+    
+    
+    def sto_estimation_Q2(self, y):
+        """
+        Estimates symbol timing (fractional) based on phase shifts.
+        """
+        R = self.osr_rx
+
+        #preamble_length = 32 * R  # Length of the preamble in samples
+        #y_preamble = y[:preamble_length]  # Use only the preamble
+
+        # Computation of derivatives of phase function
+        phase_function = np.unwrap(np.angle(y))
+        #phase_function = np.unwrap(np.angle(y_preamble))
+        
+        phase_derivative_1 = phase_function[2:] - phase_function[:-2]
+        #phase_derivative_1 = np.diff(phase_function)
+        phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
+        #phase_derivative_2 = np.abs(np.diff(phase_derivative_1))
+
+        sum_der_saved = -np.inf
+        save_i = 0
+        for i in range(0, R):
+            #sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
+            sum_der = (
+                np.sum(phase_derivative_2[max(i - 2, 0)::R]) +  # i-2
+                np.sum(phase_derivative_2[max(i - 1, 0)::R]) +  # i-1
+                np.sum(phase_derivative_2[i::R]) +   # i
+                np.sum(phase_derivative_2[min(i + 1, R - 1)::R])+  # i+1
+                np.sum(phase_derivative_2[min(i + 2, R - 1)::R])  # i+2
+            )
+
+            if sum_der > sum_der_saved:
+                sum_der_saved = sum_der
+                save_i = i
+
+        return np.mod(save_i + 1, R)
 
     def sto_estimation(self, y):
         """

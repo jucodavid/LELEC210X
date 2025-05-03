@@ -168,6 +168,7 @@ class synchronization(gr.basic_block):
     def general_work(self, input_items, output_items):
         if self.rem_samples == 0:  # new packet to process, compute the CFO and STO
             y = input_items[0][: self.hdr_len * 8 * self.osr]
+            self.logger.info("------> Some values: %s",np.max(np.abs(y)))
             self.cfo = cfo_estimation(y, self.drate, self.osr, self.fdev)
 
             # Correct CFO in preamble

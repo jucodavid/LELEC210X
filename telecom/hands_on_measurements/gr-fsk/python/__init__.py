@@ -37,3 +37,4 @@ from .onQuery_noise_estimation import onQuery_noise_estimation  # noqa: F401
 from .packet_parser import packet_parser  # noqa: F401
 from .preamble_detect import preamble_detect  # noqa: F401
 from .synchronization import synchronization  # noqa: F401
+from .agc import agc  # noqa: F401

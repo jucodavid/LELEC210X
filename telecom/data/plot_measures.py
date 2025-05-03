@@ -95,7 +95,7 @@ def plot_cfo_histogram(df):
     """
     # Plotting the histogram of CFO
     #df = df[(df['SNR'] <= 20) & (df['SNR'] >= 10)]
-    #df = df[(df['CFO'] <= 10000) & (df['CFO'] >= 5000)]
+    df = df[(df['CFO'] <= 7500) & (df['CFO'] >= 5000)]
     print(df['CFO'].mean())
     print(df['CFO'].std())
     plt.figure(figsize=(10, 7))

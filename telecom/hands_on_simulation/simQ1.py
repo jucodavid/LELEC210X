@@ -38,6 +38,7 @@ def add_cfo(chain: Chain, x: np.ndarray, cfo: float):
     y = np.exp(1j * 2 * np.pi * cfo * t) * x
     return y
 
+
 def run_sim(chain: Chain):
     """
     Main function, running the simulations of the communication chain provided, for several SNRs.
@@ -47,7 +48,6 @@ def run_sim(chain: Chain):
     R = chain.osr_rx
     B = chain.bit_rate
     fs = B * R
-    cfo_list = np.zeros(7)
 
     # Error counters/metric initialisation
     bit_errors = np.zeros(len(SNRs_dB))
@@ -161,8 +161,7 @@ def run_sim(chain: Chain):
                 if chain.bypass_cfo_estimation:
                     cfo_hat = cfo
                 else:
-                    cfo_hat,cfo_list0 = chain.cfo_estimation(y_detect)
-                    cfo_list += cfo_list0
+                    cfo_hat = chain.cfo_estimation(y_detect)
 
                 t = np.arange(len(y_detect)) / (B * R)
                 y_sync = np.exp(-1j * 2 * np.pi * cfo_hat * t) * y_detect
@@ -252,7 +251,7 @@ def run_sim(chain: Chain):
     ax.plot(np.arange(len(Cu)), np.abs(Cu))
     ax.grid(True)
     ax.set_title("Correlation")
-    """
+
     print(Cu)
     print(sum_Cu)
     print(R**2 / sum_Cu)
@@ -261,7 +260,7 @@ def run_sim(chain: Chain):
     print(SNR_th)
     print(SNRs_dB - shift_SNR_filter + shift_SNR_out)
     print(shift_SNR_out)
-    print(shift_SNR_filter)"""
+    print(shift_SNR_filter)
     ### Plot dashboard
 
     fig, ax1 = plt.subplots()
@@ -279,49 +278,9 @@ def run_sim(chain: Chain):
     ax2.axis("tight")
     plt.show()
 
-    #print("SNRs_dB + shift_SNR_out", SNRs_dB + shift_SNR_out)
-    #print("BER", BER)
-
-    x_sim_Q1 = [-0.57415467, 0.42584533, 1.42584533, 2.42584533, 3.42584533, 4.42584533,
-                5.42584533, 6.42584533, 7.42584533, 8.42584533, 9.42584533, 10.42584533,
-                11.42584533, 12.42584533, 13.42584533, 14.42584533, 15.42584533, 16.42584533,
-                17.42584533, 18.42584533, 19.42584533, 20.42584533, 21.42584533, 22.42584533,
-                23.42584533, 24.42584533, 25.42584533, 26.42584533, 27.42584533, 28.42584533,
-                29.42584533, 30.42584533, 31.42584533, 32.42584533, 33.42584533]
-    
-    x_sim_Q2 = [
-        -0.66919095, 0.33080905, 1.33080905, 2.33080905, 3.33080905, 4.33080905,
-        5.33080905, 6.33080905, 7.33080905, 8.33080905, 9.33080905, 10.33080905,
-        11.33080905, 12.33080905, 13.33080905, 14.33080905, 15.33080905, 16.33080905,
-        17.33080905, 18.33080905, 19.33080905, 20.33080905, 21.33080905, 22.33080905,
-        23.33080905, 24.33080905, 25.33080905, 26.33080905, 27.33080905, 28.33080905,
-        29.33080905, 30.33080905, 31.33080905, 32.33080905, 33.33080905
-    ]
-
-    y_BER_sim_Q2 = [
-        5.00000e-01, 5.00000e-01, 5.00000e-01, 5.00000e-01, 5.00000e-01, 5.00000e-01,
-        5.00000e-01, 4.95279e-01, 1.65966e-01, 2.01430e-02, 7.21750e-03, 2.45850e-03,
-        6.02000e-04, 1.07500e-04, 1.20000e-05, 1.00000e-06, 0.00000e+00, 0.00000e+00,
-        0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00,
-        0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00,
-        0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00, 0.00000e+00
-    ]
-
-    y_BER_sim_Q1 = [
-        5.000000e-01, 5.000000e-01, 5.000000e-01, 5.000000e-01, 5.000000e-01,
-        5.000000e-01, 5.000000e-01, 4.562095e-01, 2.335390e-01, 1.527755e-01,
-        9.810850e-02, 5.588050e-02, 2.364900e-02, 6.733000e-03, 2.218000e-03,
-        6.855000e-04, 1.885000e-04, 6.200000e-05, 2.450000e-05, 1.300000e-05,
-        8.500000e-06, 4.500000e-06, 2.500000e-06, 5.000000e-07, 5.000000e-07,
-        0.000000e+00, 0.000000e+00, 0.000000e+00, 0.000000e+00, 0.000000e+00,
-        0.000000e+00, 0.000000e+00, 0.000000e+00, 0.000000e+00, 0.000000e+00
-    ]
-
     # Bit error rate
     fig, ax = plt.subplots(constrained_layout=True)
     ax.plot(SNRs_dB + shift_SNR_out, BER, "-s", label="Simulation")
-    #ax.plot(x_sim_Q1, y_BER_sim_Q1, "-s", label="Simulation Q1")
-    #ax.plot(x_sim_Q2, y_BER_sim_Q2, "-s", label="Simulation Q2")
     ax.plot(SNR_th, BER_th, label="AWGN Th. FSK")
     ax.plot(SNR_th, BER_th_noncoh, label="AWGN Th. FSK non-coh.")
     ax.plot(SNR_th, BER_th_BPSK, label="AWGN Th. BPSK")
@@ -360,46 +319,11 @@ def run_sim(chain: Chain):
             3.62776506e-04, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
             0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
             0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
-            0.00000000e+00]                                                 #mesures Q1
-    x_me2 = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-    y_me2 = [1.00000000e+00, 1.00000000e+00, 1.00000000e+00, 1.00000000e+00,
-            1.00000000e+00,1.00000000e+00, 1.00000000e+00, 1.00000000e+00,
-            1.00000000e+00, 8.80000000e-01, 5.55635492e-01, 2.98747856e-01,
-            2.77703349e-02, 6.98140704e-04,1e-04, 0.00000000e+00]
-    x_me3 = [2.7762,3.7486,4.721,5.693,6.6658,7.6382,8.61,9.583,10.55,
-            11.528,12.5,13.472,15]
-    x_me3_corrected = [x - shift_SNR_filter + shift_SNR_out for x in x_me3]
-    x_me3_shifted = [x + 1 for x in x_me3]
-    y_me3 = [1.00000000e+00,1.00000000e+00,1.00000000e+00,1.00000000e+00,
-            1.00000000e+00,1.00000000e+00,1.00000000e+00,9.20630000e-01,
-            5.99220000e-01,9.01160000e-02,5.98800000e-03,4.4529000e-04
-            ,0.00000000e+00]                                                #mesures Q2         2.453e-03 ou 4.4529e-04     
-    
-    y_PER_sim_Q1 = [
-        1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00,
-        1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 9.864e-01,
-        8.076e-01, 4.124e-01, 1.368e-01, 4.800e-02, 1.960e-02, 1.040e-02, 6.800e-03,
-        3.600e-03, 2.000e-03, 4.000e-04, 4.000e-04, 0.000e+00, 0.000e+00, 0.000e+00,
-        0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00
-    ]
-
-    y_PER_sim_Q2 = [
-        1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00, 1.000e+00,
-        1.000e+00, 1.000e+00, 1.000e+00, 9.964e-01, 8.552e-01, 3.852e-01, 8.400e-02,
-        9.600e-03, 8.000e-04, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00,
-        0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00,
-        0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00, 0.000e+00
-    ]
-
-    #print("PER", PER)
+            0.00000000e+00]
     # Packet error rate
     fig, ax = plt.subplots(constrained_layout=True)
     ax.plot(SNRs_dB + shift_SNR_out, PER, "-s", label="Simulation")
-    #ax.plot(SNRs_dB + shift_SNR_out, PER, "-s", label="Simulation Q1 + h = 1")
-    #ax.plot(x_sim_Q2, y_PER_sim_Q2, "-s", label="Simulation Q2")
-    #ax.plot(x_sim_Q1, y_PER_sim_Q1, "-s", label="Simulation Q1")
-    ax.plot(x_me, y_me, "-s", label="Measures Q1")
-    ax.plot(x_me3_shifted, y_me3, "-s", label="Measures Q2")
+    ax.plot(x_me, y_me,"-s", label="Measures")
     ax.plot(SNR_th, 1 - (1 - BER_th) ** chain.payload_len, label="AWGN Th. FSK")
     ax.plot(
         SNR_th,
@@ -420,15 +344,6 @@ def run_sim(chain: Chain):
     bool_2_axis = True
     if bool_2_axis:
         ax2 = ax.twiny()
-        ax2.set_xticks(SNRs_dB - shift_SNR_filter + shift_SNR_out)
-        ax2.set_xticklabels(SNRs_dB)
-        ax2.xaxis.set_ticks_position("bottom")
-        ax2.xaxis.set_label_position("bottom")
-        ax2.spines["bottom"].set_position(("outward", 36))
-        ax2.set_xlabel(r"$SNR_e$ [dB]")
-        ax2.set_xlim(ax.get_xlim())
-        ax2.xaxis.label.set_color("b")
-        ax2.tick_params(axis="x", colors="b")
         # ax2.set_xticks(SNRs_dB + shift_SNR_out)
         ax2.set_xticks(SNRs_dB - shift_SNR_filter + shift_SNR_out)
         ax2.set_xticklabels(SNRs_dB)
@@ -453,93 +368,25 @@ def run_sim(chain: Chain):
     plt.legend()
     plt.show()
 
-    #print("SNRs_dB", SNRs_dB)
-    #print("RMSE_cfo", RMSE_cfo)
+    print("SNRs_dB + shift_SNR_out", SNRs_dB + shift_SNR_out)
+    print("BER", BER)
+    print("PER", PER)
+    print("SNRs_dB", SNRs_dB)
+    print("RMSE_cfo", RMSE_cfo)
+    print("RMSE_sto", RMSE_sto)
 
-    cfo_Q1_nopreamble = [0.09657732, 0.08774924, 0.07756481, 0.06641991, 0.05545177, 0.04562764,
-                         0.03793903, 0.03203628, 0.02746894, 0.02371626, 0.02037546, 0.017779,
-                         0.01566364, 0.0138427, 0.01226004, 0.01087564, 0.00965903, 0.00858621,
-                         0.00763772, 0.00679752, 0.00605211, 0.00539004, 0.00480149, 0.00427794,
-                         0.00381197, 0.00339709, 0.00302759, 0.00269844, 0.00240519, 0.0021439,
-                         0.00191106, 0.00170358, 0.00151868, 0.00135393, 0.00120711]
-    
-    cfo_Q1_wpreamble = [
-        0.14534846, 0.14549812, 0.14547317, 0.14527977, 0.14515639, 0.14460659,
-        0.14779109, 0.14622622, 0.08295365, 0.02832454, 0.02064149, 0.0180075,
-        0.01594295, 0.01412975, 0.01247995, 0.01104106, 0.00979265, 0.00869744,
-        0.00773745, 0.00687495, 0.00612089, 0.00544165, 0.00484775, 0.00432216,
-        0.0038708, 0.00344965, 0.00307917, 0.00276286, 0.00246493, 0.00219391,
-        0.00196285, 0.0017534, 0.00156017, 0.00139547, 0.00124441
-    ]
-
-    # RMSE CFO
+    #RMSE CFO
     plt.figure()
-    #plt.semilogy(SNRs_dB,cfo_Q1_wpreamble, "-s", label = "Q1")
     plt.semilogy(SNRs_dB, RMSE_cfo, "-s")
     plt.title("RMSE CFO")
     plt.ylabel("RMSE [-]")
     plt.xlabel("SNR [dB]")
-    #plt.legend()
     plt.grid()
     plt.show()
     
-    #print("SNR sto", SNRs_dB)
-    #print("RMSE sto", RMSE_sto)
-
-    sto_Q1_no_ind = [
-        1.98527925e+01, 1.91510122e+01, 1.82125381e+01, 1.73058475e+01,
-        1.48489095e+01, 1.25187122e+01, 1.07238152e+01, 9.03001696e+00,
-        6.93475576e+00, 5.81986147e+00, 3.96495744e+00, 2.67922680e+00,
-        2.04005668e+00, 1.34277930e+00, 6.07875398e-01, 1.37772457e-01,
-        6.32949445e-02, 4.92442890e-02, 3.65718471e-02, 2.79508497e-02,
-        2.48746859e-02, 2.09165007e-02, 1.96850197e-02, 1.85404962e-02,
-        1.75000000e-02, 1.75000000e-02, 1.82002747e-02, 1.93649167e-02,
-        1.93649167e-02, 1.98431348e-02, 1.90394328e-02, 1.80277564e-02,
-        1.92028644e-02, 2.00000000e-02, 2.00000000e-02
-    ]
-
-    sto_Q1_w_ind = [
-        19.24296609, 17.37778863, 15.16625448, 12.2068426, 9.52194669, 6.78526897,
-        5.04421637, 3.83530964, 2.28754645, 2.0442358, 1.4344424, 0.20713824,
-        0.1657747, 0.12180928, 0.08739279, 0.06754628, 0.05460082, 0.04444097,
-        0.03848701, 0.03381937, 0.03259601, 0.0324037, 0.03335416, 0.035,
-        0.03674235, 0.03824265, 0.04007805, 0.04279311, 0.04562072, 0.04683748,
-        0.04968652, 0.04993746, 0.05086747, 0.05129571, 0.0513566
-    ]
-
-    sto_jitter = [
-        1.87851424e+01, 1.68748357e+01, 1.49470760e+01, 1.21703025e+01,
-        9.39705140e+00, 7.31854323e+00, 6.20735350e+00, 4.53680091e+00,
-        3.11468197e+00, 1.88560169e+00, 1.09612100e+00, 6.05315001e-01,
-        5.58591980e-01, 7.23705741e-02, 5.58457698e-02, 4.29389101e-02,
-        3.23071200e-02, 2.35849528e-02, 1.83711731e-02, 1.63935963e-02,
-        1.29903811e-02, 1.08972474e-02, 1.03077641e-02, 9.68245837e-03,
-        7.90569415e-03, 7.50000000e-03, 9.01387819e-03, 7.50000000e-03,
-        5.59016994e-03, 6.61437828e-03, 5.59016994e-03, 5.00000000e-03,
-        4.33012702e-03, 4.33012702e-03, 3.53553391e-03
-    ]
-
-    sto_deriv = [
-        18.82467994, 16.90486598, 14.93742427, 12.33560826, 9.69523691, 7.35076442,
-        5.05046409, 3.61390544, 2.13805256, 0.94431192, 0.12813567, 0.1029563,
-        0.08923284, 0.08649422, 0.08681878, 0.08753571, 0.0887764, 0.08965211,
-        0.09024273, 0.09045026, 0.09093267, 0.09127568, 0.09120718, 0.08968696,
-        0.0887764, 0.08703448, 0.08529361, 0.08287792, 0.07988273, 0.07685213,
-        0.073951, 0.07071068, 0.06642665, 0.06229968, 0.05809475
-    ]
-
-    print("CFO list", np.array(cfo_list) / chain.n_packets)
-
     # RMSE STO
     plt.figure()
-
     plt.semilogy(SNRs_dB, RMSE_sto, "-s")
-    #plt.semilogy(SNRs_dB, RMSE_sto, "-s", label= "Q2")
-    #plt.semilogy(SNRs_dB, sto_Q1_no_ind, "-s", label= "Q1")
-    #plt.semilogy(SNRs_dB, sto_Q1_w_ind, "-s", label= "Q1 w ind")
-    #plt.semilogy(SNRs_dB, sto_jitter, "-s", label= "Jitter")
-    #plt.semilogy(SNRs_dB, sto_deriv, "-s", label= "Deriv")
-    #plt.legend()
     plt.title("RMSE STO")
     plt.ylabel("RMSE [-]")
     plt.xlabel("SNR [dB]")
@@ -568,7 +415,7 @@ def run_sim(chain: Chain):
 
 
 if __name__ == "__main__":
-    from chain import BasicChain
+    from chainQ1 import BasicChain
 
-    chain = Chain()
+    chain = BasicChain()
     run_sim(chain)
