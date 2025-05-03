@@ -2,14 +2,14 @@
 
 ## gnu radio
 ```bash
-cd LELE210X/telecom/hands_on_measurements/gr-fsk
+cd LELEC210X/telecom/hands_on_measurements/gr-fsk
 wsl
 gnuradio-companion
 ```
 
 ### gnu radio modifications
 ```bash
-cd LELE210X/telecom/hands_on_measurements/gr-fsk/build
+cd LELEC210X/telecom/hands_on_measurements/gr-fsk/build
 wsl
 sudo make install
 ```
@@ -33,7 +33,7 @@ usbipd attach --wsl --busid
 
 ## leaderboard
 ```bash
-cd LELE210X/leaderboard
+cd LELEC210X/leaderboard
 rye run leaderboard serve --open
 ```
 On local:

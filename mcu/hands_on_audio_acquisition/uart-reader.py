@@ -75,6 +75,7 @@ if __name__ == "__main__":
             print(f"Acquisition #{msg_counter}")
 
             buffer_size = len(msg)
+            print("Buffer size is {}\n".format(buffer_size))
             times = np.linspace(0, buffer_size - 1, buffer_size) * 1 / FREQ_SAMPLING
             voltage_mV = msg * VDD / VAL_MAX_ADC * 1e3
 

@@ -59,6 +59,134 @@ void Spectrogram_Format(q15_t *buf)
 //	stop_cycle_count("Step_0.2");
 }
 
+void optimizedMatrixMultiplication(int a, int b, int c,
+                                   int matrix[a][b], int dense[b][c], int result[a][c]) {
+    int start_index[a], length[a];
+
+    // Trouver les indices de début et la longueur de la plage non-nulle pour chaque ligne
+    for (int i = 0; i < a; i++) {
+        start_index[i] = -1;  // Indicateur pour le début de la plage
+        length[i] = 0;
+
+        for (int j = 0; j < b; j++) {
+            if (matrix[i][j] != 0) {
+                if (start_index[i] == -1) start_index[i] = j; // Premier élément non nul
+                length[i]++;
+            } else if (start_index[i] != -1) {
+                // Une fois qu'on a commencé la plage, on s'arrête dès qu'on retrouve un zéro
+                break;
+            }
+        }
+    }
+
+    // Multiplication optimisée en ignorant les zéros
+    for (int i = 0; i < a; i++) {
+        if (length[i] == 0) continue; // Ligne entièrement nulle, inutile de la traiter
+
+        int start = start_index[i];
+        int end = start + length[i];
+
+        for (int j = 0; j < c; j++) {
+            for (int k = start; k < end; k++) {
+                result[i][j] += matrix[i][k] * dense[k][j];
+            }
+        }
+    }
+}
+
+
+#include "arm_math.h" // CMSIS-DSP
+
+void optimizedMatrixMultiplication(int a, int b, int c,
+	arm_matrix_instance_q15 matrix[a][b], arm_matrix_instance_q15 dense[b][c], arm_matrix_instance_q15 result[a][c]) {
+    int start_index[a], length[a];
+    start_index[-1] = 0;
+    length[-1] = 0;
+
+    // Trouver les indices de début et la longueur de la plage non-nulle pour chaque ligne
+    for (int i = 0; i < a; i++) {
+        start_index[i] = -1;  // Indicateur pour le début de la plage
+        length[i] = length[i-1];
+
+        for (int j = start_index[i-1]; j < b; j++) {
+            if (matrix[i][j] != 0) {
+                if (start_index[i] == -1) start_index[i] = j; // Premier élément non nul
+            break;
+        }
+    }   while (matrix[i][start_index[i]+length[i]] != 0){
+            length[i]++;
+        }
+    }
+    for (int j = 0; j < 4; j++) {
+            printf("%d ", start_index[j]);
+        }
+    printf("\n");
+    for (int j = 0; j < 4; j++) {
+        printf("%d ", length[j]);
+    }
+    printf("\n");
+
+    for (int i = 0; i < a; ++i) {
+      for (int j = 0; j < c; ++j) {
+         result[i][j] = 0;
+      }
+   }
+
+    // Multiplication optimisée en ignorant les zéros
+    for (int i = 0; i < a; i++) {
+        if (length[i] == 0) continue; // Ligne entièrement nulle, inutile de la traiter
+
+        int start = start_index[i];
+        int end = start + length[i];
+
+        for (int j = 0; j < c; j++) {
+            for (int k = start; k < end; k++) {
+                result[i][j] += matrix[i][k] * dense[k][j];
+            }
+        }
+    }
+}
+
+arm_status optimized_mat_mult_q15(
+    const arm_matrix_instance_q15 * pSrcA,
+    const arm_matrix_instance_q15 * pSrcB,
+    arm_matrix_instance_q15 * pDst)
+{
+    // Dimensions
+    uint16_t numRowsA = pSrcA->numRows;
+    uint16_t numColsA = pSrcA->numCols;
+    uint16_t numColsB = pSrcB->numCols;
+
+    // Pointeurs des données
+    q15_t *pA = pSrcA->pData;
+    q15_t *pB = pSrcB->pData;
+    q15_t *pC = pDst->pData;
+
+    // Multiplication optimisée
+    for (uint16_t i = 0; i < numRowsA; i++) {
+        uint16_t start = 0, length = 0;
+        q15_t *rowA = &pA[i * numColsA];
+
+        // Trouver la plage non nulle dans la ligne i
+        while (start < numColsA && rowA[start] == 0) start++;  // Début
+        length = numColsA - start;
+        while (length > 0 && rowA[start + length - 1] == 0) length--;  // Fin
+
+        if (length == 0) continue; // Si toute la ligne est nulle, passer
+
+        // Effectuer le produit ligne × matrice colonne
+        for (uint16_t j = 0; j < numColsB; j++) {
+            q31_t sum = 0;  // Somme sur 32 bits pour éviter l’overflow
+            for (uint16_t k = 0; k < length; k++) {
+                sum += (q31_t) rowA[start + k] * pB[(start + k) * numColsB + j];
+            }
+            pC[i * numColsB + j] = (q15_t) __SSAT((sum >> 15), 16); // Saturation Q15
+        }
+    }
+
+    return ARM_MATH_SUCCESS;
+}
+
 // Compute spectrogram of samples and transform into MEL vectors.
 void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 {
@@ -146,14 +274,17 @@ void Spectrogram_Compute(q15_t *samples, q15_t *melvec)
 	// /!\ In order to avoid overflows completely the input signals should be scaled down. Scale down one of the input matrices by log2(numColsA) bits to avoid overflows,
 	// as a total of numColsA additions are computed internally for each output element. Because our hz2mel_mat matrix contains lots of zeros in its rows, this is not necessary.
 
-//	start_cycle_count();
+
 	arm_matrix_instance_q15 hz2mel_inst, fftmag_inst, melvec_inst;
 
 	arm_mat_init_q15(&hz2mel_inst, MELVEC_LENGTH,          SAMPLES_PER_MELVEC / 2, hz2mel_mat);
 	arm_mat_init_q15(&fftmag_inst, SAMPLES_PER_MELVEC / 2, 1,                      buf);
 	arm_mat_init_q15(&melvec_inst, MELVEC_LENGTH,          1,                      melvec);
-
+	start_cycle_count();
 	arm_mat_mult_fast_q15(&hz2mel_inst, &fftmag_inst, &melvec_inst, buf_tmp);
-//	stop_cycle_count("Step_4");
+	stop_cycle_count("Step_4");
+	start_cycle_count();
+	optimizedMatrixMultiplication(MELVEC_LENGTH, SAMPLES_PER_MELVEC / 2, 1, hz2mel_mat, buf, melvec)
+	stop_cycle_count("Step_5");
 }
 
