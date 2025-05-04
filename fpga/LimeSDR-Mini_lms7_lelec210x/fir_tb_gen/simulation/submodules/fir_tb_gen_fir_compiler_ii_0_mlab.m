@@ -18,7 +18,7 @@
 %MegaWizard Scaled Coefficient Values
 
 function  output = fir_tb_gen_fir_compiler_ii_0_mlab(stimulation, bank);
- coef_matrix_in= [0,0,0,0,0,-1,1,0,-3,6,-5,0,11,-25,37,127,37,-25,11,0,-5,6,-3,0,1,-1,0,0,0,0,0];
+ coef_matrix_in= [0,0,0,0,-2,-3,0,6,8,0,-16,-22,0,50,103,127,103,50,0,-22,-16,0,8,6,0,-3,-2,0,0,0,0];
  INTER_FACTOR  = 1;
  DECI_FACTOR  =  1;
  MSB_RM  = 4;

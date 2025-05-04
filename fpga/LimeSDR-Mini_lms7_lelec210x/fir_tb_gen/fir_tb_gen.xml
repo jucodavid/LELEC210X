@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy
- date="2023.11.01.09:11:30"
- outputDirectory="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/">
+ date="2025.05.04.14:13:43"
+ outputDirectory="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/">
  <perimeter>
   <parameter
      name="AUTO_GENERATION_ID"
@@ -129,14 +129,14 @@
  </perimeter>
  <entity
    path=""
-   parameterizationKey="fir_tb_gen:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=10M16SAU169C8G,AUTO_DEVICE_FAMILY=MAX 10,AUTO_DEVICE_SPEEDGRADE=8,AUTO_GENERATION_ID=1698826288,AUTO_UNIQUE_ID=(clock_source:18.1:clockFrequency=125000000,clockFrequencyKnown=true,inputClockFrequency=0,resetSynchronousEdges=NONE)(altera_fir_compiler_ii:18.1:L_bandsFilter=1,MODE_STRING=None Set,ModeWidth=0,backPressure=false,bankCount=1,bankDisplay=0,bankInWidth=0,baseAddress=0,busAddressWidth=5,busDataWidth=16,chanPerInputInterface=1,chanPerOutputInterface=1,channelModes=0,1,2,3,clockRate=0.4,clockSlack=0,coeffBitWidth=8,coeffBitWidth_derived=8,coeffComplex=false,coeffFracBitWidth=7,coeffNum=31,coeffReload=false,coeffScaling=auto,coeffSetFixedValue=0,0,0,0,0,-1,1,0,-3,6,-5,0,11,-25,37,127,37,-25,11,0,-5,6,-3,0,1,-1,0,0,0,0,0,coeffSetFixedValueImag=0,0,0,0,0,0,0,0,coeffSetRealValue=-0.001201261290430126,0.0020488944185569607,-0.0020751053507837938,4.910806933254215E-18,0.004754535968663148,-0.00987450755161552,0.00995675888032359,-1.4391882903962387E-17,-0.018922538981281996,0.036214375130954504,-0.03468641976116993,2.4803862788187382E-17,0.06848299151299582,-0.15293237705130486,0.22297239138994396,0.7505245253702963,0.22297239138994396,-0.15293237705130486,0.06848299151299582,2.4803862788187385E-17,-0.034686419761169936,0.036214375130954504,-0.018922538981282003,-1.4391882903962393E-17,0.00995675888032359,-0.009874507551615532,0.004754535968663151,4.910806933254215E-18,-0.0020751053507837946,0.0020488944185569607,-0.001201261290430126,coeffSetRealValueImag=0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0530093, -0.04498, 0.0, 0.0749693, 0.159034, 0.224907, 0.249809, 0.224907, 0.159034, 0.0749693, 0.0, -0.04498, -0.0530093, -0.0321283, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,coeffSetScaleValue=0.0,0.0,0.0,0.0,0.0,-0.0059096419320495775,0.0059096419320495775,0.0,-0.017728925796148733,0.03545785159229747,-0.029548209660247887,0.0,0.06500606125254535,-0.14774104830123944,0.21865675148583436,0.7505245253702963,0.21865675148583436,-0.14774104830123944,0.06500606125254535,0.0,-0.029548209660247887,0.03545785159229747,-0.017728925796148733,0.0,0.0059096419320495775,-0.0059096419320495775,0.0,0.0,0.0,0.0,0.0,coeffSetScaleValueImag=0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,coeffType=frac,coefficientReadback=false,coefficientWriteable=false,decimFactor=1,delayRAMBlockThreshold=20,deviceFamily=MAX 10,dspCount=0,dualMemDistRAMThreshold=1280,errorList=0,filterType=single,funcResult=-interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family=&quot;MAX 10&quot; 
-|{}|2|2|1|1|25|18|17|8|noCode|LUTS: 2504 DSPs: 0 RAM Bits: 0|,hardMultiplierThreshold=-1,inputBitWidth=12,inputChannelNum=2,inputFracBitWidth=11,inputInterfaceNum=2,inputRate=0.4,inputType=frac,interpFactor=1,karatsuba=false,latency=17,latency_realOnly=17,lutCount=2504,mRAMThreshold=1000000,memBitCount=0,modeFormatted=--,num_modes=2,outBitWidth=12,outFracBitWidth=9,outFullFracBitWidth=18,outFullFracBitWidth_realOnly=18,outLSBRound=trunc,outLsbBitRem=9,outMSBRound=trunc,outMsbBitRem=4,outType=frac,outWidth=25,outWidth_realOnly=25,outputInterfaceNum=2,outputfifodepth=16,outputfifodepth_realOnly=8,readWriteMode=read_write,reconfigurable=false,reconfigurable_list=0,speedGrade=slow,symmetryMode=nsym)(clock:18.1:)(reset:18.1:)"
+   parameterizationKey="fir_tb_gen:1.0:AUTO_CLK_CLOCK_DOMAIN=-1,AUTO_CLK_CLOCK_RATE=-1,AUTO_CLK_RESET_DOMAIN=-1,AUTO_DEVICE=10M16SAU169C8G,AUTO_DEVICE_FAMILY=MAX 10,AUTO_DEVICE_SPEEDGRADE=8,AUTO_GENERATION_ID=1746360822,AUTO_UNIQUE_ID=(clock_source:18.1:clockFrequency=125000000,clockFrequencyKnown=true,inputClockFrequency=0,resetSynchronousEdges=NONE)(altera_fir_compiler_ii:18.1:L_bandsFilter=1,MODE_STRING=None Set,ModeWidth=0,backPressure=false,bankCount=1,bankDisplay=0,bankInWidth=0,baseAddress=0,busAddressWidth=5,busDataWidth=16,chanPerInputInterface=1,chanPerOutputInterface=1,channelModes=0,1,2,3,clockRate=0.4,clockSlack=0,coeffBitWidth=8,coeffBitWidth_derived=8,coeffComplex=false,coeffFracBitWidth=7,coeffNum=31,coeffReload=false,coeffScaling=auto,coeffSetFixedValue=0,0,0,0,-2,-3,0,6,8,0,-16,-22,0,50,103,127,103,50,0,-22,-16,0,8,6,0,-3,-2,0,0,0,0,coeffSetFixedValueImag=0,0,0,0,0,0,0,0,coeffSetRealValue=-4.9809104E-18,0.00176930002,0.00253417762,-2.17631429E-18,-0.00580637442,-0.00852702132,-1.97826189E-17,0.016913653,0.0231087423,-8.8444965E-18,-0.0423600414,-0.0583000754,1.18265982E-17,0.132063056,0.27230022,0.332608728,0.27230022,0.132063056,1.18265982E-17,-0.0583000754,-0.0423600414,-8.8444965E-18,0.0231087423,0.016913653,-1.97826189E-17,-0.00852702132,-0.00580637442,-2.17631429E-18,0.00253417762,0.00176930002,-4.9809104E-18,coeffSetRealValueImag=0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0530093, -0.04498, 0.0, 0.0749693, 0.159034, 0.224907, 0.249809, 0.224907, 0.159034, 0.0749693, 0.0, -0.04498, -0.0530093, -0.0321283, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,coeffSetScaleValue=0.0,0.0,0.0,0.0,-0.005237932724409449,-0.007856899086614173,0.0,0.015713798173228346,0.020951730897637796,0.0,-0.04190346179527559,-0.05761725996850394,0.0,0.13094831811023622,0.2697535353070866,0.332608728,0.2697535353070866,0.13094831811023622,0.0,-0.05761725996850394,-0.04190346179527559,0.0,0.020951730897637796,0.015713798173228346,0.0,-0.007856899086614173,-0.005237932724409449,0.0,0.0,0.0,0.0,coeffSetScaleValueImag=0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,coeffType=frac,coefficientReadback=false,coefficientWriteable=false,decimFactor=1,delayRAMBlockThreshold=20,deviceFamily=MAX 10,dspCount=0,dualMemDistRAMThreshold=1280,errorList=0,filterType=single,funcResult=-interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family=&quot;MAX 10&quot; 
+|{}|2|2|1|1|25|18|17|8|noCode|LUTS: 2545 DSPs: 0 RAM Bits: 0|,hardMultiplierThreshold=-1,inputBitWidth=12,inputChannelNum=2,inputFracBitWidth=11,inputInterfaceNum=2,inputRate=0.4,inputType=frac,interpFactor=1,karatsuba=false,latency=17,latency_realOnly=17,lutCount=2545,mRAMThreshold=1000000,memBitCount=0,modeFormatted=--,num_modes=2,outBitWidth=12,outFracBitWidth=9,outFullFracBitWidth=18,outFullFracBitWidth_realOnly=18,outLSBRound=trunc,outLsbBitRem=9,outMSBRound=trunc,outMsbBitRem=4,outType=frac,outWidth=25,outWidth_realOnly=25,outputInterfaceNum=2,outputfifodepth=16,outputfifodepth_realOnly=8,readWriteMode=read_write,reconfigurable=false,reconfigurable_list=0,speedGrade=slow,symmetryMode=nsym)(clock:18.1:)(reset:18.1:)"
    instancePathKey="fir_tb_gen"
    kind="fir_tb_gen"
    version="1.0"
    name="fir_tb_gen">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="-1" />
-  <parameter name="AUTO_GENERATION_ID" value="1698826288" />
+  <parameter name="AUTO_GENERATION_ID" value="1746360822" />
   <parameter name="AUTO_DEVICE" value="10M16SAU169C8G" />
   <parameter name="AUTO_DEVICE_FAMILY" value="MAX 10" />
   <parameter name="AUTO_CLK_RESET_DOMAIN" value="-1" />
@@ -145,80 +145,80 @@
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="8" />
   <generatedFiles>
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/fir_tb_gen.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/fir_tb_gen.v"
        type="VERILOG" />
   </generatedFiles>
   <childGeneratedFiles>
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library_package.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library_package.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_math_pkg_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_math_pkg_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_lib_pkg_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_lib_pkg_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_controller_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_controller_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_sink_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_sink_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_source_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_source_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_roundsat_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_roundsat_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_avalon_sc_fifo.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_avalon_sc_fifo.v"
        type="VERILOG"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_ast.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_ast.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.v"
        type="VERILOG"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_synchronizer.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_synchronizer.v"
        type="VERILOG"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.sdc"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.sdc"
        type="SDC"
        attributes="" />
   </childGeneratedFiles>
   <sourceFiles>
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen.qsys" />
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen.qsys" />
   </sourceFiles>
   <childSourceFiles>
    <file
-       path="C:/intelfpga/18.1/ip/altera/dsp/altera_fir_compiler_ii/src/HP_FIR_hw.tcl" />
+       path="C:/intelfpga_lite/18.1/ip/altera/dsp/altera_fir_compiler_ii/src/HP_FIR_hw.tcl" />
    <file
-       path="C:/intelfpga/18.1/ip/altera/merlin/altera_reset_controller/altera_reset_controller_hw.tcl" />
+       path="C:/intelfpga_lite/18.1/ip/altera/merlin/altera_reset_controller/altera_reset_controller_hw.tcl" />
   </childSourceFiles>
   <messages>
    <message level="Debug" culprit="fir_tb_gen">queue size: 0 starting:fir_tb_gen "fir_tb_gen"</message>
@@ -241,9 +241,9 @@
    <message level="Debug" culprit="fir_tb_gen"><![CDATA["<b>fir_tb_gen</b>" reuses <b>altera_fir_compiler_ii</b> "<b>submodules/fir_tb_gen_fir_compiler_ii_0</b>"]]></message>
    <message level="Debug" culprit="fir_tb_gen"><![CDATA["<b>fir_tb_gen</b>" reuses <b>altera_reset_controller</b> "<b>submodules/altera_reset_controller</b>"]]></message>
    <message level="Debug" culprit="fir_tb_gen">queue size: 1 starting:altera_fir_compiler_ii "submodules/fir_tb_gen_fir_compiler_ii_0"</message>
-   <message level="Debug" culprit="fir_compiler_ii_0"><![CDATA[C:/intelfpga/18.1/quartus/dspba/backend/windows64/fir_ip_api_interface fir_tb_gen_fir_compiler_ii_0_rtl_core . MAX10 slow 0 0.4 2 0.4 31 1 1 1 nsym 1 12 11 8 7 0 false false -- 16 5 20 1280 1000000 -1 true false 1 -- <<< 0,0,0,0,0,-1,1,0,-3,6,-5,0,11,-25,37,127,37,-25,11,0,-5,6,-3,0,1,-1,0,0,0,0,0 ]]></message>
+   <message level="Debug" culprit="fir_compiler_ii_0"><![CDATA[C:/intelfpga_lite/18.1/quartus/dspba/backend/windows64/fir_ip_api_interface fir_tb_gen_fir_compiler_ii_0_rtl_core . MAX10 slow 0 0.4 2 0.4 31 1 1 1 nsym 1 12 11 8 7 0 false false -- 16 5 20 1280 1000000 -1 true false 1 -- <<< 0,0,0,0,-2,-3,0,6,8,0,-16,-22,0,50,103,127,103,50,0,-22,-16,0,8,6,0,-3,-2,0,0,0,0 ]]></message>
    <message level="Debug" culprit="fir_compiler_ii_0"><![CDATA[OUTPARAMS -interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family="MAX 10" 
-|{}|2|2|1|1|25|18|17|8|true|LUTS: 2504 DSPs: 0 RAM Bits: 0|fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd|]]></message>
+|{}|2|2|1|1|25|18|17|8|true|LUTS: 2545 DSPs: 0 RAM Bits: 0|fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd|]]></message>
    <message level="Info" culprit="fir_compiler_ii_0">PhysChanIn 2, PhysChanOut 2, ChansPerPhyIn 1, ChansPerPhyOut 1, OutputFullBitWidth 25, Bankcount 1, Latency 17, CoefBitWidth 8</message>
    <message level="Info" culprit="fir_compiler_ii_0"><![CDATA["<b>fir_tb_gen</b>" instantiated <b>altera_fir_compiler_ii</b> "<b>fir_compiler_ii_0</b>"]]></message>
    <message level="Debug" culprit="fir_tb_gen">queue size: 0 starting:altera_reset_controller "submodules/altera_reset_controller"</message>
@@ -252,8 +252,8 @@
  </entity>
  <entity
    path="submodules/"
-   parameterizationKey="altera_fir_compiler_ii:18.1:L_bandsFilter=1,MODE_STRING=None Set,ModeWidth=0,backPressure=false,bankCount=1,bankDisplay=0,bankInWidth=0,baseAddress=0,busAddressWidth=5,busDataWidth=16,chanPerInputInterface=1,chanPerOutputInterface=1,channelModes=0,1,2,3,clockRate=0.4,clockSlack=0,coeffBitWidth=8,coeffBitWidth_derived=8,coeffComplex=false,coeffFracBitWidth=7,coeffNum=31,coeffReload=false,coeffScaling=auto,coeffSetFixedValue=0,0,0,0,0,-1,1,0,-3,6,-5,0,11,-25,37,127,37,-25,11,0,-5,6,-3,0,1,-1,0,0,0,0,0,coeffSetFixedValueImag=0,0,0,0,0,0,0,0,coeffSetRealValue=-0.001201261290430126,0.0020488944185569607,-0.0020751053507837938,4.910806933254215E-18,0.004754535968663148,-0.00987450755161552,0.00995675888032359,-1.4391882903962387E-17,-0.018922538981281996,0.036214375130954504,-0.03468641976116993,2.4803862788187382E-17,0.06848299151299582,-0.15293237705130486,0.22297239138994396,0.7505245253702963,0.22297239138994396,-0.15293237705130486,0.06848299151299582,2.4803862788187385E-17,-0.034686419761169936,0.036214375130954504,-0.018922538981282003,-1.4391882903962393E-17,0.00995675888032359,-0.009874507551615532,0.004754535968663151,4.910806933254215E-18,-0.0020751053507837946,0.0020488944185569607,-0.001201261290430126,coeffSetRealValueImag=0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0530093, -0.04498, 0.0, 0.0749693, 0.159034, 0.224907, 0.249809, 0.224907, 0.159034, 0.0749693, 0.0, -0.04498, -0.0530093, -0.0321283, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,coeffSetScaleValue=0.0,0.0,0.0,0.0,0.0,-0.0059096419320495775,0.0059096419320495775,0.0,-0.017728925796148733,0.03545785159229747,-0.029548209660247887,0.0,0.06500606125254535,-0.14774104830123944,0.21865675148583436,0.7505245253702963,0.21865675148583436,-0.14774104830123944,0.06500606125254535,0.0,-0.029548209660247887,0.03545785159229747,-0.017728925796148733,0.0,0.0059096419320495775,-0.0059096419320495775,0.0,0.0,0.0,0.0,0.0,coeffSetScaleValueImag=0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,coeffType=frac,coefficientReadback=false,coefficientWriteable=false,decimFactor=1,delayRAMBlockThreshold=20,deviceFamily=MAX 10,dspCount=0,dualMemDistRAMThreshold=1280,errorList=0,filterType=single,funcResult=-interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family=&quot;MAX 10&quot; 
-|{}|2|2|1|1|25|18|17|8|noCode|LUTS: 2504 DSPs: 0 RAM Bits: 0|,hardMultiplierThreshold=-1,inputBitWidth=12,inputChannelNum=2,inputFracBitWidth=11,inputInterfaceNum=2,inputRate=0.4,inputType=frac,interpFactor=1,karatsuba=false,latency=17,latency_realOnly=17,lutCount=2504,mRAMThreshold=1000000,memBitCount=0,modeFormatted=--,num_modes=2,outBitWidth=12,outFracBitWidth=9,outFullFracBitWidth=18,outFullFracBitWidth_realOnly=18,outLSBRound=trunc,outLsbBitRem=9,outMSBRound=trunc,outMsbBitRem=4,outType=frac,outWidth=25,outWidth_realOnly=25,outputInterfaceNum=2,outputfifodepth=16,outputfifodepth_realOnly=8,readWriteMode=read_write,reconfigurable=false,reconfigurable_list=0,speedGrade=slow,symmetryMode=nsym"
+   parameterizationKey="altera_fir_compiler_ii:18.1:L_bandsFilter=1,MODE_STRING=None Set,ModeWidth=0,backPressure=false,bankCount=1,bankDisplay=0,bankInWidth=0,baseAddress=0,busAddressWidth=5,busDataWidth=16,chanPerInputInterface=1,chanPerOutputInterface=1,channelModes=0,1,2,3,clockRate=0.4,clockSlack=0,coeffBitWidth=8,coeffBitWidth_derived=8,coeffComplex=false,coeffFracBitWidth=7,coeffNum=31,coeffReload=false,coeffScaling=auto,coeffSetFixedValue=0,0,0,0,-2,-3,0,6,8,0,-16,-22,0,50,103,127,103,50,0,-22,-16,0,8,6,0,-3,-2,0,0,0,0,coeffSetFixedValueImag=0,0,0,0,0,0,0,0,coeffSetRealValue=-4.9809104E-18,0.00176930002,0.00253417762,-2.17631429E-18,-0.00580637442,-0.00852702132,-1.97826189E-17,0.016913653,0.0231087423,-8.8444965E-18,-0.0423600414,-0.0583000754,1.18265982E-17,0.132063056,0.27230022,0.332608728,0.27230022,0.132063056,1.18265982E-17,-0.0583000754,-0.0423600414,-8.8444965E-18,0.0231087423,0.016913653,-1.97826189E-17,-0.00852702132,-0.00580637442,-2.17631429E-18,0.00253417762,0.00176930002,-4.9809104E-18,coeffSetRealValueImag=0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.0530093, -0.04498, 0.0, 0.0749693, 0.159034, 0.224907, 0.249809, 0.224907, 0.159034, 0.0749693, 0.0, -0.04498, -0.0530093, -0.0321283, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,coeffSetScaleValue=0.0,0.0,0.0,0.0,-0.005237932724409449,-0.007856899086614173,0.0,0.015713798173228346,0.020951730897637796,0.0,-0.04190346179527559,-0.05761725996850394,0.0,0.13094831811023622,0.2697535353070866,0.332608728,0.2697535353070866,0.13094831811023622,0.0,-0.05761725996850394,-0.04190346179527559,0.0,0.020951730897637796,0.015713798173228346,0.0,-0.007856899086614173,-0.005237932724409449,0.0,0.0,0.0,0.0,coeffSetScaleValueImag=0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,coeffType=frac,coefficientReadback=false,coefficientWriteable=false,decimFactor=1,delayRAMBlockThreshold=20,deviceFamily=MAX 10,dspCount=0,dualMemDistRAMThreshold=1280,errorList=0,filterType=single,funcResult=-interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family=&quot;MAX 10&quot; 
+|{}|2|2|1|1|25|18|17|8|noCode|LUTS: 2545 DSPs: 0 RAM Bits: 0|,hardMultiplierThreshold=-1,inputBitWidth=12,inputChannelNum=2,inputFracBitWidth=11,inputInterfaceNum=2,inputRate=0.4,inputType=frac,interpFactor=1,karatsuba=false,latency=17,latency_realOnly=17,lutCount=2545,mRAMThreshold=1000000,memBitCount=0,modeFormatted=--,num_modes=2,outBitWidth=12,outFracBitWidth=9,outFullFracBitWidth=18,outFullFracBitWidth_realOnly=18,outLSBRound=trunc,outLsbBitRem=9,outMSBRound=trunc,outMsbBitRem=4,outType=frac,outWidth=25,outWidth_realOnly=25,outputInterfaceNum=2,outputfifodepth=16,outputfifodepth_realOnly=8,readWriteMode=read_write,reconfigurable=false,reconfigurable_list=0,speedGrade=slow,symmetryMode=nsym"
    instancePathKey="fir_tb_gen:.:fir_compiler_ii_0"
    kind="altera_fir_compiler_ii"
    version="18.1"
@@ -268,7 +268,7 @@
   <parameter
      name="funcResult"
      value="-interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family=&quot;MAX 10&quot; 
-|{}|2|2|1|1|25|18|17|8|noCode|LUTS: 2504 DSPs: 0 RAM Bits: 0|" />
+|{}|2|2|1|1|25|18|17|8|noCode|LUTS: 2545 DSPs: 0 RAM Bits: 0|" />
   <parameter name="speedGrade" value="slow" />
   <parameter name="outFullFracBitWidth_realOnly" value="18" />
   <parameter name="coeffBitWidth" value="8" />
@@ -289,7 +289,7 @@
   <parameter name="baseAddress" value="0" />
   <parameter
      name="coeffSetRealValue"
-     value="-0.001201261290430126,0.0020488944185569607,-0.0020751053507837938,4.910806933254215E-18,0.004754535968663148,-0.00987450755161552,0.00995675888032359,-1.4391882903962387E-17,-0.018922538981281996,0.036214375130954504,-0.03468641976116993,2.4803862788187382E-17,0.06848299151299582,-0.15293237705130486,0.22297239138994396,0.7505245253702963,0.22297239138994396,-0.15293237705130486,0.06848299151299582,2.4803862788187385E-17,-0.034686419761169936,0.036214375130954504,-0.018922538981282003,-1.4391882903962393E-17,0.00995675888032359,-0.009874507551615532,0.004754535968663151,4.910806933254215E-18,-0.0020751053507837946,0.0020488944185569607,-0.001201261290430126" />
+     value="-4.9809104E-18,0.00176930002,0.00253417762,-2.17631429E-18,-0.00580637442,-0.00852702132,-1.97826189E-17,0.016913653,0.0231087423,-8.8444965E-18,-0.0423600414,-0.0583000754,1.18265982E-17,0.132063056,0.27230022,0.332608728,0.27230022,0.132063056,1.18265982E-17,-0.0583000754,-0.0423600414,-8.8444965E-18,0.0231087423,0.016913653,-1.97826189E-17,-0.00852702132,-0.00580637442,-2.17631429E-18,0.00253417762,0.00176930002,-4.9809104E-18" />
   <parameter name="coeffSetScaleValueImag" value="0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0" />
   <parameter name="chanPerInputInterface" value="1" />
   <parameter name="deviceFamily" value="MAX 10" />
@@ -314,9 +314,9 @@
   <parameter name="channelModes" value="0,1,2,3" />
   <parameter
      name="coeffSetScaleValue"
-     value="0.0,0.0,0.0,0.0,0.0,-0.0059096419320495775,0.0059096419320495775,0.0,-0.017728925796148733,0.03545785159229747,-0.029548209660247887,0.0,0.06500606125254535,-0.14774104830123944,0.21865675148583436,0.7505245253702963,0.21865675148583436,-0.14774104830123944,0.06500606125254535,0.0,-0.029548209660247887,0.03545785159229747,-0.017728925796148733,0.0,0.0059096419320495775,-0.0059096419320495775,0.0,0.0,0.0,0.0,0.0" />
+     value="0.0,0.0,0.0,0.0,-0.005237932724409449,-0.007856899086614173,0.0,0.015713798173228346,0.020951730897637796,0.0,-0.04190346179527559,-0.05761725996850394,0.0,0.13094831811023622,0.2697535353070866,0.332608728,0.2697535353070866,0.13094831811023622,0.0,-0.05761725996850394,-0.04190346179527559,0.0,0.020951730897637796,0.015713798173228346,0.0,-0.007856899086614173,-0.005237932724409449,0.0,0.0,0.0,0.0" />
   <parameter name="latency" value="17" />
-  <parameter name="lutCount" value="2504" />
+  <parameter name="lutCount" value="2545" />
   <parameter name="outFracBitWidth" value="9" />
   <parameter name="outputfifodepth" value="16" />
   <parameter name="clockRate" value="0.4" />
@@ -326,7 +326,7 @@
   <parameter name="coeffFracBitWidth" value="7" />
   <parameter
      name="coeffSetFixedValue"
-     value="0,0,0,0,0,-1,1,0,-3,6,-5,0,11,-25,37,127,37,-25,11,0,-5,6,-3,0,1,-1,0,0,0,0,0" />
+     value="0,0,0,0,-2,-3,0,6,8,0,-16,-22,0,50,103,127,103,50,0,-22,-16,0,8,6,0,-3,-2,0,0,0,0" />
   <parameter name="modeFormatted" value="--" />
   <parameter name="mRAMThreshold" value="1000000" />
   <parameter name="bankCount" value="1" />
@@ -345,66 +345,66 @@
   <parameter name="hardMultiplierThreshold" value="-1" />
   <generatedFiles>
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library_package.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library_package.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/dspba_library.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_math_pkg_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_math_pkg_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_lib_pkg_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_lib_pkg_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_controller_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_controller_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_sink_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_sink_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_source_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_avalon_streaming_source_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_roundsat_hpfir.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/auk_dspip_roundsat_hpfir.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_avalon_sc_fifo.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_avalon_sc_fifo.v"
        type="VERILOG"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_ast.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0_ast.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0.vhd"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/fir_tb_gen_fir_compiler_ii_0.vhd"
        type="VHDL"
        attributes="" />
   </generatedFiles>
   <childGeneratedFiles/>
   <sourceFiles>
    <file
-       path="C:/intelfpga/18.1/ip/altera/dsp/altera_fir_compiler_ii/src/HP_FIR_hw.tcl" />
+       path="C:/intelfpga_lite/18.1/ip/altera/dsp/altera_fir_compiler_ii/src/HP_FIR_hw.tcl" />
   </sourceFiles>
   <childSourceFiles/>
   <instantiator instantiator="fir_tb_gen" as="fir_compiler_ii_0" />
   <messages>
    <message level="Debug" culprit="fir_tb_gen">queue size: 1 starting:altera_fir_compiler_ii "submodules/fir_tb_gen_fir_compiler_ii_0"</message>
-   <message level="Debug" culprit="fir_compiler_ii_0"><![CDATA[C:/intelfpga/18.1/quartus/dspba/backend/windows64/fir_ip_api_interface fir_tb_gen_fir_compiler_ii_0_rtl_core . MAX10 slow 0 0.4 2 0.4 31 1 1 1 nsym 1 12 11 8 7 0 false false -- 16 5 20 1280 1000000 -1 true false 1 -- <<< 0,0,0,0,0,-1,1,0,-3,6,-5,0,11,-25,37,127,37,-25,11,0,-5,6,-3,0,1,-1,0,0,0,0,0 ]]></message>
+   <message level="Debug" culprit="fir_compiler_ii_0"><![CDATA[C:/intelfpga_lite/18.1/quartus/dspba/backend/windows64/fir_ip_api_interface fir_tb_gen_fir_compiler_ii_0_rtl_core . MAX10 slow 0 0.4 2 0.4 31 1 1 1 nsym 1 12 11 8 7 0 false false -- 16 5 20 1280 1000000 -1 true false 1 -- <<< 0,0,0,0,-2,-3,0,6,8,0,-16,-22,0,50,103,127,103,50,0,-22,-16,0,8,6,0,-3,-2,0,0,0,0 ]]></message>
    <message level="Debug" culprit="fir_compiler_ii_0"><![CDATA[OUTPARAMS -interp=1 -decim=1 -incycles=1 -len=31 -bankcount=1 -nsym -nband=1 -chans=2 -family="MAX 10" 
-|{}|2|2|1|1|25|18|17|8|true|LUTS: 2504 DSPs: 0 RAM Bits: 0|fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd|]]></message>
+|{}|2|2|1|1|25|18|17|8|true|LUTS: 2545 DSPs: 0 RAM Bits: 0|fir_tb_gen_fir_compiler_ii_0_rtl_core.vhd|]]></message>
    <message level="Info" culprit="fir_compiler_ii_0">PhysChanIn 2, PhysChanOut 2, ChansPerPhyIn 1, ChansPerPhyOut 1, OutputFullBitWidth 25, Bankcount 1, Latency 17, CoefBitWidth 8</message>
    <message level="Info" culprit="fir_compiler_ii_0"><![CDATA["<b>fir_tb_gen</b>" instantiated <b>altera_fir_compiler_ii</b> "<b>fir_compiler_ii_0</b>"]]></message>
   </messages>
@@ -418,22 +418,22 @@
    name="altera_reset_controller">
   <generatedFiles>
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.v"
        type="VERILOG"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_synchronizer.v"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_synchronizer.v"
        type="VERILOG"
        attributes="" />
    <file
-       path="D:/Pol/Documents/Courses/LELEC2102/GIT/Git_teachers/golden/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.sdc"
+       path="C:/Master1/LELEC210X/fpga/LimeSDR-Mini_lms7_lelec210x/fir_tb_gen/synthesis/submodules/altera_reset_controller.sdc"
        type="SDC"
        attributes="" />
   </generatedFiles>
   <childGeneratedFiles/>
   <sourceFiles>
    <file
-       path="C:/intelfpga/18.1/ip/altera/merlin/altera_reset_controller/altera_reset_controller_hw.tcl" />
+       path="C:/intelfpga_lite/18.1/ip/altera/merlin/altera_reset_controller/altera_reset_controller_hw.tcl" />
   </sourceFiles>
   <childSourceFiles/>
   <instantiator instantiator="fir_tb_gen" as="rst_controller" />
