@@ -11,8 +11,12 @@ for N in range(4, 17, 2):
 y = np.array([1.20402283e-02, -5.72412149e-03, -9.56333316e-04, -9.34382407e-04, -8.49491811e-04, -5.70236186e-04, -6.90409322e-05])          #2500paquets
 #y = np.array([0.03620934, -0.01909011, -0.00079858, 0.00188618, 0.00312197, 0.00537015, 0.00120378]) #1000paquets
 
-#y = np.array([33479.18592352, 15984.4215123, 10622.46179169, 7724.79027858, 5845.98316324, 4504.8187559, 3574.31974748]) #5000paquets, abs
-y = np.array([360.79288818, -373.81757305, -19.53176305, 75.19419176, -92.50312615, 49.45926837, -45.60701897])   #2500paquets, no abs
+y = np.array([33479.18592352, 15984.4215123, 10622.46179169, 7724.79027858, 5845.98316324, 4504.8187559, 3574.31974748]) #5000paquets, abs
+#y = np.array([360.79288818, -373.81757305, -19.53176305, 75.19419176, -92.50312615, 49.45926837, -45.60701897])   #2500paquets, no abs
+y1 = np.array([-11.46899158, -7.39751606, 6.2862364, -2.38571568, 0.33509319, -2.58701136, -0.08067888])
+y1 = np.array([1385.92452132, 463.42567923, 240.72984913, 147.5270937, 103.5913435, 77.92521555, 60.6954447])
+
+y2 = np.array([1904.40893766, 706.81830053, 377.01755361, 239.16302838, 168.88384742, 125.36553838, 97.34623401])
 
 """
 #y2 = np.abs(y)
@@ -31,10 +35,16 @@ y3 = np.cumsum(np.abs(y))
 yplot = np.abs(y)/tot_corr*100
 yplot2 = y3/tot_corr*100
 
+tot_corr1 = np.sum(np.abs(y1))
+yplot1 = np.abs(y1)/tot_corr1*100
+tot_corr2 = np.sum(np.abs(y2))
+yplot12 = np.abs(y2)/tot_corr2*100
 
 fig, ax1 = plt.subplots(figsize=(8, 6))
 #Plot yplot à gauche
 ax1.plot(x, yplot, marker='o', linestyle='-', color='b')
+ax1.plot(x, yplot1, marker='o', linestyle='-', color='g')
+#ax1.plot(x, yplot12, marker='o', linestyle='-', color='y')
 ax1.set_xlabel('Moose block size (N)')
 ax1.set_ylabel('Impact of current N on overall correction (%)', color='b')
 ax1.tick_params(axis='y', labelcolor='b')

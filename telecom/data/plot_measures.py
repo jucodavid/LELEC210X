@@ -95,9 +95,11 @@ def plot_cfo_histogram(df):
     """
     # Plotting the histogram of CFO
     #df = df[(df['SNR'] <= 20) & (df['SNR'] >= 10)]
-    df = df[(df['CFO'] <= 7500) & (df['CFO'] >= 5000)]
-    print(df['CFO'].mean())
-    print(df['CFO'].std())
+    #df = df[(df['CFO'] <= 7500) & (df['CFO'] >= 5000)]
+    #df = df[(df['CFO'] <= 6890) & (df['CFO'] >= 6790)] #2e distrib
+    df = df[(df['CFO'] <= 7000) & (df['CFO'] >= 6950)]
+    print("CFO mean : ",df['CFO'].mean())
+    print("CFO std : ",df['CFO'].std())
     plt.figure(figsize=(10, 7))
     plt.hist(df['CFO'], bins=150, edgecolor='black')
     plt.xlabel('CFO [Hz]')

@@ -21,10 +21,10 @@ class Chain:
     preamble: np.ndarray = PREAMBLE
     sync_word: np.ndarray = SYNC_WORD
 
-    payload_len: int = 5 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
+    payload_len: int = 800 # Number of bits per packet   HERE <---- payload length = 8*100 dans stm32
 
     # Simulation parameters
-    n_packets: int = 1500  # Number of sent packets      HERE <----200 ou 800(pour le fun)
+    n_packets: int = 1  # Number of sent packets      HERE <----200 ou 800(pour le fun)
 
     # Channel parameters
     sto_val: float = 0
@@ -35,12 +35,14 @@ class Chain:
         1000  # defines the CFO range when random (in Hz) #(1000 in old repo)
     )
 
-    snr_range: np.ndarray = np.arange(-10, 25)
+    #snr_range: np.ndarray = np.arange(-10, 25)
+    snr_range : np.ndarray = np.array([8])
+    #snr_range: np.ndarray = np.arange(0,24)
 
     # Lowpass filter parameters
     numtaps: int = 31
     #cutoff: float = BIT_RATE * osr_rx / 6.0001  # or 2*BIT_RATE,...     HERE <----  66,7kHz pour le moment
-    cutoff: float = 150.00e3
+    cutoff: float = 75.00e3
 
     # Tx methods
 
@@ -133,7 +135,7 @@ class Chain:
         return bits_hat
 
     # Rx methods
-    bypass_preamble_detect: bool = True
+    bypass_preamble_detect: bool = False
 
     def preamble_detect(self, y):
         """
@@ -150,7 +152,7 @@ class Chain:
         return None
 
     #bypass_cfo_estimation = False
-    bypass_cfo_estimation = True                                                #HERE <----
+    bypass_cfo_estimation = False                                                #HERE <----
 
 
     def cfo_estimation_Q1(self, y):
@@ -267,7 +269,7 @@ class Chain:
             sum_est = np.vdot(y_preamb[:Nt], y_preamb[Nt:2*Nt])
             cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/self.osr_rx)
             cfo_tot += cfo_est
-            cfo_list.append(cfo_est)
+            cfo_list.append(np.abs(cfo_est))
             y_preamb *= np.exp(-1j * 2 * np.pi * cfo_est * t)
         return cfo_tot,np.array(cfo_list)
     
@@ -326,7 +328,7 @@ class Chain:
         avg_cfo_est = np.mean(cfo_estimates)
         return avg_cfo_est
 
-    bypass_sto_estimation = True                                               #HERE <----
+    bypass_sto_estimation = False                                               #HERE <----
 
     def sto_estimation_Q1(self, y):
         """
@@ -404,6 +406,16 @@ class Chain:
         #phase_derivative_1 = np.diff(phase_function)
         phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
         #phase_derivative_2 = np.abs(np.diff(phase_derivative_1))
+        
+        import matplotlib.pyplot as plt
+        plt.figure()
+        print(phase_derivative_2[:150])
+        plt.plot(phase_derivative_2[:150])
+        plt.title("Phase derivative")
+        plt.xlabel("Sample index")
+        plt.ylabel("Phase derivative")
+        plt.grid()
+        plt.show()
 
         sum_der_saved = -np.inf
         save_i = 0

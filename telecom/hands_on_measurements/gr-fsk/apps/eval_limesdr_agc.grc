@@ -327,7 +327,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [408, 268.0]
+    coordinate: [688, 516.0]
     rotation: 0
     state: true
 - name: fsk_demodulation_0
@@ -347,7 +347,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [872, 364.0]
+    coordinate: [896, 364.0]
     rotation: 0
     state: enabled
 - name: fsk_flag_detector_0
@@ -426,7 +426,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [616, 444.0]
+    coordinate: [440, 428.0]
     rotation: 0
     state: enabled
 - name: limesdr_fpga_source_0
@@ -521,12 +521,12 @@ connections:
 - [dc_blocker_xx_0, '0', fsk_flag_detector_0, '0']
 - [dc_blocker_xx_0, '0', fsk_onQuery_noise_estimation_0, '0']
 - [dc_blocker_xx_0, '0', qtgui_sink_x_0, '0']
-- [fsk_agc_0, '0', fsk_synchronization_0, '0']
+- [fsk_agc_0, '0', fsk_demodulation_0, '0']
 - [fsk_demodulation_0, '0', fsk_packet_parser_0, '0']
-- [fsk_flag_detector_0, '0', fsk_agc_0, '0']
+- [fsk_flag_detector_0, '0', fsk_synchronization_0, '0']
 - [fsk_onQuery_noise_estimation_0, NoisePow, fsk_synchronization_0, NoisePow]
 - [fsk_packet_parser_0, '0', zeromq_pub_sink_0, '0']
-- [fsk_synchronization_0, '0', fsk_demodulation_0, '0']
+- [fsk_synchronization_0, '0', fsk_agc_0, '0']
 - [limesdr_fpga_source_0, '0', dc_blocker_xx_0, '0']
 
 metadata:
