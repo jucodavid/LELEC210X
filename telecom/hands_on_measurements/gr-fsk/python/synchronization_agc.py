@@ -1,0 +1,301 @@
+#!/usr/bin/env python
+#
+# Copyright 2021 UCLouvain.
+#
+# This is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# This software is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this software; see the file COPYING.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street,
+# Boston, MA 02110-1301, USA.
+#
+
+from distutils.version import LooseVersion
+
+import numpy as np
+import pmt
+from gnuradio import gr
+import threading
+import time
+
+from .utils import logging, measurements_logger
+
+
+def cfo_estimation(y,B,R,Fdev):
+    """
+    Estimates CFO using Moose algorithm, on first samples of preamble. With offsets.
+    """
+    y_preamb = y[:32*R]
+    T = 1/B
+    Nt = 2*R
+    t = np.arange(len(y_preamb)) / (B * R)
+    cfo = np.angle(np.vdot(y[:Nt], y[Nt:2*Nt])) / (2 * np.pi * Nt * T/R)
+    cfo_tot = cfo
+    y_preamb *= np.exp(-1j * 2 * np.pi * cfo * t)
+    for N in range(4,17,2):
+        Nt = N * R
+        sum_est = np.vdot(y_preamb[:Nt], y_preamb[Nt:2*Nt])
+        cfo_est = np.angle(sum_est) / (2 * np.pi * Nt * T/R)
+        cfo_tot += cfo_est
+        y_preamb *= np.exp(-1j * 2 * np.pi * cfo_est * t)
+    return cfo_tot
+
+
+def sto_estimation(y, B, R, Fdev):
+    """
+    Estimates symbol timing (fractional) based on phase shifts.
+    """
+
+    #preamble_length = 32 * R  # Length of the preamble in samples
+    #y_preamble = y[:preamble_length]  # Use only the preamble
+
+    # Computation of derivatives of phase function
+    phase_function = np.unwrap(np.angle(y))
+    #phase_function = np.unwrap(np.angle(y_preamble))
+
+    phase_derivative_1 = phase_function[2:] - phase_function[:-2]
+    #phase_derivative_1 = np.diff(phase_function)
+    phase_derivative_2 = np.abs(phase_derivative_1[1:] - phase_derivative_1[:-1])
+    #phase_derivative_2 = np.abs(np.diff(phase_derivative_1))
+
+    sum_der_saved = -np.inf
+    save_i = 0
+    for i in range(0, R):
+        #sum_der = np.sum(phase_derivative_2[i::R])  # Sum every R samples
+        sum_der = (
+            np.sum(phase_derivative_2[max(i - 2, 0)::R]) +  # i-2
+            np.sum(phase_derivative_2[max(i - 1, 0)::R]) +  # i-1
+            np.sum(phase_derivative_2[i::R]) +  # i
+            np.sum(phase_derivative_2[min(i + 1, R - 1)::R])+  # i+1
+            np.sum(phase_derivative_2[min(i + 2, R - 1)::R])  # i+2
+        )
+
+        if sum_der > sum_der_saved:
+            sum_der_saved = sum_der
+            save_i = i
+
+    return np.mod(save_i + 1, R)
+
+def monitor_gain_update(self):
+    while self.running:
+        time.sleep(1)
+        if time.time() - self.last_gain_update_time > 10:
+            self.callback(self.gain - 2)
+            self.last_gain_update_time = time.time()
+
+def gain_estimation(y,ref,current_gain,max_gain,slices):
+    slice_length = len(y)//slices
+    amplitude = 0.0
+    max_dev = 10
+    print("max value in y: ",np.max(np.abs(y)))
+    for i in range(slices):
+        start_id = i* slice_length
+        end_id = (i + 1) * slice_length if (i + 1) * slice_length <= len(y) else len(y)
+        slice = y[start_id:end_id]
+        amplitude += np.max(np.abs(slice))
+    amplitude /= slices
+    print("------------> Amplitude: ", amplitude)
+
+    #2047 est la valeur maximale sortant de l'adc
+    #mais il y a normalisation dans gnuradio de -.5 à .5
+    if amplitude >= 0.47:       #0.47
+        gain = current_gain - 10
+        print("-----------> 1 <----------")
+        return gain
+    elif amplitude < 0.005 and current_gain >= max_gain - 10:
+        gain = current_gain - 10
+        print("-----------> 2 <----------")
+        return gain
+
+    target_amplitude = ref * 0.5        #0.5
+
+    if amplitude != 0:
+        gain = target_amplitude / amplitude
+        print("-----------> 3 <----------", gain)
+    else:
+        gain = 1
+        print("-----------> 4 <----------")
+    #20.log pour V/V et 10.log pour W/W
+    gain = int(20*np.log10(gain))
+    print("gain: ", gain)
+    if np.abs(gain) > max_dev:
+        print("------------45-----------------")
+        gain= current_gain + max_dev if gain > 0 else current_gain - max_dev
+    else:
+        gain += current_gain
+
+    if max_gain > 0 and gain > max_gain:    #max gain > 0 ? -> max gain non infini ?
+        gain = max_gain
+        print("-----------> 5 <----------")
+    return gain
+
+
+class synchronization_agc(gr.basic_block):
+    """
+    docstring for block synchronization
+    """
+
+    def __init__(self, drate, fdev, fsamp, hdr_len, packet_len, tx_power,enable_log,ref,max_gain,slices,gain,callback):
+        self.drate = drate
+        self.fdev = fdev
+        self.fsamp = fsamp
+        self.osr = int(fsamp / drate)
+        self.hdr_len = hdr_len
+        self.packet_len = packet_len  # in bytes
+        self.estimated_noise_power = 0
+        self.tx_power = tx_power
+        self.enable_log = enable_log
+
+        self.ref = ref
+        self.max_gain = max_gain
+        self.slices = slices
+        self.gain = gain
+        self.callback = callback
+        self.callback(self.gain)
+
+        # Remaining number of samples in the current packet
+        self.rem_samples = 0
+        self.init_sto = 0
+        self.cfo = 0.0
+        self.t0 = 0.0
+        self.power_est = None
+        self.power_est = None
+        self.estimated_noise_power = 0
+
+        self.monitor_thread = threading.Thread(target=self.monitor_gain_update)
+        self.monitor_thread.daemon = True
+        self.monitor_thread.start()
+
+        gr.basic_block.__init__(
+            self, name="Synchronization", in_sig=[np.complex64], out_sig=[np.complex64]
+        )
+        self.logger = logging.getLogger("sync")
+        self.message_port_register_in(pmt.intern("NoisePow"))
+        self.set_msg_handler(pmt.intern("NoisePow"), self.handle_msg)
+
+        self.gr_version = gr.version()
+
+        # Redefine function based on version
+        if LooseVersion(self.gr_version) < LooseVersion("3.9.0"):
+            self.forecast = self.forecast_v38
+        else:
+            self.forecast = self.forecast_v310
+
+    def stop(self):
+        self.running = False
+        self.monitor_thread.join()
+
+    def forecast_v38(self, noutput_items, ninput_items_required):
+        """
+        input items are samples (with oversampling factor)
+        output items are samples (with oversampling factor)
+        """
+        if self.rem_samples == 0:  # looking for a new packet
+            ninput_items_required[0] = (
+                    min(8000, 8 * self.osr * (self.packet_len + 1) + self.osr)
+                )  # enough samples to find a header inside
+        else:  # processing a previously found packet
+            ninput_items_required[0] = (
+                noutput_items  # pass remaining samples in packet to next block
+            )
+
+    def forecast_v310(self, noutput_items, ninputs):
+        """
+        forecast is only called from a general block
+        this is the default implementation
+        """
+        ninput_items_required = [0] * ninputs
+        for i in range(ninputs):
+            if self.rem_samples == 0:  # looking for a new packet
+                ninput_items_required[i] = (
+                    min(8000, 8 * self.osr * (self.packet_len + 1) + self.osr)
+                )  # enough samples to find a header inside
+            else:  # processing a previously found packet
+                ninput_items_required[i] = (
+                    noutput_items  # pass remaining samples in packet to next block
+                )
+
+        return ninput_items_required
+
+    def set_enable_log(self, enable_log):
+        self.enable_log = enable_log
+
+    def handle_msg(self, msg):
+        self.estimated_noise_power = pmt.to_double(msg)
+
+    def set_tx_power(self, tx_power):
+        self.tx_power = tx_power
+
+    def general_work(self, input_items, output_items):
+        if self.rem_samples == 0:  # new packet to process, compute the CFO and STO
+            y = input_items[0][: self.hdr_len * 8 * self.osr]
+            self.logger.info("------> Some values: %s",np.max(np.abs(y)))
+            self.cfo = cfo_estimation(y, self.drate, self.osr, self.fdev)
+
+            # Correct CFO in preamble
+            t = np.arange(len(y)) / (self.drate * self.osr)
+            y_cfo = np.exp(-1j * 2 * np.pi * self.cfo * t) * y
+            self.t0 = t[-1]
+
+            sto = sto_estimation(y_cfo, self.drate, self.osr, self.fdev)
+
+            self.init_sto = sto
+
+            self.gain = gain_estimation(y,self.ref,self.gain,self.max_gain,self.slices)
+            self.callback(self.gain)
+            self.logger.info("------> Current gain: %d",self.gain)
+            self.logger.info("------> Some values: %s",np.abs(y[0:10]))
+            self.last_gain_update_time = time.time()
+
+            self.power_est = None
+            self.rem_samples = (self.packet_len + 1) * 8 * self.osr
+            if self.enable_log:
+                self.logger.info(
+                    f"new preamble detected @ {self.nitems_read(0) + sto} (CFO {self.cfo:.2f} Hz, STO {sto})"
+                )
+            measurements_logger.info(f"CFO={self.cfo},STO={sto}")
+            self.consume_each(sto)  # drop *sto* samples to align the buffer
+            return 0  # ... but we do not transmit data to the demodulation stage
+        else:
+            win_size = min(len(output_items[0]), self.rem_samples)
+            y = input_items[0][:win_size]
+
+            if self.power_est is None and win_size >= 256:
+                self.power_est = np.var(y)
+                SNR_est = (
+                    self.power_est - self.estimated_noise_power
+                ) / self.estimated_noise_power
+                if self.enable_log:
+                    self.logger.info(
+                        f"estimated SNR: {10 * np.log10(SNR_est):.2f} dB ({len(y)} samples, Esti. RX power: {self.power_est:.2e},  TX indicative Power: {self.tx_power} dB)"
+                    )
+                measurements_logger.info(
+                    f"SNRdB={10 * np.log10(SNR_est):.2f},TXPdB={self.tx_power}"
+                )
+
+            # Correct CFO before transferring samples to demodulation stage
+            t = self.t0 + np.arange(1, len(y) + 1) / (self.drate * self.osr)
+            y_corr = np.exp(-1j * 2 * np.pi * self.cfo * t) * y
+            self.t0 = t[
+                -1
+            ]  # we keep the CFO correction continuous across buffer chunks
+
+            output_items[0][:win_size] = y_corr
+
+            self.rem_samples -= win_size
+            if (
+                self.rem_samples == 0
+            ):  # Thow away the extra OSR samples from the preamble detection stage
+                self.consume_each(win_size + self.osr - self.init_sto)
+            else:
+                self.consume_each(win_size)
+
+            return win_size

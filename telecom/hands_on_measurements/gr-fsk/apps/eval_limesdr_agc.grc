@@ -327,9 +327,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 516.0]
+    coordinate: [720, 308.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: fsk_demodulation_0
   id: fsk_demodulation
   parameters:
@@ -347,7 +347,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 364.0]
+    coordinate: [1024, 348.0]
     rotation: 0
     state: enabled
 - name: fsk_flag_detector_0
@@ -404,7 +404,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1152, 444.0]
+    coordinate: [1232, 460.0]
     rotation: 0
     state: enabled
 - name: fsk_synchronization_0
@@ -426,9 +426,36 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 428.0]
+    coordinate: [440, 324.0]
     rotation: 0
-    state: enabled
+    state: disabled
+- name: fsk_synchronization_agc_0
+  id: fsk_synchronization_agc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    drate: data_rate
+    enable_log: Print_metrics
+    fdev: fdev
+    fsamp: samp_rate
+    gain: '30'
+    hdr_len: hdr_len
+    max_gain: '70'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    packet_len: packet_len
+    ref: '0.7'
+    slices: '5'
+    tx_power: tx_power
+    updated_gain: updated_rx_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 516.0]
+    rotation: 0
+    state: true
 - name: limesdr_fpga_source_0
   id: limesdr_fpga_source
   parameters:
@@ -524,9 +551,12 @@ connections:
 - [fsk_agc_0, '0', fsk_demodulation_0, '0']
 - [fsk_demodulation_0, '0', fsk_packet_parser_0, '0']
 - [fsk_flag_detector_0, '0', fsk_synchronization_0, '0']
+- [fsk_flag_detector_0, '0', fsk_synchronization_agc_0, '0']
 - [fsk_onQuery_noise_estimation_0, NoisePow, fsk_synchronization_0, NoisePow]
+- [fsk_onQuery_noise_estimation_0, NoisePow, fsk_synchronization_agc_0, NoisePow]
 - [fsk_packet_parser_0, '0', zeromq_pub_sink_0, '0']
 - [fsk_synchronization_0, '0', fsk_agc_0, '0']
+- [fsk_synchronization_agc_0, '0', fsk_demodulation_0, '0']
 - [limesdr_fpga_source_0, '0', dc_blocker_xx_0, '0']
 
 metadata:

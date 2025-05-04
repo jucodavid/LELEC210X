@@ -39,6 +39,7 @@ GR_PYTHON_INSTALL(
     demodulation.py
     packet_parser.py
     agc.py
+    synchronization_agc.py
     onQuery_noise_estimation.py DESTINATION ${GR_PYTHON_DIR}/fsk
 )
 
