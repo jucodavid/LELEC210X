@@ -84,13 +84,6 @@ def sto_estimation(y, B, R, Fdev):
 
     return np.mod(save_i + 1, R)
 
-def monitor_gain_update(self):
-    while self.running:
-        time.sleep(1)
-        if time.time() - self.last_gain_update_time > 10:
-            self.callback(self.gain - 2)
-            self.last_gain_update_time = time.time()
-
 def gain_estimation(y,ref,current_gain,max_gain,slices):
     slice_length = len(y)//slices
     amplitude = 0.0
@@ -107,11 +100,11 @@ def gain_estimation(y,ref,current_gain,max_gain,slices):
     #2047 est la valeur maximale sortant de l'adc
     #mais il y a normalisation dans gnuradio de -.5 à .5
     if amplitude >= 0.47:       #0.47
-        gain = current_gain - 10
+        gain = current_gain - 5
         print("-----------> 1 <----------")
         return gain
     elif amplitude < 0.005 and current_gain >= max_gain - 10:
-        gain = current_gain - 10
+        gain = current_gain - 5
         print("-----------> 2 <----------")
         return gain
 
@@ -170,6 +163,10 @@ class synchronization_agc(gr.basic_block):
         self.power_est = None
         self.estimated_noise_power = 0
 
+        self.count = 0
+        self.last_gain_update_time = time.time()
+
+        self.running = True
         self.monitor_thread = threading.Thread(target=self.monitor_gain_update)
         self.monitor_thread.daemon = True
         self.monitor_thread.start()
@@ -189,9 +186,24 @@ class synchronization_agc(gr.basic_block):
         else:
             self.forecast = self.forecast_v310
 
+    def monitor_gain_update(self):
+        gain_list = [35, 15, 60]
+        while self.running:
+            time.sleep(1)
+            if time.time() - self.last_gain_update_time > 10:
+                self.last_gain_update_time = time.time()
+                self.gain = gain_list[self.count]
+                self.callback(self.gain)
+                self.logger.info("------> Gain time update: %d",self.gain)
+                if self.count == 2:
+                    self.count = 0
+                else:
+                    self.count += 1
+
+    """
     def stop(self):
         self.running = False
-        self.monitor_thread.join()
+        self.monitor_thread.join()"""
 
     def forecast_v38(self, noutput_items, ninput_items_required):
         """
@@ -254,6 +266,7 @@ class synchronization_agc(gr.basic_block):
             self.logger.info("------> Current gain: %d",self.gain)
             self.logger.info("------> Some values: %s",np.abs(y[0:10]))
             self.last_gain_update_time = time.time()
+            self.count = 0
 
             self.power_est = None
             self.rem_samples = (self.packet_len + 1) * 8 * self.osr

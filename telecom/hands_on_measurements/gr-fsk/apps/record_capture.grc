@@ -357,7 +357,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 740.0]
+    coordinate: [432, 828.0]
     rotation: 0
     state: disabled
 - name: fsk_flag_detector_0
@@ -397,6 +397,28 @@ blocks:
     coordinate: [336, 700.0]
     rotation: 0
     state: true
+- name: fsk_synchronization_0
+  id: fsk_synchronization
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    drate: data_rate
+    enable_log: Print_metrics
+    fdev: fdev
+    fsamp: samp_rate
+    hdr_len: hdr_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    packet_len: packet_len
+    tx_power: tx_power
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 732.0]
+    rotation: 0
+    state: disabled
 - name: fsk_synchronization_agc_0
   id: fsk_synchronization_agc
   parameters:
@@ -413,7 +435,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     packet_len: packet_len
-    ref: '0.5'
+    ref: '0.6'
     slices: '5'
     tx_power: tx_power
     updated_gain: updated_rx_gain
@@ -423,7 +445,7 @@ blocks:
     bus_structure: null
     coordinate: [792, 476.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: limesdr_fpga_source_0
   id: limesdr_fpga_source
   parameters:
@@ -525,8 +547,12 @@ blocks:
 connections:
 - [dc_blocker_xx_0, '0', fsk_flag_detector_0, '0']
 - [dc_blocker_xx_0, '0', fsk_onQuery_noise_estimation_0, '0']
+- [fsk_flag_detector_0, '0', fsk_synchronization_0, '0']
 - [fsk_flag_detector_0, '0', fsk_synchronization_agc_0, '0']
+- [fsk_onQuery_noise_estimation_0, NoisePow, fsk_synchronization_0, NoisePow]
 - [fsk_onQuery_noise_estimation_0, NoisePow, fsk_synchronization_agc_0, NoisePow]
+- [fsk_synchronization_0, '0', blocks_file_sink_0, '0']
+- [fsk_synchronization_0, '0', qtgui_sink_x_0, '0']
 - [fsk_synchronization_agc_0, '0', blocks_file_sink_0, '0']
 - [fsk_synchronization_agc_0, '0', qtgui_sink_x_0, '0']
 - [limesdr_fpga_source_0, '0', dc_blocker_xx_0, '0']
