@@ -11,8 +11,8 @@
 #define MAIN_APP 0
 #define EVAL_RADIO 1
 
-//#define RUN_CONFIG EVAL_RADIO
-#define RUN_CONFIG MAIN_APP
+#define RUN_CONFIG EVAL_RADIO
+//#define RUN_CONFIG MAIN_APP
 
 
 // Radio parameters
@@ -49,7 +49,7 @@
 #define HW_HARD_THRESHOLD 2
 
 // Event detection mode selection
-#define EVENT_DETECTION_MODE HW_HARD_THRESHOLD
+#define EVENT_DETECTION_MODE HARD_THRESHOLD
 //#define EVENT_DETECTION_MODE SOFT_THRESHOLD
 
 // Event detection parameters
