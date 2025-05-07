@@ -67,7 +67,11 @@ click==8.1.8
     # via contrib
     # via flask
     # via leaderboard
-    # via mcu
+colorama==0.4.6
+    # via click
+    # via ipython
+    # via pytest
+    # via tqdm
 comm==0.2.2
     # via ipykernel
 contourpy==1.2.1
@@ -513,7 +517,7 @@ wsproto==1.2.0
     # via simple-websocket
 wtforms==3.1.2
     # via flask-wtf
-youtube-dl @ git+https://github.com/ytdl-org/youtube-dl.git@673277e510ebd996b62a2fcc76169bf3cce29910
+youtube-dl @ git+https://github.com/ytdl-org/youtube-dl.git@a084c80f7bac9ae343075a97cc0fb2c1c96ade89
 zipp==3.20.1
     # via importlib-metadata
     # via importlib-resources

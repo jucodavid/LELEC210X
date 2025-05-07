@@ -64,7 +64,10 @@ click==8.1.7
     # via common
     # via flask
     # via leaderboard
-    # via mcu
+colorama==0.4.6
+    # via click
+    # via ipython
+    # via tqdm
 comm==0.2.2
     # via ipykernel
 contourpy==1.2.1
