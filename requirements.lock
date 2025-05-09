@@ -12,8 +12,8 @@
 -e file:auth
 -e file:classification
 -e file:common
+-e file:contrib
 -e file:leaderboard
--e file:mcu
 aniso8601==9.0.1
     # via flask-restx
 anyio==4.4.0
@@ -64,7 +64,6 @@ click==8.1.7
     # via common
     # via flask
     # via leaderboard
-    # via mcu
 colorama==0.4.6
     # via click
     # via ipython
@@ -268,7 +267,6 @@ numpy==2.0.2
     # via contourpy
     # via librosa
     # via matplotlib
-    # via mcu
     # via numba
     # via pandas
     # via scikit-learn
@@ -288,7 +286,6 @@ packaging==24.1
     # via limits
     # via matplotlib
     # via nbconvert
-    # via plotly
     # via pooch
 pandas==2.2.2
     # via seaborn
@@ -301,8 +298,6 @@ pillow==10.4.0
 platformdirs==4.2.2
     # via jupyter-core
     # via pooch
-plotly==5.24.1
-    # via mcu
 pooch==1.8.2
     # via librosa
 prometheus-client==0.20.0
@@ -325,15 +320,8 @@ pygments==2.18.0
     # via rich
 pyparsing==3.1.4
     # via matplotlib
-pyqt6==6.7.1
-    # via mcu
-pyqt6-qt6==6.7.3
-    # via pyqt6
-pyqt6-sip==13.8.0
-    # via pyqt6
 pyserial==3.5
     # via auth
-    # via mcu
 python-dateutil==2.9.0.post0
     # via arrow
     # via flask-apscheduler
@@ -392,7 +380,6 @@ scikit-learn==1.5.1
 scipy==1.13.1
     # via classification
     # via librosa
-    # via mcu
     # via scikit-learn
 seaborn==0.13.2
     # via classification
@@ -419,15 +406,12 @@ sounddevice==0.5.0
 soundfile==0.12.1
     # via classification
     # via librosa
-    # via mcu
 soupsieve==2.6
     # via beautifulsoup4
 soxr==0.5.0
     # via librosa
 stack-data==0.6.3
     # via ipython
-tenacity==9.0.0
-    # via plotly
 terminado==0.18.1
     # via jupyter-server
     # via jupyter-server-terminals
