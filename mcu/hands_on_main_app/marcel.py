@@ -17,7 +17,7 @@ ZMQ_ADDRESS = "tcp://127.0.0.1:10000"
 
 PREAMB_LENGTH = 4
 SYNC_LENGTH = 4
-MELVEC_LENGTH = 20
+MELVEC_LENGTH = 12
 N_MELVECS = 20
 TAG_LENGTH = 16
 
@@ -107,7 +107,7 @@ if __name__ == "__main__":
         plot_melvec = False
 
     model_dir = "classification/data/models/"
-    filename = "model_new_data_bg.pickle"
+    filename = "model_12.pickle"
 
     packet_counter = 0
     classnames = ['background','chainsaw','fire','fireworks','gunshot']
