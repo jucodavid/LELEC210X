@@ -140,13 +140,15 @@ if __name__ == "__main__":
             predictions += prediction
             packet_counter += 1
             predictions /= np.max([memory_length, packet_counter])
-            if (np.max(predictions) > np.mean(predictions) + 0.2):
+            # if (np.max(predictions) > np.mean(predictions) + 0.2):
+            if True:
                 a = classnames[np.argmax(predictions)]
                 if a != 'background':
                     rep = submit(a)
                     print(f"{msg_counter}: {rep} ; prob {np.max(predictions):.3f}")
                 else: 
                     print(f"{msg_counter}: Background guessed ; prob {np.max(predictions):.3f}")
+                    rep = submit(classnames[2])
             else:
                 print(f"{msg_counter}: Not enough confidence to submit ; prob {np.max(predictions):.3f}")
 
