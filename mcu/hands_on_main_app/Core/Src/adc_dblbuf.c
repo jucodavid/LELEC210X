@@ -121,6 +121,7 @@ static void routine(int buf_cplt) {
 //		print_spectrogram();
 //		stop_cycle_count("Total FV");
 		send_spectrogram();
+		HAL_PWR_EnterSLEEPMode(PWR_MAINREGULATOR_ON, PWR_SLEEPENTRY_WFI);
 	}
 }
 

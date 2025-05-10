@@ -59,7 +59,7 @@
 #define HT_MAX 1
 #define HT_POWER 2
 
-#define THRESHOLD 2400 // Mean : 2040; MAX : 2500; ENERGY :
+#define THRESHOLD 2300 // Mean : 2040; MAX : 2500; ENERGY :
 //#define HT_METRIC HT_MEAN
 #define HT_METRIC HT_MAX
 //#define HT_METRIC HT_POWER
@@ -73,7 +73,7 @@
 
 // Spectrogram parameters
 #define SAMPLES_PER_MELVEC 512
-#define MELVEC_LENGTH 20
+#define MELVEC_LENGTH 12
 #define N_MELVECS 20
 
 

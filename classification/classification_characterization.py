@@ -47,7 +47,7 @@ def play_all_sounds(dataset):
 def load_dataset():
     dataset = Dataset()
     classnames = dataset.list_classes()
-    myds = Feature_vector_DS(dataset, Nft=512, nmel=20, duration=950)
+    myds = Feature_vector_DS(dataset, Nft=512, nmel=12, duration=950)
     return dataset, classnames, myds
 
 def load_data(myds, classnames, dataset,distorsion_to_add = []):  
@@ -129,7 +129,7 @@ def model_validation(X_train, y_train, X_test, y_test, best_est, best_depth, bes
     print('la2')
     model.fit(X_train, y_train)
     #save the model in the pickle
-    pickle.dump(model, open("classification/data/models/model_new_data_bg.pickle", "wb"))
+    pickle.dump(model, open("classification/data/models/model_122.pickle", "wb"))
     prediction = model.predict(X_test)
     print("Accuracy on test set: ", accuracy(prediction, y_test))
     acc = accuracy(prediction, y_test)
